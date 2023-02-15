@@ -7,5 +7,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`FoodSaver API listening on port ${port}!`);
+  console.log(`FoodSaver API listening on port ${port}`);
 });
