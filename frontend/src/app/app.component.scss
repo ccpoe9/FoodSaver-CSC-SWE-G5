@@ -1,6 +1,41 @@
 
 
 #offcanvasNavbar{
-    width: 20%;
+    width: 15rem;
 }
 
+.navbar-toggler{
+    border: none;
+    padding: 8px;
+}
+
+.navbar-toggler:focus {
+    outline:none;
+    box-shadow: none;
+}
+
+.navbar-toggler:active{
+    background-color: lightgrey;
+}
+
+.cart-btn{
+    padding: 8px;
+    font-size: larger;
+    border: none;
+    border-radius: 25px;
+    background-color: #04ace9;
+    width: 75px;
+}
+
+.cart-btn:active{
+    background-color: #0386b6;
+}
+
+.search-bar{
+    padding: 8px 0px 8px 15px;
+    border-radius: 15px;
+}
+.search-bar:focus {
+    outline:none;
+    box-shadow: none;
+}
