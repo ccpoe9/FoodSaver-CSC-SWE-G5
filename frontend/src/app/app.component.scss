@@ -1,7 +1,11 @@
-
-
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
 #offcanvasNavbar{
-    width: 15rem;
+    width: 20rem;
+    font-family: 'Josefin Sans', sans-serif;
+}
+.offcanvas-body{
+    padding-right: 0;
 }
 
 .navbar-toggler{
@@ -25,10 +29,15 @@
     border-radius: 25px;
     background-color: #04ace9;
     width: 75px;
+    font-family: 'Josefin Sans', sans-serif;
 }
 
 .cart-btn:active{
     background-color: #0386b6;
+}
+
+.cart-number{
+    font-size: medium;
 }
 
 .search-bar{
@@ -37,6 +46,7 @@
     padding: 8px 0px 8px 8px;
     border-radius: 0px 15px 15px 0px;
     border-left: none;
+    font-family: 'Josefin Sans', sans-serif;
 }
 .search-bar:focus {
     outline:none;
@@ -53,3 +63,13 @@
     height: 2.75em;
     width: 2.75em;
 }
+
+.nav-item{
+    font-size: 1.5em;
+    padding: 0.5em;
+    border: 0.1px solid black;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
