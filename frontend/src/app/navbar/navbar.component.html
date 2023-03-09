@@ -1,0 +1,56 @@
+<div class="container">
+    <nav class="navbar bg-body-tertiary fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-left w-25">
+            <button class="navbar-toggler me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+            <img src="/assets/FoodSaver.png" width="200em" height="40em"/>
+          </div>
+          <div class="navbar-center w-50">
+            <form class="d-flex" role="search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input class="search-bar" type="text" placeholder="Search" />
+            </form>
+          </div>
+          <div class="navbar-right w-25 d-flex justify-content-end">
+            <button type="button" class="btn cart-btn d-flex align-items-center justify-content-center" >
+              <i class="fa-solid fa-cart-shopping me-2"></i>
+              <div class="cart-number">1</div>
+            </button>
+          </div>
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header justify-content-start">
+              <i class="fa-solid fa-user" style="font-size: 1.5em; padding: 0.5em;"></i>
+              <div style="padding-top: 0.5em;">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">John Doe</h5>
+                <h6 class="offcanvas-subtitle" id="offcanvasNavbarLabel">Customer</h6>
+              </div>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1">
+                <li class="nav-item mt-2 mb-2">
+                  <a class="nav-link " [ngClass]="{'active' : currentPage === '/home'}" aria-current="page" href="home"><i class="fa-solid fa-house"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" [ngClass]="{'active' : currentPage === '/orders'}" href="orders"><i class="fa-solid fa-bag-shopping"></i> Orders</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" [ngClass]="{'active' : currentPage === '/favorites'}" href="favorites"><i class="fa-solid fa-heart"></i> Favorites</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{'active' : currentPage === '/reports'}" href="reports"><i class="fa-solid fa-clipboard"></i> Reports</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" [ngClass]="{'active' : currentPage === '/settings'}" href="settings"><i class="fa-solid fa-gear"></i> Settings</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </nav>
+</div>
+
