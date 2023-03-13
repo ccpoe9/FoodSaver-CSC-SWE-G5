@@ -7,7 +7,6 @@
 .offcanvas-body{
     padding-right: 0;
 }
-
 .navbar-toggler{
     border: none;
     padding: 8px;
@@ -21,23 +20,55 @@
 .navbar-toggler:active{
     background-color: lightgrey;
 }
+.navbar-center{
+    width: 50%;
+}
 
-.cart-btn{
-    padding: 8px;
+.address-btn{
     font-size: larger;
     border: none;
     border-radius: 25px;
-    background-color: #04ace9;
-    width: 75px;
+    background-color: rgb(4, 137, 187);
+    width: fit-content;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.address-btn:active{
+    background-color: rgb(4, 137, 187);
+}
+
+.cart-btn{
+    font-size: larger;
+    border: none;
+    border-radius: 25px;
+    background-color: rgb(4, 137, 187);
+    width: fit-content;
     font-family: 'Josefin Sans', sans-serif;
 }
 
 .cart-btn:active{
-    background-color: #0386b6;
+    background-color: rgb(4, 137, 187);
 }
 
 .cart-number{
     font-size: medium;
+}
+
+.brand-text{
+    color: rgb(4, 137, 187);
+    padding-top: 5px;
+    font-size: larger;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.address-text{
+    font-size: medium;
+}
+.fa-location-dot{
+    margin-right: 0.66rem;
+}
+.fa-cart-shopping{
+    margin-right: 0.66rem;
 }
 
 .search-bar{
@@ -73,3 +104,44 @@
     border-right: none;
 }
 
+@media only screen and (max-width: 1136px) {
+    .navbar-center {
+      width: 40%;
+    }
+  }
+  @media only screen and (max-width: 968px) {
+    .navbar-center {
+      width: 30%;
+    }
+  }
+
+  @media only screen and (max-width: 820px) {
+    .fa-location-dot{
+        margin-right: 0;
+    }
+    .address-text{
+        display: none;
+    }
+    
+  }
+
+  @media only screen and (max-width: 600px) {
+    .brand-text{
+        display: none;
+    }
+    #offcanvasNavbar{
+        width: 100%;
+    }
+  }
+  @media only screen and (max-width: 400px) {
+    .address-btn{
+        display: none;
+    }
+    
+    .cart-number{
+        display: none;
+    }
+    .fa-cart-shopping{
+        margin-right: 0;
+    } 
+  }
