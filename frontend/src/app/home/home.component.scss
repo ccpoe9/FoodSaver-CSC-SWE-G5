@@ -3,8 +3,18 @@
 
 .container{
     height: 100vh;
+    padding: 2rem;
 }
 
-.header-title{
+.card{
+    border: none;
+}
+
+.header-title, .card-title{
     font-family: 'Josefin Sans', sans-serif;
 }
+.card-subtitle{
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: small;
+}
+
