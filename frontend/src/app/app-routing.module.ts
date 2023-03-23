@@ -5,8 +5,10 @@ import { OrdersComponent } from './orders/orders.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ReportsComponent } from './reports/reports.component';
+import { LandingComponent } from './landing/landing.component';
 
 const routes: Routes = [{path : '', redirectTo:'home', pathMatch:'full'},
+                        {path:'landing', component:LandingComponent},
                         {path:'home', component: HomeComponent},
                         {path:'orders', component: OrdersComponent},
                         {path:'favorites', component: FavoritesComponent},
