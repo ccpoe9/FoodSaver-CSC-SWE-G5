@@ -9,6 +9,7 @@ import { FavoritesComponent } from './favorites/favorites.component';
 import { SettingsComponent } from './settings/settings.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ReportsComponent } from './reports/reports.component';
+import { LandingComponent } from './landing/landing.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ReportsComponent } from './reports/reports.component';
     FavoritesComponent,
     SettingsComponent,
     NavbarComponent,
-    ReportsComponent
+    ReportsComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,
