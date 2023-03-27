@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap');
 #offcanvasNavbar{
     width: 20rem;
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 #offcanvasCart{
     width: 20rem;
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 .offcanvas-body{
@@ -33,13 +33,12 @@
     font-size: larger;
     border: none;
     border-radius: 25px;
-    background-color: rgb(4, 137, 187);
     width: fit-content;
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 .address-btn:active{
-    background-color: rgb(4, 137, 187);
+    background-color: rgb(193, 192, 192);
 }
 
 .cart-btn{
@@ -48,7 +47,7 @@
     border-radius: 25px;
     background-color: rgb(4, 137, 187);
     width: fit-content;
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 .cart-btn:active{
@@ -82,7 +81,7 @@
     padding: 8px 0px 8px 8px;
     border-radius: 0px 15px 15px 0px;
     border-left: none;
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 .search-bar:focus {
     outline:none;
