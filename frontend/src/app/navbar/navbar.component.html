@@ -21,7 +21,7 @@
               <i class="fa-solid fa-location-dot"></i>
               <div class="address-text">123 Monroe Street</div>
             </button>
-            <button type="button" class="btn cart-btn d-flex align-items-center justify-content-center" >
+            <button type="button" class="btn cart-btn d-flex align-items-center justify-content-center" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart">
               <i class="fa-solid fa-cart-shopping"></i>
               <div class="cart-number">1</div>
             </button>
@@ -30,12 +30,11 @@
             <div class="offcanvas-header justify-content-between">
               <div class="offcanvas-header-left d-flex">
                 <i class="fa-solid fa-user" style="font-size: 1.5em; padding: 0.5em;"></i>
-                <div style="padding-top: 0.5em;">
+                <div style="padding-top: 0.2em;">
                   <h5 class="offcanvas-title" id="offcanvasNavbarLabel">John Doe</h5>
                   <h6 class="offcanvas-subtitle" id="offcanvasNavbarLabel">Customer</h6>
                 </div>
               </div>
-              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
               <ul class="navbar-nav justify-content-end flex-grow-1">
@@ -58,6 +57,28 @@
                   <a class="nav-link" href="#"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a>
                 </li>
               </ul>
+            </div>
+          </div>
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
+            <div class="offcanvas-header justify-content-center">
+              <div class="offcanvas-header-left d-flex">
+                <div style="padding-top: 0.2em;">
+                  <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Cart</h5>
+                </div>
+              </div>
+            </div>
+            <div class="offcanvas-body">
+              <div class="card mb-3" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">Publix</h5>
+                  <h6 class="card-subtitle mb-2 text-body-secondary">1 Item(s)</h6>
+                  <p class="card-text">Total : $3.99</p>
+                  <button type="button" class="btn cart-btn d-flex align-items-center justify-content-center">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <div class="cart-number">Checkout</div>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
