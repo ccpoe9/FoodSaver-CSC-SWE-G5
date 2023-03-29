@@ -12,6 +12,26 @@
 .offcanvas-body{
     padding-right: 0;
 }
+.sub-nav-links{
+    text-decoration: none;
+    color: black;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.food-type-img{
+    width: 4rem;
+    height: 4rem;
+    background-color: white;
+    border-radius: 50%;
+    padding: 8px;
+}
+.food-img{
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    border-radius: 50%;
+}
+
 
 .navbar-toggler{
     border: none;
