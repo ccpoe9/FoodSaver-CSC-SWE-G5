@@ -19,13 +19,13 @@
     font-size: small;
 }
 
-a {
+.page-link {
     text-decoration: none;
     display: inline-block;
     padding: 8px 16px;
   }
   
-  a:hover {
+  .page-link:hover {
     background-color: #ddd;
     color: black;
   }
@@ -53,4 +53,20 @@ a {
     color: white;
   }
 
+  .store-icons{
+    padding: 5px;
+    background-color: rgb(235, 233, 233);
+    width:8rem; 
+    height: 8rem;
+    border-radius: 50%;
+}
 
+.store-list-btn{
+  font-size: larger;
+}
+
+.store-icon-img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

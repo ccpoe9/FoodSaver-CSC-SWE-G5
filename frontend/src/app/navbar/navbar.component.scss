@@ -12,6 +12,17 @@
 .offcanvas-body{
     padding-right: 0;
 }
+.sub-nav-links{
+    text-decoration: none;
+    color: black;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.sub-nav-links:hover{
+    text-decoration: underline;
+}
+
+
 .navbar-toggler{
     border: none;
     padding: 8px;
@@ -28,6 +39,10 @@
 .navbar-center{
     width: 50%;
 }
+.modal{
+    background: rgba(0, 0, 0, 0.5);
+    font-family: 'Quicksand', sans-serif;
+}
 
 .address-btn{
     font-size: larger;
@@ -36,7 +51,6 @@
     width: fit-content;
     font-family: 'Quicksand', sans-serif;
 }
-
 .address-btn:active{
     background-color: rgb(193, 192, 192);
 }
