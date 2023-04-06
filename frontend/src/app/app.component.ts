@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,16 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'FoodSaver.';
+
+  currentPage : string;
+
+  constructor(private router : Router){
+    this.router.events
+          .subscribe(
+            (event: any) => {
+              if(event instanceof NavigationStart) {
+                this.currentPage = event.url;
+              }
+            });
+  }
 }

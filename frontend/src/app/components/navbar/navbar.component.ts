@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 
 @Component({
@@ -10,6 +10,7 @@ export class NavbarComponent {
 
   currentPage: string;
 
+  
   constructor(private router : Router){
     this.router.events
           .subscribe(

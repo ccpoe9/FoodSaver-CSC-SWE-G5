@@ -1,5 +1,5 @@
 <div class="page-content-wrapper">
     <!--style="display:none;"-->
-    <app-navbar></app-navbar>
+    <app-navbar [ngStyle]="currentPage == '/landing' ? {'display': 'none'} : {}"></app-navbar>
     <router-outlet></router-outlet>
 </div>
