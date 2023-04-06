@@ -5,3 +5,4 @@ PreCondition : Make sure you're working in your review git branch with command "
 - After that commit your changes to your branch with this command : git commit -m "*Explain your changes here*"
 - Next, pull all the changes made on the main branch : git pull --rebase origin main
 - Then, push your changes to your git review branch : git push origin *YourFirstName*/review
+- Go to the FoodSaver github to merge your branch
