@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { OrdersComponent } from './orders/orders.component';
-import { FavoritesComponent } from './favorites/favorites.component';
-import { SettingsComponent } from './settings/settings.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { ReportsComponent } from './reports/reports.component';
-import { LandingComponent } from './landing/landing.component';
+import { HomeComponent } from './components/home/home.component';
+import { OrdersComponent } from './components/orders/orders.component';
+import { FavoritesComponent } from './components/favorites/favorites.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { ReportsComponent } from './components/reports/reports.component';
+import { LandingComponent } from './components/landing/landing.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,8 @@ import { LandingComponent } from './landing/landing.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
