@@ -1,17 +1,17 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Config } from 'src/config/config';
 import { catchError, throwError } from 'rxjs';
+import { Config } from 'src/config/config';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductsService {
+export class StoresService {
 
   constructor(private http : HttpClient) { }
 
-  getProducts(){
-    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTS)
+  getStores(){
+    return this.http.get<any[]>(Config.APIROOT + Config.APIURLS.STORES, {responseType : 'json'})
     .pipe(
       catchError((err) => {
         console.error(err);
