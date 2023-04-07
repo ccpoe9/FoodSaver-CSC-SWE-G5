@@ -31,8 +31,8 @@
               <div class="offcanvas-header-left d-flex">
                 <i class="fa-solid fa-user" style="font-size: 1.5em; padding: 0.5em;"></i>
                 <div style="padding-top: 0.2em;">
-                  <h5 class="offcanvas-title" id="offcanvasNavbarLabel">John Doe</h5>
-                  <h6 class="offcanvas-subtitle" id="offcanvasNavbarLabel">Customer</h6>
+                  <h5 class="offcanvas-title" id="offcanvasNavbarLabel">{{Username}}</h5>
+                  <h6 class="offcanvas-subtitle" id="offcanvasNavbarLabel">{{UserType}}</h6>
                 </div>
               </div>
             </div>
@@ -41,13 +41,13 @@
                 <li class="nav-item mt-2 mb-2">
                   <a class="nav-link " [ngClass]="{'active' : currentPage === '/home'}" aria-current="page" href="home"><i class="fa-solid fa-house"></i> Home</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="UserType == 'Admin'">
                   <a class="nav-link" [ngClass]="{'active' : currentPage === '/mystores'}" href="/mystores"><i class="fa-solid fa-store"></i> My Stores</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="UserType == 'Customer'">
                   <a class="nav-link" [ngClass]="{'active' : currentPage === '/orders'}" href="orders"><i class="fa-solid fa-bag-shopping"></i> Orders</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="UserType == 'Customer'">
                   <a class="nav-link" [ngClass]="{'active' : currentPage === '/favorites'}" href="favorites"><i class="fa-solid fa-heart"></i> Favorites</a>
                 </li>
                 <li class="nav-item">
@@ -57,7 +57,7 @@
                   <a class="nav-link" [ngClass]="{'active' : currentPage === '/settings'}" href="settings"><i class="fa-solid fa-gear"></i> Settings</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a>
+                  <a class="nav-link sign-out" (click)="signOut()"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a>
                 </li>
               </ul>
             </div>

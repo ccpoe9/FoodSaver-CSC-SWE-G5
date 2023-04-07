@@ -10,7 +10,7 @@ export class ProductsService {
 
   constructor(private http : HttpClient) { }
 
-  getProducts(){
+  getProductsByStore(){
     return this.http.get(Config.APIROOT+Config.APIURLS.PRODUCTS)
     .pipe(
       catchError((err) => {

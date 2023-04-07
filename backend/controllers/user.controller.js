@@ -31,3 +31,19 @@ exports.Login = (req,res) => {
         res.send(data);
     });
 }
+
+exports.AdminLogin = (req,res) => {
+
+    let Q4 = `SELECT * FROM SUPPLIER_ADMIN WHERE 
+    \`Username\` = '${req.body.Username}' 
+    AND \`Password\` = '${req.body.Password}'`;
+
+    db.query(Q4, (err,data,fields) =>{
+        if(err){
+            console.error(err.message);
+            res.statusMessage = "SQL Error : " + err.message;
+            return res.status(400).end();
+        }
+        res.send(data);
+    });
+}

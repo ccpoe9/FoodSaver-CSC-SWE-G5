@@ -20,7 +20,7 @@ export class AuthService {
   }
 
   signUpCustomer(userInfo : any){
-    return this.http.post(Config.APIROOT+Config.APIURLS.CUSTOMERSIGNUP, userInfo)
+    return this.http.post(Config.APIROOT+Config.APIURLS.CUSTOMERSIGNUP, userInfo, {responseType: 'json' })
     .pipe(
       catchError((err) => {
         console.error(err);
@@ -28,5 +28,13 @@ export class AuthService {
       }));
   }
 
+  loginAdmin(userInfo : any){
+    return this.http.post<any[]>(Config.APIROOT+Config.APIURLS.SUPPLIERLOGIN, userInfo, {responseType: 'json' })
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
 
 }

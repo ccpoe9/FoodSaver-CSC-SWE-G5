@@ -12,13 +12,12 @@ export class HomeComponent {
   products : any;
 
   ngOnInit() : void {
-    this.getProducts();
     
   }
+  getStores(){
 
+  }
+  
   getProducts(){
-    this.productsService.getProducts().subscribe( data => {
-      this.products = data;
-    })
   }
 }
