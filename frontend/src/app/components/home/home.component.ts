@@ -11,27 +11,28 @@ export class HomeComponent {
 
   constructor(private productsService : ProductsService, private storeService : StoresService) { }
   stores : any[];
-  products : any[];
+  products : any = [];
   filterargs = {title: 'hello'};
-  
-  ngOnInit() : void {
-    this.getStores();
-    this.getProducts();
+  storeCount : number = 0;
+  async ngOnInit() : Promise<void> {
+    await this.getStores();
+    console.log(this.products);
   }
 
   getStores(){
     this.storeService.getStores()
     .subscribe( data => {
       this.stores = data;
-      console.log(this.stores);
+      for(let store of this.stores){
+        this.productsService.getProducts(store.ID)
+        .subscribe( data => {
+          this.products[store.ID] = data;
+        })
+      }
     });
   }
 
-  getProducts(){
-    this.productsService.getProducts()
-    .subscribe( data => {
-      this.products = data;
-      console.log(this.products);
-    })
+  getProducts(storeID : number){
+    return this.products[storeID];
   }
 }
