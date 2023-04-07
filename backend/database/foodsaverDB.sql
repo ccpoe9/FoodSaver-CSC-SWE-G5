@@ -8,10 +8,11 @@ USE foodsaver;
 -- DROP TABLE IF EXISTS `CUSTOMERS`;
 CREATE TABLE `CUSTOMERS` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Username` varchar(50) DEFAULT NULL,
+  `Username` varchar(50) DEFAULT NULL UNIQUE,
   `Password` varchar(50) DEFAULT NULL,
   `Email` varchar(70) DEFAULT NULL,
   `Phone` varchar(20) DEFAULT NULL,
+  `Address` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 );
 
@@ -33,11 +34,10 @@ CREATE TABLE `SUPPLIER_ADMIN` (
 CREATE TABLE `STORES` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(30) DEFAULT NULL,
-  `AddressID` int DEFAULT NULL,
+  `Address` varchar(100) DEFAULT NULL,
   `StoreLogo` varchar(400) DEFAULT NULL,
   `SupplierAdmin` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `fk_supp_admin` (`SupplierAdmin`),
   CONSTRAINT `fk_supp_admin` FOREIGN KEY (`SupplierAdmin`) REFERENCES `SUPPLIER_ADMIN` (`ID`)
 );
 
@@ -50,24 +50,7 @@ CREATE TABLE `SHOPPING_SESSION` (
   `CtmID` int DEFAULT NULL,
   `Total` decimal(7,2) DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `shopping_session_ibfk_1` (`CtmID`),
   CONSTRAINT `shopping_session_ibfk_1` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
-);
-
---
--- Table structure for table `ADDRESS`
---
--- DROP TABLE IF EXISTS `ADDRESS`;
-CREATE TABLE `ADDRESS` (
-  `UserID` int NOT NULL,
-  `Street` varchar(300) DEFAULT NULL,
-  `City` varchar(100) DEFAULT NULL,
-  `State` varchar(100) DEFAULT NULL,
-  `PostalCode` int DEFAULT NULL,
-  `Country` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`UserID`),
-  CONSTRAINT `address_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `CUSTOMERS` (`ID`),
-  CONSTRAINT `address_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `SUPPLIER_ADMIN` (`ID`)
 );
 
 --
@@ -78,7 +61,6 @@ CREATE TABLE `FAVORITES` (
   `ProductName` varchar(100) NOT NULL,
   `CtmID` int DEFAULT NULL,
   PRIMARY KEY (`ProductName`),
-  KEY `CtmID` (`CtmID`),
   CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
 );
 
@@ -96,10 +78,7 @@ CREATE TABLE `PRODUCTS` (
   `Image` varchar(400) DEFAULT NULL,
   `StoreID` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `StoreID` (`StoreID`),
-  KEY `products_ibfk_2` (`Name`),
-  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`StoreID`) REFERENCES `STORES` (`ID`),
-  CONSTRAINT `products_ibfk_2` FOREIGN KEY (`Name`) REFERENCES `FAVORITES` (`ProductName`)
+  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`StoreID`) REFERENCES `STORES` (`ID`)
 );
 
 --
@@ -115,8 +94,6 @@ CREATE TABLE `ORDERS` (
   `StoreID` int DEFAULT NULL,
   `CtmID` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `StoreID` (`StoreID`),
-  KEY `orders_ibfk_2` (`CtmID`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`StoreID`) REFERENCES `STORES` (`ID`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
 );
@@ -128,8 +105,6 @@ CREATE TABLE `ORDERS` (
 CREATE TABLE `ORDERED` (
   `ProductID` int NOT NULL,
   `OrderID` int DEFAULT NULL,
-  KEY `fk_prod_id` (`ProductID`),
-  KEY `fk_order_id` (`OrderID`),
   CONSTRAINT `fk_order_id` FOREIGN KEY (`OrderID`) REFERENCES `ORDERS` (`ID`),
   CONSTRAINT `fk_prod_id` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ID`)
 );
@@ -141,8 +116,6 @@ CREATE TABLE `ORDERED` (
 CREATE TABLE `CART_ITEM` (
   `ProductID` int DEFAULT NULL,
   `SessionID` int DEFAULT NULL,
-  KEY `ProductID` (`ProductID`),
-  KEY `SessionID` (`SessionID`),
   CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ID`),
   CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`SessionID`) REFERENCES `SHOPPING_SESSION` (`ID`)
 );
@@ -159,8 +132,6 @@ CREATE TABLE `REPORTS` (
   `CtmID` int DEFAULT NULL,
   `StoreID` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `CtmID` (`CtmID`),
-  KEY `StoreID` (`StoreID`),
   CONSTRAINT `reports_ibfk_1` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`),
   CONSTRAINT `reports_ibfk_2` FOREIGN KEY (`StoreID`) REFERENCES `STORES` (`ID`)
 );
