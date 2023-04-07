@@ -9,9 +9,11 @@ import { catchError, throwError } from 'rxjs';
 export class ProductsService {
 
   constructor(private http : HttpClient) { }
+  queryParams : HttpParams;
 
-  getProducts(){
-    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTS)
+  getProducts(storeID : number){
+    this.queryParams = new HttpParams().set('ID', storeID);
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTS, {params : this.queryParams})
     .pipe(
       catchError((err) => {
         console.error(err);

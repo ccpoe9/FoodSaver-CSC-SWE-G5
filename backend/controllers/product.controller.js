@@ -1,8 +1,7 @@
 var db = require('../config/db.config');
 
 exports.GetProductsByStore = (req,res) => {
-
-    let Q1 = `SELECT * FROM PRODUCTS`;
+    let Q1 = `SELECT * FROM PRODUCTS WHERE StoreID = ${req.query.ID}`;
 
     db.query(Q1, (err,data,fields) =>{
         if(err){
