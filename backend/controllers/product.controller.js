@@ -10,6 +10,6 @@ exports.GetProducts = (req,res) => {
             res.statusMessage = "SQL Error : " + err.message;
             return res.status(400).end();
         }
-        res.send(data[0]);
+        res.send(data);
     });
 }

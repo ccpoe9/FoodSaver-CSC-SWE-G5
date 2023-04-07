@@ -6,14 +6,16 @@ import { FavoritesComponent } from './components/favorites/favorites.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { LandingComponent } from './components/landing/landing.component';
+import { MystoresComponent } from './components/mystores/mystores.component';
 
-const routes: Routes = [{path : '', redirectTo:'home', pathMatch:'full'},
+const routes: Routes = [{path : '*', redirectTo:'landing', pathMatch:'full'},
                         {path:'landing', component:LandingComponent},
                         {path:'home', component: HomeComponent},
                         {path:'orders', component: OrdersComponent},
                         {path:'favorites', component: FavoritesComponent},
                         {path:'settings', component: SettingsComponent},
-                        {path:'reports', component: ReportsComponent}];
+                        {path:'reports', component: ReportsComponent},
+                        {path:'mystores', component:MystoresComponent}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
