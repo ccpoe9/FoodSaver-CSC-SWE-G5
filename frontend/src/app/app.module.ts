@@ -10,6 +10,8 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { LandingComponent } from './components/landing/landing.component';
+import { MystoresComponent } from './components/mystores/mystores.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,12 +22,14 @@ import { LandingComponent } from './components/landing/landing.component';
     SettingsComponent,
     NavbarComponent,
     ReportsComponent,
-    LandingComponent
+    LandingComponent,
+    MystoresComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
