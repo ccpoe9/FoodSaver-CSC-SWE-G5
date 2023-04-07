@@ -1,6 +1,7 @@
 let express = require('express');
 const {  GetProductsByStore } = require('../controllers/product.controller');
 const { SignUp, Login, AdminLogin} = require('../controllers/user.controller');
+const { GetStores } = require('../controllers/store.controller');
 let router = express.Router();
 
 
@@ -9,7 +10,7 @@ router.get('/', (req,res) =>{
 });
 
 router.get('/api/products',GetProductsByStore);
-
+router.get('/api/stores',GetStores);
 router.post('/api/users/customers/login',Login);
 router.post('/api/users/customers/signup',SignUp);
 router.post('/api/users/admin/login',AdminLogin);
