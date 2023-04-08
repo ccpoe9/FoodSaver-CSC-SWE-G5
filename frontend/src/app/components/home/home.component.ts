@@ -14,21 +14,22 @@ export class HomeComponent {
   products : any = [];
   filterargs = {title: 'hello'};
   storeCount : number = 0;
+  pageNumber : number = 1;
   async ngOnInit() : Promise<void> {
-    await this.getStores();
-    console.log(this.products);
+    await this.getStores(this.pageNumber);
   }
 
-  getStores(){
-    this.storeService.getStores()
+  getStores(page : number){
+    this.storeService.getStores(page)
     .subscribe( data => {
-      this.stores = data;
-      for(let store of this.stores){
+      this.stores = data[0];
+      console.log(this.stores);
+      /*for(let store of this.stores){
         this.productsService.getProducts(store.ID)
         .subscribe( data => {
           this.products[store.ID] = data;
         })
-      }
+      }*/
     });
   }
 

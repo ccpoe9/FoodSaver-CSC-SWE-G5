@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { Config } from 'src/config/config';
@@ -9,9 +9,11 @@ import { Config } from 'src/config/config';
 export class StoresService {
 
   constructor(private http : HttpClient) { }
+  queryParams : HttpParams;
 
-  getStores(){
-    return this.http.get<any[]>(Config.APIROOT + Config.APIURLS.STORES, {responseType : 'json'})
+  getStores(page : number){
+    this.queryParams = new HttpParams().set('page', page);
+    return this.http.get<any[]>(Config.APIROOT + Config.APIURLS.STORES, {params : this.queryParams})
     .pipe(
       catchError((err) => {
         console.error(err);

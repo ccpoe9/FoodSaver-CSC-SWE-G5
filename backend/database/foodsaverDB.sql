@@ -8,8 +8,8 @@ USE foodsaver;
 -- DROP TABLE IF EXISTS `CUSTOMERS`;
 CREATE TABLE `CUSTOMERS` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Username` varchar(50) DEFAULT NULL UNIQUE,
-  `Password` varchar(50) DEFAULT NULL,
+  `Username` varchar(50) NOT NULL UNIQUE,
+  `Password` varchar(50) NOT NULL,
   `Email` varchar(70) DEFAULT NULL,
   `Phone` varchar(20) DEFAULT NULL,
   `Address` varchar(100) DEFAULT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE `CUSTOMERS` (
 -- DROP TABLE IF EXISTS `SUPPLIER_ADMIN`;
 CREATE TABLE `SUPPLIER_ADMIN` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Username` varchar(30) NOT NULL,
+  `Username` varchar(30) NOT NULL UNIQUE,
   `Password` varchar(50) NOT NULL,
   PRIMARY KEY (`ID`)
 );
@@ -34,7 +34,7 @@ CREATE TABLE `SUPPLIER_ADMIN` (
 CREATE TABLE `STORES` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(30) DEFAULT NULL,
-  `Address` varchar(100) DEFAULT NULL,
+  `Address` varchar(100) DEFAULT NULL UNIQUE,
   `StoreLogo` varchar(400) DEFAULT NULL,
   `SupplierAdmin` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
@@ -135,3 +135,37 @@ CREATE TABLE `REPORTS` (
   CONSTRAINT `reports_ibfk_1` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`),
   CONSTRAINT `reports_ibfk_2` FOREIGN KEY (`StoreID`) REFERENCES `STORES` (`ID`)
 );
+
+#<-----------------------STORED PROCEDURES ------------------------->
+
+
+DROP PROCEDURE IF EXISTS GetProductsByPage;
+
+DELIMITER //
+CREATE PROCEDURE GetProductsByPage(
+	IN currentPage INT,
+    IN Store INT
+)
+BEGIN
+	DECLARE offsetval INT DEFAULT 0;
+	SET offsetval = (currentpage - 1) * 5;
+	SELECT * FROM PRODUCTS WHERE StoreID = Store
+    LIMIT 5 OFFSET offsetval;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS GetStoresByPage;
+
+DELIMITER //
+CREATE PROCEDURE GetStoresByPage(
+	IN currentPage INT
+)
+BEGIN
+	DECLARE offsetval INT DEFAULT 0;
+	SET offsetval = (currentpage - 1) * 5;
+	SELECT * FROM STORES
+    LIMIT 5 OFFSET offsetval;
+END; //
+
+DELIMITER ;
