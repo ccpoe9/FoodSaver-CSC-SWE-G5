@@ -2,7 +2,7 @@ var db = require('../config/db.config');
 
 exports.GetStores = (req, res) => {
 
-    let Q1 = `SELECT * FROM STORES`;
+    let Q1 = `CALL GetStoresByPage(${req.query.page});`;
 
     db.query(Q1, (err,data,fields) =>{
         if(err){
