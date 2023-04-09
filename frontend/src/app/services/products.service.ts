@@ -11,8 +11,8 @@ export class ProductsService {
   constructor(private http : HttpClient) { }
   queryParams : HttpParams;
 
-  getProducts(storeID : number){
-    this.queryParams = new HttpParams().set('ID', storeID);
+  getProducts(storeID : number, page : number){
+    this.queryParams = new HttpParams().set('ID', storeID).set('page', page);
     return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTS, {params : this.queryParams})
     .pipe(
       catchError((err) => {
