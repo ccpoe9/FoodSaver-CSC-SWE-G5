@@ -12,7 +12,7 @@ export class ProductsService {
   queryParams : HttpParams;
 
   getProducts(storeID : number, page : number){
-    this.queryParams = new HttpParams().set('ID', storeID).set('page', page);
+    this.queryParams = new HttpParams().set('storeID', storeID).set('page', page);
     return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTS, {params : this.queryParams})
     .pipe(
       catchError((err) => {

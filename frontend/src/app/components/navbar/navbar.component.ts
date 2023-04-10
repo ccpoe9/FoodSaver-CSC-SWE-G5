@@ -11,27 +11,30 @@ export class NavbarComponent {
   currentPage: string;
   Username : string | null;
   UserType : string | null;
-  
+
+  productTypes = ['Produce', 'Dairy & Eggs', 'Meat & Seafood', 
+  'Beverages', 'Snacks', 'Prepared Foods', 'Breakfast', 'Dry Goods & Pasta',
+  'Bakery', 'Oils, Spices & Condiments'];
+
   constructor(private router : Router){
     this.router.events
           .subscribe(
             (event: any) => {
               if(event instanceof NavigationStart) {
                 this.currentPage = event.url;
-                console.log(this.currentPage);
                 this.Username = localStorage.getItem('Username');
                 this.UserType = localStorage.getItem('User');
               }
             });
-  }
-
-  ngOnInit(){
-    
   }
   
   signOut(){
     localStorage.removeItem('User');
     localStorage.removeItem('Username');
     this.router.navigate(['landing']);
+  }
+
+  getAllOfType(type : string){
+    this.router.navigate(['viewtypes'], {queryParams :{type : type}});
   }
 }

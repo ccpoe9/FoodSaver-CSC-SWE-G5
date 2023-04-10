@@ -102,21 +102,9 @@
             </div>
           </div>
         </div>
-        <div class="container-fluid pt-2 gap-5 justify-content-center">
-            <a class="sub-nav-links text-center" href="">
-              Meats
-            </a>
-            <a class="sub-nav-links text-center" href="">
-              Veggies
-            </a>
-            <a class="sub-nav-links text-center" href="">
-              Cereal
-            </a>
-            <a class="sub-nav-links text-center" href="">
-              Snacks
-            </a>
-            <a class="sub-nav-links text-center" href="">
-              Bread
+        <div class="container-fluid pt-2 gap-4 justify-content-center">
+            <a class="sub-nav-links text-center" *ngFor="let type of productTypes" (click)="getAllOfType(type)">
+              {{type}}
             </a>
         </div>
     </nav>

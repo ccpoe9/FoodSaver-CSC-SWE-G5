@@ -8,6 +8,8 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { MystoresComponent } from './components/mystores/mystores.component';
 import { AuthGuard } from './services/auth.guard';
+import { ViewallComponent } from './components/viewall/viewall.component';
+import { ViewtypesComponent } from './components/viewtypes/viewtypes.component';
 
 const routes: Routes = [{path : '', redirectTo:'landing', pathMatch:'full'},
                         {path:'landing', component:LandingComponent},
@@ -16,7 +18,10 @@ const routes: Routes = [{path : '', redirectTo:'landing', pathMatch:'full'},
                         {path:'favorites', component: FavoritesComponent , canActivate : [AuthGuard]},
                         {path:'settings', component: SettingsComponent , canActivate : [AuthGuard]},
                         {path:'reports', component: ReportsComponent , canActivate : [AuthGuard]},
-                        {path:'mystores', component:MystoresComponent , canActivate : [AuthGuard]}];
+                        {path:'mystores', component:MystoresComponent , canActivate : [AuthGuard]},
+                        {path:'viewall', component:ViewallComponent, canActivate : [AuthGuard]},
+                        {path:'viewtypes', component:ViewtypesComponent, canActivate : [AuthGuard]}
+                        ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

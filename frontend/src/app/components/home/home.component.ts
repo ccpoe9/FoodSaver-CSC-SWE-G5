@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { ProductsService } from 'src/app/services/products.service';
 import { StoresService } from 'src/app/services/stores.service';
@@ -10,15 +11,16 @@ import { StoresService } from 'src/app/services/stores.service';
 })
 export class HomeComponent {
 
-  constructor(private productsService : ProductsService, private storeService : StoresService) { }
+  constructor(private productsService : ProductsService, private storeService : StoresService, private router : Router)  { }
   stores : any[];
   topStores : any[];
   products : any = [];
   filterargs = {title: 'hello'};
   storeCount : number = 0;
   pageNumber : number = 1;
-  TotalPages : number;
-  TotalRecords : number;
+  TotalStorePages : number;
+  TotalStoreRecords : number;
+  currentPageStores = [0, 1, 1, 1, 1, 1];
 
   ngOnInit(){
     this.getTopStores();
@@ -28,18 +30,19 @@ export class HomeComponent {
     this.storeService.getStores(page)
     .subscribe( data => {
       this.stores = data[0];
-      this.TotalPages = data[2][0].TotalPages;
-      this.TotalRecords = data[2][0].TotalRecords;
+      this.TotalStorePages = data[2][0].TotalPages;
+      this.TotalStoreRecords = data[2][0].TotalRecords;
     });
   }
 
   getTopStores(){
     this.storeService.getStores(1)
-    .subscribe( data => {
+    .subscribe( async data => {
       this.stores = data[0];
       this.topStores = data[0];
-      this.TotalPages = data[2][0].TotalPages;
-      this.TotalRecords = data[2][0].TotalRecords;
+      this.TotalStorePages = data[2][0].TotalPages;
+      this.TotalStoreRecords = data[2][0].TotalRecords;
+      this.getProducts(this.stores);
     });
   }
 
@@ -49,15 +52,26 @@ export class HomeComponent {
   }
 
   getProducts(stores : any[]){
+    this.products[0] = [];
     for(let store of stores){
-      this.products[store.ID] = this.productsService.getProducts(store.ID, this.pageNumber);
+      this.productsService.getProducts(store.ID, this.pageNumber)
+      .subscribe( data => {
+        this.products[store.ID] = data[0];
+        this.products[0][store.ID] = data[2][0].TotalPages;
+      });
     }
-    forkJoin(this.products).subscribe( data => {
-      console.log(data);
-    })
   }
 
-  getStoreProducts(storeID : number){
-    return this.products[storeID];
+  getNextProducts(storeID : number, page : number){
+    this.productsService.getProducts(storeID, page)
+    .subscribe( data => {
+      this.products[storeID] = data[0];
+      this.currentPageStores[storeID] = page;
+      this.products[0][storeID] = data[2][0].TotalPages;
+    });
+  }
+
+  viewAllProducts(storeID : number, storeName : string, StoreLogo : string){
+    this.router.navigate(['/viewall'], {queryParams :{storeID: storeID, storeName : storeName, StoreLogo : StoreLogo}});
   }
 }
