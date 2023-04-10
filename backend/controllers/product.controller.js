@@ -15,7 +15,7 @@ exports.GetProductsByStore = (req,res) => {
 }
 
 exports.GetProductsByType = (req,res) => {
-    let Q2 = `CALL GetProductsByType('Snacks');`;
+    let Q2 = `CALL GetProductsByType('${req.query.type}');`;
 
     db.query(Q2, (err,data,fields) =>{
         if(err){
@@ -30,7 +30,6 @@ exports.GetProductsByType = (req,res) => {
 exports.GetProductsByTypeStore = (req,res) => {
     let Q3 = `CALL GetProductsByTypeStore(${req.query.page}, ${req.query.storeID}, '${req.query.type}', @totalPages, @totalRecords); 
     SELECT @totalPages as TotalPages, @totalRecords as TotalRecords;`;
-
     db.query(Q3, (err,data,fields) =>{
         if(err){
             console.error(err.message);

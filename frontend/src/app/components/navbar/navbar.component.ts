@@ -13,7 +13,7 @@ export class NavbarComponent {
   UserType : string | null;
 
   productTypes = ['Produce', 'Dairy & Eggs', 'Meat & Seafood', 
-  'Beverages', 'Snacks', 'Prepared Foods', 'Breakfast', 'Dry Goods & Pasta',
+  'Beverages', 'Snacks', 'Prepared Food', 'Breakfast', 'Dry Goods & Pasta',
   'Bakery', 'Oils, Spices & Condiments'];
 
   constructor(private router : Router){

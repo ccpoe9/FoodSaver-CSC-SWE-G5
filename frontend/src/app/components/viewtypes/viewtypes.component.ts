@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
   selector: 'app-viewtypes',
@@ -8,13 +9,26 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ViewtypesComponent {
 
-  constructor(private route : ActivatedRoute){}
+  constructor(private route : ActivatedRoute, private productsService : ProductsService){}
 
   type : string;
-
+  products : any = [];
   ngOnInit(){
+    this.getType();
+  }
+
+  getType(){
     this.route.queryParams.subscribe( data => {
       this.type = data['type'];
+      this.getProductsByType(this.type);
     });
   }
+
+  getProductsByType(type : string){
+    this.productsService.getProductsByType(type).subscribe( data => {
+      this.products = data[0];
+      console.log(this.products);
+    });
+  }
+
 }
