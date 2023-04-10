@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
   selector: 'app-viewall',
@@ -14,14 +15,17 @@ export class ViewallComponent {
   StoreName : string;
   StoreID : number;
   StoreLogo : string;
-  constructor(private route : ActivatedRoute) {
+  constructor(private route : ActivatedRoute, private productService : ProductsService) {
     
   }
   ngOnInit(){
+
     this.route.queryParams.subscribe( data => {
       this.StoreID = data['storeID'];
       this.StoreName = data['storeName'];
       this.StoreLogo = data['StoreLogo'];
     });
   }
+
+  
 }

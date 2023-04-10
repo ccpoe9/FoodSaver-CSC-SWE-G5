@@ -4,6 +4,8 @@ export class Config{
 
     static readonly APIURLS = {
         PRODUCTS : "/products",
+        PRODUCTTYPES : "/products/type",
+        PRODUCTDETAILS : "/products/details",
         STORES : "/stores",
         CUSTOMERSIGNUP : "/users/customers/signup",
         CUSTOMERLOGIN : "/users/customers/login",

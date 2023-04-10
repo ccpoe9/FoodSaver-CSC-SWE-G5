@@ -20,4 +20,24 @@ export class ProductsService {
         return throwError(err);
       }));
   }
+
+  getProductsByType(type : string){
+    this.queryParams = new HttpParams().set('type', type);
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTTYPES, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
+  getProductsByStoreAndType(storeID : number, page : number, type : string){
+    this.queryParams = new HttpParams().set('storeID', storeID).set('page', page).set('type', type);
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTDETAILS, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
 }

@@ -29,7 +29,7 @@ exports.GetProductsByType = (req,res) => {
 
 exports.GetProductsByTypeStore = (req,res) => {
     let Q3 = `CALL GetProductsByTypeStore(${req.query.page}, ${req.query.storeID}, '${req.query.type}', @totalPages, @totalRecords); 
-    SELECT @totalPages as TotalPages,@totalRecords as TotalRecords;`;
+    SELECT @totalPages as TotalPages, @totalRecords as TotalRecords;`;
 
     db.query(Q3, (err,data,fields) =>{
         if(err){

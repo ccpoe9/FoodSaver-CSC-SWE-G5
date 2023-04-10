@@ -10,8 +10,8 @@ router.get('/', (req,res) =>{
 });
 
 router.get('/api/products',GetProductsByStore);
-router.get('api/products/type' ,GetProductsByType);
-router.get('api/product/details', GetProductsByTypeStore);
+router.get('/api/products/type' ,GetProductsByType);
+router.get('/api/products/details', GetProductsByTypeStore);
 router.get('/api/stores',GetStores);
 router.post('/api/users/customers/login',Login);
 router.post('/api/users/customers/signup',SignUp);
