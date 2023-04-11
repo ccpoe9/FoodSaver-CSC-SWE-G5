@@ -18,7 +18,6 @@ export class HomeComponent {
   topStores : any[];
   products : any = [];
   productsCount : any = [];
-  filterargs = {title: 'hello'};
   storeCount : number = 0;
   pageNumber : number = 1;
   TotalStorePages : number;
@@ -28,6 +27,7 @@ export class HomeComponent {
   ngOnInit(){
     this.getTopStores();
     this.UserID = Number(localStorage.getItem('UserID'));
+    console.log(this.productsCount);
   }
 
   getStores(page : number){
@@ -61,6 +61,7 @@ export class HomeComponent {
       this.productsService.getProducts(store.ID, this.pageNumber)
       .subscribe( data => {
         this.products[store.ID] = data[0];
+        this.productsCount[store.ID] = Array<number>(data[2][0].TotalRecords).fill(0);
         this.products[0][store.ID] = data[2][0].TotalPages;
       });
     }
@@ -77,6 +78,21 @@ export class HomeComponent {
 
   viewAllProducts(storeID : number, storeName : string, StoreLogo : string){
     this.router.navigate(['/viewall'], {queryParams :{storeID: storeID, storeName : storeName, StoreLogo : StoreLogo}});
+  }
+
+  addItemtoCart(storeID : number, index : number){
+    this.productsCount[storeID][((this.currentPageStores[storeID] - 1) * 6) + index]++;
+  }
+  canDelete(storeID : number, index : number){
+    if(this.productsCount[storeID][((this.currentPageStores[storeID] - 1) * 6) + index] >= 1){
+      return true;
+    }
+    else return false;
+  }
+  deleteitemFromCart(storeID : number, index : number){
+    if(this.productsCount[storeID][((this.currentPageStores[storeID] - 1) * 6) + index] >= 1){
+      this.productsCount[storeID][((this.currentPageStores[storeID] - 1) * 6) + index]--;
+    }
   }
 
 }

@@ -50,8 +50,11 @@ CREATE TABLE `STORES` (
 CREATE TABLE `SHOPPING_SESSION` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `CtmID` int NOT NULL,
+  `StoreID` int NOT NULL,
+  `Total` DECIMAL(7,2) DEFAULT 0,
   PRIMARY KEY (`ID`),
-  CONSTRAINT `shopping_session_ibfk_1` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
+  CONSTRAINT `shopping_session_ibfk_1` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`),
+  CONSTRAINT `shopping_session_ibfk_2` FOREIGN KEY (`StoreID`) REFERENCES `STORES` (`ID`)
 );
 
 --
@@ -243,9 +246,82 @@ END; //
 
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS CreateShoppingSession;
 
+DELIMITER //
+CREATE PROCEDURE CreateShoppingSession(
+	IN customerID INT,
+    IN storeID INT
+)
+BEGIN
+	INSERT INTO SHOPPING_SESSION(`CtmID`, `StoreID`)
+    VALUES(customerID, storeID);
+END; //
 
+DELIMITER ;
 
+DROP PROCEDURE IF EXISTS GetShoppingSession;
+
+DELIMITER //
+CREATE PROCEDURE GetShoppingSession(
+	IN customerID INT
+)
+BEGIN
+	SELECT * FROM SHOPPING_SESSION ss JOIN STORES s ON ss.StoreID = s.ID
+	WHERE CtmID = customerID;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CreateCartItem;
+
+DELIMITER //
+CREATE PROCEDURE CreateCartItem(
+	IN productID INT,
+    IN customerID INT,
+    IN storeID INT
+)
+BEGIN
+	SET @SessionID = (SELECT `ID` FROM SHOPPING_SESSION WHERE `CtmID`= customerID AND storeID = storeID);
+    INSERT INTO CART_ITEM
+    VALUES(productID, @SessionID);
+    SET @Price = (SELECT `Price` FROM PRODUCTS p WHERE p.ID = productID);
+    SET @currentTotal = (SELECT `Total` FROM SHOPPING_SESSION s WHERE s.ID = @SessionID);
+    SET @newTotal = @currentTotal + @Price;
+    UPDATE SHOPPING_SESSION
+    SET `Total` = @newTotal WHERE `ID` = @SessionID;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS RemoveCartItem;
+
+DELIMITER //
+CREATE PROCEDURE RemoveCartItem(
+	IN productID INT,
+    IN customerID INT,
+    IN storeID INT
+)
+BEGIN
+	SET @SessionID = (SELECT `ID` FROM SHOPPING_SESSION WHERE `CtmID`= customerID AND storeID = storeID);
+    DELETE FROM CART_ITEM
+    WHERE ProductID = productiD AND SessionID = @SessionID
+    LIMIT 1;
+    SET @Price = (SELECT `Price` FROM PRODUCTS p WHERE p.ID = productID);
+    SET @currentTotal = (SELECT `Total` FROM SHOPPING_SESSION s WHERE s.ID = @SessionID);
+    SET @newTotal = @currentTotal - @Price;
+    UPDATE SHOPPING_SESSION
+    SET `Total` = @newTotal WHERE `ID` = @SessionID;
+END; //
+
+DELIMITER ;
+
+/*CALL CreateShoppingSession(1, 1);
+CALL CreateCartItem(1,1,1);
+CALL CreateCartItem(3,1,1);
+CALL RemoveCartItem(1,1,1);
+CALL GetShoppingSession(1);
+SELECT * FROM CART_ITEM;*/
 
 
 
