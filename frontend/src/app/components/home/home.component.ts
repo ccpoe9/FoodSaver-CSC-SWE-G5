@@ -95,7 +95,7 @@ export class HomeComponent {
   getCartItemCount(productName : string, storeID : number){
     this.shoppingService.getCartItemCount(productName, storeID)
     .subscribe( data => { 
-      console.log(storeID, productName,data[0][0].Amount);
+      console.log(storeID, productName, data[0][0].Amount);
     });
   } 
 }
