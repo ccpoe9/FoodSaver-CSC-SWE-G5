@@ -40,4 +40,17 @@ exports.GetProductsByTypeStore = (req,res) => {
     });
 }
 
+exports.GetProductsBySearch = (req,res) => {
+    let Q4 = `CALL GetProductsBySearch('${req.query.search}');`;
+
+    db.query(Q4, (err,data,fields) =>{
+        if(err){
+            console.error(err.message);
+            res.statusMessage = "SQL Error : " + err.message;
+            return res.status(400).end();
+        }
+        res.send(data);
+    });
+}
+
 

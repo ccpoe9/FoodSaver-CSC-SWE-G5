@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { forkJoin, switchMap } from 'rxjs';
 import { ProductsService } from 'src/app/services/products.service';
+import { ShoppingService } from 'src/app/services/shopping.service';
 import { StoresService } from 'src/app/services/stores.service';
 
 @Component({
@@ -11,19 +12,22 @@ import { StoresService } from 'src/app/services/stores.service';
 })
 export class HomeComponent {
 
-  constructor(private productsService : ProductsService, private storeService : StoresService, private router : Router)  { }
+  constructor(private productsService : ProductsService, private storeService : StoresService, 
+    private router : Router, private shoppingService : ShoppingService)  { }
   stores : any[];
   topStores : any[];
   products : any = [];
+  productsCount : any = [];
   filterargs = {title: 'hello'};
   storeCount : number = 0;
   pageNumber : number = 1;
   TotalStorePages : number;
   TotalStoreRecords : number;
   currentPageStores = [0, 1, 1, 1, 1, 1];
-
+  UserID : number;
   ngOnInit(){
     this.getTopStores();
+    this.UserID = Number(localStorage.getItem('UserID'));
   }
 
   getStores(page : number){
@@ -58,6 +62,7 @@ export class HomeComponent {
       .subscribe( data => {
         this.products[store.ID] = data[0];
         this.products[0][store.ID] = data[2][0].TotalPages;
+        this.getProductCount(store.ID);
       });
     }
   }
@@ -74,4 +79,23 @@ export class HomeComponent {
   viewAllProducts(storeID : number, storeName : string, StoreLogo : string){
     this.router.navigate(['/viewall'], {queryParams :{storeID: storeID, storeName : storeName, StoreLogo : StoreLogo}});
   }
+
+  addToCart(storeID : number, productID : number){
+    this.shoppingService.createShoppingSession(this.UserID, storeID)
+    .pipe(switchMap( () => {
+      return this.shoppingService.createCartItem(productID, storeID, this.UserID);
+    })).subscribe();
+  }
+
+  getProductCount(storeID : number){
+    for(let product of this.products[storeID]){
+      this.getCartItemCount(product.Name, storeID);
+    }
+  }
+  getCartItemCount(productName : string, storeID : number){
+    this.shoppingService.getCartItemCount(productName, storeID)
+    .subscribe( data => { 
+      console.log(storeID, productName,data[0][0].Amount);
+    });
+  } 
 }

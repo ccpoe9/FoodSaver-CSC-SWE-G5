@@ -25,6 +25,7 @@ export class LandingComponent {
     .subscribe( data => {
       if(data.length == 1){
         localStorage.setItem('User', 'Customer');
+        localStorage.setItem('UserID', data[0].ID);
         localStorage.setItem('Username', data[0].Username);
         this.router.navigate(['home']);
         this.ErrorMessage = "";
@@ -42,6 +43,7 @@ export class LandingComponent {
   this.authService.signUpCustomer(this.userInfo)
   .subscribe( data => {
       localStorage.setItem('User', 'Customer');
+      localStorage.setItem('UserID', data[0].ID);
       localStorage.setItem('Username', this.Username);
       this.router.navigate(['home']);
   });
@@ -56,6 +58,7 @@ export class LandingComponent {
     .subscribe( data => {
       if(data.length == 1){
         localStorage.setItem('User', 'Admin');
+        localStorage.setItem('UserID', data[0].ID);
         localStorage.setItem('Username', data[0].Username);
         this.router.navigate(['home']);
         this.ErrorMessage = "";

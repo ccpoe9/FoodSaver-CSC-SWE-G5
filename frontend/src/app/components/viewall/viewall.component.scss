@@ -34,13 +34,13 @@
   }
 
   .product-name{
+    min-height: 2rem;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 1; /* number of lines to show */
-            line-clamp: 1; 
+    -webkit-line-clamp: 2; /* number of lines to show */
+            line-clamp: 2; 
     -webkit-box-orient: vertical;
   }
-
   .cart-add-button{
     background-color: rgb(4, 137, 187);
     color: white;

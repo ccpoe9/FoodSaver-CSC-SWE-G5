@@ -11,9 +11,9 @@
             </div>
           </div>
           <div class="navbar-center">
-            <form class="d-flex" role="search">
+            <form class="d-flex" role="search" (keyup.enter)="searchProducts()">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <input class="search-bar" type="text" placeholder="Search" />
+              <input class="search-bar" type="text" placeholder="Search Products..." name="search" [(ngModel)]="search"/>
             </form>
           </div>
           <div class="navbar-right d-flex">

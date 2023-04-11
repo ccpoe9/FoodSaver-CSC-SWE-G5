@@ -12,6 +12,8 @@ export class NavbarComponent {
   Username : string | null;
   UserType : string | null;
 
+  search : string;
+
   productTypes = ['Produce', 'Dairy & Eggs', 'Meat & Seafood', 
   'Beverages', 'Snacks', 'Prepared Food', 'Breakfast', 'Dry Goods & Pasta',
   'Bakery', 'Oils, Spices & Condiments'];
@@ -36,5 +38,9 @@ export class NavbarComponent {
 
   getAllOfType(type : string){
     this.router.navigate(['viewtypes'], {queryParams :{type : type}});
+  }
+
+  searchProducts(){
+    this.router.navigate(['search'], {queryParams : {s : this.search}});
   }
 }

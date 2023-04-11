@@ -1,20 +1,10 @@
 <div class="container">
-    <div class="page-header mb-3 d-flex">
-        <img src="{{StoreLogo}}" alt="" style="width:9rem; height:5rem;">
+    <div class="page-header mb-3">
+        <h1>Products</h1>
     </div>
-    <div class="page-row" *ngFor="let type of productTypes; let i = index">
-        <div class="row-header d-flex justify-content-between">
-            <div class="header-left d-flex align-items-center">
-                <h3>{{type}}</h3>
-              </div>
-              <div class="header-right d-flex align-items-center">
-                <a class="previous page-link round me-2" *ngIf="currentPages[i]!=1" (click)="getNextPage(i, currentPages[i] - 1, type)">&#8249;</a>
-                <a class="next page-link round" *ngIf="totalPages[i] != 0 && currentPages[i] < totalPages[i]" (click)="getNextPage(i, currentPages[i] + 1, type)">&#8250;</a>
-              </div>
-        </div>
         <div class="row-content">
             <div class="row">
-                <div class="col-lg-2 col-md-3 col-sm-4 mb-3" *ngFor="let product of products[i]">
+                <div class="col-lg-2 col-md-3 col-sm-4 mb-3" *ngFor="let product of searchResults">
                   <div class="card h-20 pt-2 d-flex align-items-center">
                     <img src="{{product.Image}}" class="card-img-top" style="height: 8rem; width: 8rem;" alt="...">
                     <div class="card-body">
@@ -24,6 +14,7 @@
                         <i class="fa-regular fa-clock me-1"></i>
                         <p class="card-subtitle pt-1 text-muted">Expires in x days</p>
                       </div>
+                      <p><i>{{product.storeName}}</i></p>
                     </div>
                   </div>
                   <div class="product-buttons d-flex justify-content-between align-items-center">
@@ -38,5 +29,4 @@
                 </div>
               </div>
         </div>
-    </div>
 </div>

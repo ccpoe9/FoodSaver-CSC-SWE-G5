@@ -31,6 +31,16 @@ export class ProductsService {
       }));
   }
 
+  getProductsBySearch(search : string){
+    this.queryParams = new HttpParams().set('search', search);
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTSEARCH, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
   getProductsByStoreAndType(storeID : number, page : number, type : string){
     this.queryParams = new HttpParams().set('storeID', storeID).set('page', page).set('type', type);
     return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTDETAILS, {params : this.queryParams})

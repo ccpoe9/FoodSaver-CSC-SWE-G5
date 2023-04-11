@@ -14,6 +14,7 @@ import { MystoresComponent } from './components/mystores/mystores.component';
 import { FormsModule } from '@angular/forms';
 import { ViewallComponent } from './components/viewall/viewall.component';
 import { ViewtypesComponent } from './components/viewtypes/viewtypes.component';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ViewtypesComponent } from './components/viewtypes/viewtypes.component';
     LandingComponent,
     MystoresComponent,
     ViewallComponent,
-    ViewtypesComponent
+    ViewtypesComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

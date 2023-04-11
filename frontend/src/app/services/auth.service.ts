@@ -20,7 +20,7 @@ export class AuthService {
   }
 
   signUpCustomer(userInfo : any){
-    return this.http.post(Config.APIROOT+Config.APIURLS.CUSTOMERSIGNUP, userInfo, {responseType: 'json' })
+    return this.http.post<any[]>(Config.APIROOT+Config.APIURLS.CUSTOMERSIGNUP, userInfo, {responseType: 'json' })
     .pipe(
       catchError((err) => {
         console.error(err);
