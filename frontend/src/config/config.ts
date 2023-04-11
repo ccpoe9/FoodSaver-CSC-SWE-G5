@@ -8,8 +8,6 @@ export class Config{
         PRODUCTDETAILS : "/products/details",
         PRODUCTSEARCH : "/products/search",
         STORES : "/stores",
-        SHOPPINGSESSION : "/sessions",
-        CART : "/sessions/items",
         CUSTOMERSIGNUP : "/users/customers/signup",
         CUSTOMERLOGIN : "/users/customers/login",
         SUPPLIERLOGIN : "/users/admin/login"

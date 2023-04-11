@@ -1,6 +1,8 @@
 INSERT INTO `SUPPLIER_ADMIN`(`Username`, `Password`)
  VALUES ('ccpoe9','12345');
-
+INSERT INTO `CUSTOMERS`(`Username`, `Password`)
+ VALUES ('1','1');
+ 
  INSERT INTO `STORES` (`Name`,`Address`,`StoreLogo`,`SupplierAdmin`)
  VALUES ('Walmart', '123 Monroe St','https://logos-world.net/wp-content/uploads/2021/11/Walmart-Logo-700x394.png', 1),
  		('Publix', '188 Marine View Dr','https://logos-world.net/wp-content/uploads/2021/10/Publix-Logo-700x394.png', 1),

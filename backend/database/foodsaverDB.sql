@@ -49,7 +49,7 @@ CREATE TABLE `STORES` (
 -- DROP TABLE IF EXISTS `SHOPPING_SESSION`;
 CREATE TABLE `SHOPPING_SESSION` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `CtmID` int DEFAULT NULL,
+  `CtmID` int NOT NULL,
   PRIMARY KEY (`ID`),
   CONSTRAINT `shopping_session_ibfk_1` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
 );
@@ -60,7 +60,7 @@ CREATE TABLE `SHOPPING_SESSION` (
 -- DROP TABLE IF EXISTS `FAVORITES`;
 CREATE TABLE `FAVORITES` (
   `ProductName` varchar(100) NOT NULL,
-  `CtmID` int DEFAULT NULL,
+  `CtmID` int NOT NULL,
   PRIMARY KEY (`ProductName`),
   CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
 );
@@ -242,55 +242,6 @@ BEGIN
 END; //
 
 DELIMITER ;
-
-DROP PROCEDURE IF EXISTS CreateShoppingSession;
-
-DELIMITER //
-CREATE PROCEDURE CreateShoppingSession(
-	IN CtmID INT
-)
-BEGIN
-	INSERT INTO SHOPPING_SESSION (`CtmID`)
-    VALUES(CtmID);
-END; //
-
-DELIMITER ;
-
-DROP PROCEDURE IF EXISTS CreateCartItem;
-
-DELIMITER //
-CREATE PROCEDURE CreateCartItem(
-	IN ProductID INT,
-    IN SessionID INT
-)
-BEGIN
-	INSERT INTO CART_ITEM
-    VALUES(ProductID, SessionID);
-END; //
-
-DELIMITER ;
-
-DROP PROCEDURE IF EXISTS GetCartAmount;
-
-DELIMITER //
-CREATE PROCEDURE GetCartAmount(
-	IN in_ProductID INT,
-    IN in_SessionID INT
-)
-BEGIN
-	SELECT COUNT(*) FROM CART_ITEM
-    WHERE ProductID = in_ProductID AND SessionID = in_SessionID;
-    
-    SELECT `Name` FROM PRODUCTS WHERE ID = in_ProductID;
-END; //
-
-DELIMITER ;
-
-CALL CreateShoppingSession(2);
-CALL CreateCartItem(3,2);
-CALL GetCartAmount(1,1);
-
-SELECT * FROM CUSTOMERS;
 
 
 
