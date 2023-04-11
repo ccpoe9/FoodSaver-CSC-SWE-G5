@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
+import { ShoppingService } from 'src/app/services/shopping.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,14 +12,16 @@ export class NavbarComponent {
   currentPage: string;
   Username : string | null;
   UserType : string | null;
-
+  UserID : number;
   search : string;
 
   productTypes = ['Produce', 'Dairy & Eggs', 'Meat & Seafood', 
   'Beverages', 'Snacks', 'Prepared Food', 'Breakfast', 'Dry Goods & Pasta',
   'Bakery', 'Oils, Spices & Condiments'];
 
-  constructor(private router : Router){
+  shoppingSessions : any[] = [];
+
+  constructor(private router : Router, private shoppingService : ShoppingService){
     this.router.events
           .subscribe(
             (event: any) => {
@@ -26,12 +29,14 @@ export class NavbarComponent {
                 this.currentPage = event.url;
                 this.Username = localStorage.getItem('Username');
                 this.UserType = localStorage.getItem('User');
+                this.UserID = Number(localStorage.getItem('UserID'));
               }
             });
   }
   
   signOut(){
     localStorage.removeItem('User');
+    localStorage.removeItem('UserID');
     localStorage.removeItem('Username');
     this.router.navigate(['landing']);
   }
@@ -42,5 +47,12 @@ export class NavbarComponent {
 
   searchProducts(){
     this.router.navigate(['search'], {queryParams : {s : this.search}});
+  }
+
+  getShoppingSessions(){
+    this.shoppingService.getShoppingSession(this.UserID).subscribe( data => {
+      this.shoppingSessions = data[0];
+      console.log(data[0])
+    })
   }
 }

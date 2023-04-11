@@ -80,19 +80,37 @@ export class HomeComponent {
     this.router.navigate(['/viewall'], {queryParams :{storeID: storeID, storeName : storeName, StoreLogo : StoreLogo}});
   }
 
-  addItemtoCart(storeID : number, index : number){
+  addItemtoCartCheck(storeID : number, index : number, productID : number){
+    
+    if(this.productsCount[storeID][((this.currentPageStores[storeID] - 1) * 6) + index] == 0){
+      this.addNewItemtoCart(storeID, productID);
+    }
+    else{
+      this.addItemtoCart(storeID, productID);
+    }
     this.productsCount[storeID][((this.currentPageStores[storeID] - 1) * 6) + index]++;
+
   }
+
+  addItemtoCart(storeID : number, productID : number){
+    this.shoppingService.createCartItem(productID, this.UserID, storeID).subscribe();
+  }
+  addNewItemtoCart(storeID : number, productID : number){
+    this.shoppingService.createShoppingSession(this.UserID, storeID).pipe( switchMap( () => {
+      return this.shoppingService.createCartItem(productID, this.UserID, storeID)
+    })).subscribe();
+  }
+
   canDelete(storeID : number, index : number){
     if(this.productsCount[storeID][((this.currentPageStores[storeID] - 1) * 6) + index] >= 1){
       return true;
     }
     else return false;
   }
-  deleteitemFromCart(storeID : number, index : number){
+  deleteitemFromCart(storeID : number, productID: number, index : number){
     if(this.productsCount[storeID][((this.currentPageStores[storeID] - 1) * 6) + index] >= 1){
       this.productsCount[storeID][((this.currentPageStores[storeID] - 1) * 6) + index]--;
+      this.shoppingService.removeCartItem(productID, this.UserID, storeID).subscribe();
     }
   }
-
 }
