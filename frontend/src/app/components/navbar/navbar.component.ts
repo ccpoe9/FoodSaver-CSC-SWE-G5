@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { ShoppingService } from 'src/app/services/shopping.service';
 
 @Component({
@@ -21,23 +22,25 @@ export class NavbarComponent {
 
   shoppingSessions : any[] = [];
 
-  constructor(private router : Router, private shoppingService : ShoppingService){
+  constructor(private router : Router, private shoppingService : ShoppingService, private authService : AuthService){
     this.router.events
           .subscribe(
             (event: any) => {
               if(event instanceof NavigationStart) {
                 this.currentPage = event.url;
-                this.Username = localStorage.getItem('Username');
-                this.UserType = localStorage.getItem('User');
-                this.UserID = Number(localStorage.getItem('UserID'));
+                this.Username = localStorage.getItem('username');;
+                this.UserType = localStorage.getItem('user');;
+                this.UserID = Number(localStorage.getItem('user'));
               }
             });
   }
   
+  ngOnInit(){
+    
+  }
+
   signOut(){
-    localStorage.removeItem('User');
-    localStorage.removeItem('UserID');
-    localStorage.removeItem('Username');
+    localStorage.clear();
     this.router.navigate(['landing']);
   }
 
@@ -47,12 +50,5 @@ export class NavbarComponent {
 
   searchProducts(){
     this.router.navigate(['search'], {queryParams : {s : this.search}});
-  }
-
-  getShoppingSessions(){
-    this.shoppingService.getShoppingSession(this.UserID).subscribe( data => {
-      this.shoppingSessions = data[0];
-      console.log(data[0])
-    })
   }
 }

@@ -54,4 +54,17 @@ exports.GetProductsBySearch = (req,res) => {
     });
 }
 
+exports.GetProductsCartCount = (req,res) => {
+    let Q5 = `CALL GetProductsCartCount('${req.query.customerID}');`;
+    console.log(Q5);
+    db.query(Q5, (err,data,fields) =>{
+        if(err){
+            console.error(err.message);
+            res.statusMessage = "SQL Error : " + err.message;
+            return res.status(400).end();
+        }
+        res.send(data);
+    });
+}
+
 

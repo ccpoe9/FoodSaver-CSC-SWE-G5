@@ -20,9 +20,4 @@ export class AppComponent {
               }
             });
   }
-
-  
-  ngOnDestroy(){
-    localStorage.clear();
-  }
 }

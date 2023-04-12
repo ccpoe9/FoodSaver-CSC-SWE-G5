@@ -33,11 +33,11 @@
           </div>
         </div>
         <div class="product-buttons d-flex justify-content-between align-items-center">
-          <button type="button" class="btn cart-add-button" (click)="addItemtoCartCheck(store.ID,i, product.ID)">
+          <button type="button" class="btn cart-add-button">
             <i class="fa-solid fa-plus"></i>
           </button>
-          <span class="add-text">{{this.productsCount[store.ID][((this.currentPageStores[store.ID] - 1) * 6) + i]}}</span>
-          <button type="button" class="btn cart-delete-button" [ngClass]="{'disabled' : canDelete(store.ID, i) == false}" (click)="deleteitemFromCart(store.ID, product.ID,i)">
+          <span class="add-text">0</span>
+          <button type="button" class="btn cart-delete-button">
             <i class="fa-solid fa-trash"></i>
           </button>
         </div>

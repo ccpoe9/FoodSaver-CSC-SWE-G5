@@ -142,6 +142,63 @@ CREATE TABLE `REPORTS` (
 
 #<-----------------------STORED PROCEDURES ------------------------->
 
+DROP PROCEDURE IF EXISTS SupplierAdminSignUp;
+
+DELIMITER //
+CREATE PROCEDURE SupplierAdminSignUp(
+    IN in_username VARCHAR(50),
+    IN in_password VARCHAR(50)
+)
+BEGIN
+	INSERT INTO `SUPPLIER_ADMIN`(`Username`, `Password`)
+	VALUES (in_username,in_password);
+    SELECT `ID` FROM SUPPLIER_ADMIN WHERE `Username` = in_username AND `Password` = in_password;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS SupplierAdminSignIn;
+
+DELIMITER //
+CREATE PROCEDURE SupplierAdminSignIn(
+    IN in_username VARCHAR(50),
+    IN in_password VARCHAR(50)
+)
+BEGIN
+	SELECT * FROM SUPPLIER_ADMIN WHERE `Username` = in_username AND `Password` = in_password;
+    
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CustomerSignUp;
+
+DELIMITER //
+CREATE PROCEDURE CustomerSignUp(
+    IN in_username VARCHAR(50),
+    IN in_password VARCHAR(50)
+)
+BEGIN
+	INSERT INTO `CUSTOMERS`(`Username`, `Password`)
+	VALUES (in_username,in_password);
+    SELECT `ID` FROM `CUSTOMERS` WHERE `Username` = in_username AND PASSWORD = in_password;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CustomerSignIn;
+
+DELIMITER //
+CREATE PROCEDURE CustomerSignIn(
+    IN in_username VARCHAR(50),
+    IN in_password VARCHAR(50)
+)
+BEGIN
+	SELECT * FROM CUSTOMERS WHERE `Username` = in_username AND `Password` = in_password;
+END; //
+
+DELIMITER ;
+
 
 DROP PROCEDURE IF EXISTS GetProductsByPage;
 
@@ -156,7 +213,6 @@ BEGIN
 	DECLARE offsetval INT DEFAULT 0;
 	SET offsetval = (currentpage - 1) * 6;
 	SELECT * FROM PRODUCTS WHERE StoreID = Store
-    GROUP BY `Name`
     LIMIT 6 OFFSET offsetval;
     
     SELECT COUNT(*) INTO totalRecords FROM(
@@ -182,7 +238,6 @@ BEGIN
 	DECLARE offsetval INT DEFAULT 0;
 	SET offsetval = (currentpage - 1) * 6;
 	SELECT * FROM PRODUCTS WHERE `Type`= in_Type AND StoreID = in_storeID
-    GROUP BY `Name`
     LIMIT 6 OFFSET offsetval;
     
     SELECT COUNT(*) INTO totalRecords FROM(
@@ -202,8 +257,7 @@ CREATE PROCEDURE GetProductsByType(
 BEGIN
 	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
     JOIN STORES s ON p.StoreID = s.ID
-    WHERE p.`Type` = in_type
-    GROUP BY `Name`;
+    WHERE p.`Type` = in_type;
 END; //
 
 DELIMITER ;
@@ -217,8 +271,7 @@ CREATE PROCEDURE GetProductsBySearch(
 BEGIN
 	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
     JOIN STORES s ON p.StoreID = s.ID
-    WHERE p.`Name` LIKE CONCAT('%', in_search, '%')
-    GROUP BY `Name`;
+    WHERE p.`Name` LIKE CONCAT('%', in_search, '%');
 END; //
 
 DELIMITER ;
@@ -246,77 +299,14 @@ END; //
 
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS CreateShoppingSession;
 
-DELIMITER //
-CREATE PROCEDURE CreateShoppingSession(
-	IN customerID INT,
-    IN storeID INT
-)
-BEGIN
-	INSERT INTO SHOPPING_SESSION(`CtmID`, `StoreID`)
-    VALUES(customerID, storeID);
-END; //
 
-DELIMITER ;
 
-DROP PROCEDURE IF EXISTS GetShoppingSession;
 
-DELIMITER //
-CREATE PROCEDURE GetShoppingSession(
-	IN customerID INT
-)
-BEGIN
-	SELECT * FROM SHOPPING_SESSION ss JOIN STORES s ON ss.StoreID = s.ID
-	WHERE CtmID = customerID;
-END; //
 
-DELIMITER ;
-
-DROP PROCEDURE IF EXISTS CreateCartItem;
-
-DELIMITER //
-CREATE PROCEDURE CreateCartItem(
-	IN productID INT,
-    IN customerID INT,
-    IN storeID INT
-)
-BEGIN
-	SET @SessionID = (SELECT `ID` FROM SHOPPING_SESSION WHERE `CtmID`= customerID AND storeID = storeID);
-    INSERT INTO CART_ITEM
-    VALUES(productID, @SessionID);
-    SET @Price = (SELECT `Price` FROM PRODUCTS p WHERE p.ID = productID);
-    SET @currentTotal = (SELECT `Total` FROM SHOPPING_SESSION s WHERE s.ID = @SessionID);
-    SET @newTotal = @currentTotal + @Price;
-    UPDATE SHOPPING_SESSION
-    SET `Total` = @newTotal WHERE `ID` = @SessionID;
-END; //
-
-DELIMITER ;
-
-DROP PROCEDURE IF EXISTS RemoveCartItem;
-
-DELIMITER //
-CREATE PROCEDURE RemoveCartItem(
-	IN productID INT,
-    IN customerID INT,
-    IN storeID INT
-)
-BEGIN
-	SET @SessionID = (SELECT `ID` FROM SHOPPING_SESSION WHERE `CtmID`= customerID AND storeID = storeID);
-    DELETE FROM CART_ITEM
-    WHERE ProductID = productiD AND SessionID = @SessionID
-    LIMIT 1;
-    SET @Price = (SELECT `Price` FROM PRODUCTS p WHERE p.ID = productID);
-    SET @currentTotal = (SELECT `Total` FROM SHOPPING_SESSION s WHERE s.ID = @SessionID);
-    SET @newTotal = @currentTotal - @Price;
-    UPDATE SHOPPING_SESSION
-    SET `Total` = @newTotal WHERE `ID` = @SessionID;
-END; //
-
-DELIMITER ;
-
-/*CALL CreateShoppingSession(1, 1);
+/*
+CALL CustomerSignUp('1','1');
+CALL CreateShoppingSession(1, 1);
 CALL CreateCartItem(1,1,1);
 CALL CreateCartItem(3,1,1);
 CALL RemoveCartItem(1,1,1);
