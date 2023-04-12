@@ -58,7 +58,7 @@ export class LandingComponent {
     }
     this.authService.loginAdmin(this.userInfo)
     .subscribe( data => {
-      if(data.length == 1){
+      if(data[0].length == 1){
         this.User = data[0];
         this.authService.setUser(this.User[0].ID, 'Admin', this.User[0].Username);
         this.router.navigate(['home']);

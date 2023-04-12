@@ -6,45 +6,13 @@
     </div>
     <div class="page-body">
       <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+        <a href="#" class="list-group-item list-group-item-action" aria-current="true" *ngFor="let report of reports">
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Food wasn't delivered.</h5>
-            <small>3 days ago</small>
+            <h5 class="mb-1">{{report.ReportTitle}}</h5>
+            <small>{{report.ReportCreated}}</small>
           </div>
-          <p class="mb-1">My food wasn't delivered and...</p>
-          <small>To : Walmart</small>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Request a Refund</h5>
-            <small class="text-body-secondary">3 days ago</small>
-          </div>
-          <p class="mb-1">I would like to request a refund on an item i ordered on....</p>
-          <small class="text-body-secondary">To : Publix</small>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Request a Refund</h5>
-            <small class="text-body-secondary">3 days ago</small>
-          </div>
-          <p class="mb-1">I would like to request a refund on an item i ordered on....</p>
-          <small class="text-body-secondary">To : Publix</small>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Request a Refund</h5>
-            <small class="text-body-secondary">3 days ago</small>
-          </div>
-          <p class="mb-1">I would like to request a refund on an item i ordered on....</p>
-          <small class="text-body-secondary">To : Publix</small>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Request a Refund</h5>
-            <small class="text-body-secondary">3 days ago</small>
-          </div>
-          <p class="mb-1">I would like to request a refund on an item i ordered on....</p>
-          <small class="text-body-secondary">To : Publix</small>
+          <p class="mb-1">{{report.ReportDesc}}</p>
+          <small>To : {{report.Name}}</small>
         </a>
       </div>
     </div>

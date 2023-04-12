@@ -50,4 +50,14 @@ export class ProductsService {
         return throwError(err);
       }));
   }
+
+  getFavorites(customerID : number){
+    this.queryParams = new HttpParams().set('customerID', customerID);
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.FAVORITES, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
 }

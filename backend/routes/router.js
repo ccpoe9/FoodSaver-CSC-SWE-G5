@@ -2,6 +2,8 @@ let express = require('express');
 const {  GetProductsByStore, GetProductsByType, GetProductsByTypeStore, GetProductsBySearch, GetProductsCartCount } = require('../controllers/product.controller');
 const { SignUp, Login, AdminLogin} = require('../controllers/user.controller');
 const { GetStores } = require('../controllers/store.controller');
+const { GetFavorites } = require('../controllers/favorites.controller');
+const { GetReports } = require('../controllers/report.controller');
 let router = express.Router();
 
 
@@ -14,6 +16,8 @@ router.get('/api/products/type' ,GetProductsByType);
 router.get('/api/products/details', GetProductsByTypeStore);
 router.get('/api/products/search', GetProductsBySearch);
 router.get('/api/stores',GetStores);
+router.get('/api/favorites', GetFavorites);
+router.get('/api/reports', GetReports);
 router.post('/api/users/customers/login',Login);
 router.post('/api/users/customers/signup',SignUp);
 router.post('/api/users/admin/login',AdminLogin);
