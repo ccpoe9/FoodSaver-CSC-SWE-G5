@@ -1,26 +1,26 @@
 <div class="container">
-  <div class="store-list mt-3 mb-3 d-flex justify-content-between">
-    <button type="button" class="btn store-list-btn btn-lg">&#8249;</button>
+  <div class="store-list mt-3 mb-3 d-flex justify-content-center gap-5">
+    <button type="button" class="btn store-list-btn btn-lg" *ngIf="pageNumber != 1" (click)="getNextStores(pageNumber - 1)">&#8249;</button>
     <a *ngFor="let store of stores">
       <div class="store-icons me-2">
-        <img class="store-icon-img" src="{{store.StoreLogo}}" alt="">
+        <img class="store-icon-img" src="{{store.StoreLogo}}" alt="" (click)="viewAllProducts(store.ID, store.Name, store.StoreLogo)">
       </div>
     </a>
-    <button type="button" class="btn store-list-btn btn-lg">&#8250;</button>
+    <button type="button" class="btn store-list-btn btn-lg" *ngIf="pageNumber < TotalStorePages && TotalStorePages != 0" (click)="getNextStores(pageNumber + 1)">&#8250;</button>
   </div>
-  <div class="page-row mb-4" *ngFor="let store of stores">
+  <div class="page-row mb-4" *ngFor="let store of topStores">
     <div class="header-title mb-3 d-flex justify-content-between">
       <div class="header-left d-flex align-items-center">
         <h3>{{store.Name}}</h3>
       </div>
       <div class="header-right d-flex align-items-center">
-        <a class="me-3 page-link" style="color:rgb(4, 137, 187);">View All</a>
-        <a href="#" class="previous page-link round me-2">&#8249;</a>
-        <a href="#" class="next page-link round">&#8250;</a>
+        <a class="me-3 page-link" style="color:rgb(4, 137, 187);" *ngIf="products[0][store.ID] > 1" (click)="viewAllProducts(store.ID, store.Name, store.StoreLogo)">View All</a>
+        <a class="previous page-link round me-2" *ngIf="currentPageStores[store.ID]!=1" (click)="getNextProducts(store.ID, currentPageStores[store.ID] - 1)">&#8249;</a>
+        <a class="next page-link round" *ngIf="currentPageStores[store.ID] != products[0][store.ID]" (click)="getNextProducts(store.ID, currentPageStores[store.ID] + 1)">&#8250;</a>
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-2 col-md-3 col-sm-4 mb-3" *ngFor="let product of getProducts(store.ID) ">
+      <div class="col-lg-2 col-md-3 col-sm-4 mb-3" *ngFor="let product of products[store.ID]; let i = index">
         <div class="card h-20 pt-2 d-flex align-items-center">
           <img src="{{product.Image}}" class="card-img-top" style="height: 8rem; width: 8rem;" alt="...">
           <div class="card-body">
@@ -36,7 +36,7 @@
           <button type="button" class="btn cart-add-button">
             <i class="fa-solid fa-plus"></i>
           </button>
-          <span class="add-text">1</span>
+          <span class="add-text">0</span>
           <button type="button" class="btn cart-delete-button">
             <i class="fa-solid fa-trash"></i>
           </button>

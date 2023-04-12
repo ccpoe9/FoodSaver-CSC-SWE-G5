@@ -1,3 +1,5 @@
+set @@global.sql_mode := replace(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', '');
+
 DROP DATABASE IF EXISTS foodsaver;
 CREATE DATABASE foodsaver;
 
@@ -47,10 +49,12 @@ CREATE TABLE `STORES` (
 -- DROP TABLE IF EXISTS `SHOPPING_SESSION`;
 CREATE TABLE `SHOPPING_SESSION` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `CtmID` int DEFAULT NULL,
-  `Total` decimal(7,2) DEFAULT NULL,
+  `CtmID` int NOT NULL,
+  `StoreID` int NOT NULL,
+  `Total` DECIMAL(7,2) DEFAULT 0,
   PRIMARY KEY (`ID`),
-  CONSTRAINT `shopping_session_ibfk_1` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
+  CONSTRAINT `shopping_session_ibfk_1` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`),
+  CONSTRAINT `shopping_session_ibfk_2` FOREIGN KEY (`StoreID`) REFERENCES `STORES` (`ID`)
 );
 
 --
@@ -59,7 +63,7 @@ CREATE TABLE `SHOPPING_SESSION` (
 -- DROP TABLE IF EXISTS `FAVORITES`;
 CREATE TABLE `FAVORITES` (
   `ProductName` varchar(100) NOT NULL,
-  `CtmID` int DEFAULT NULL,
+  `CtmID` int NOT NULL,
   PRIMARY KEY (`ProductName`),
   CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
 );
@@ -138,34 +142,176 @@ CREATE TABLE `REPORTS` (
 
 #<-----------------------STORED PROCEDURES ------------------------->
 
+DROP PROCEDURE IF EXISTS SupplierAdminSignUp;
+
+DELIMITER //
+CREATE PROCEDURE SupplierAdminSignUp(
+    IN in_username VARCHAR(50),
+    IN in_password VARCHAR(50)
+)
+BEGIN
+	INSERT INTO `SUPPLIER_ADMIN`(`Username`, `Password`)
+	VALUES (in_username,in_password);
+    SELECT `ID` FROM SUPPLIER_ADMIN WHERE `Username` = in_username AND `Password` = in_password;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS SupplierAdminSignIn;
+
+DELIMITER //
+CREATE PROCEDURE SupplierAdminSignIn(
+    IN in_username VARCHAR(50),
+    IN in_password VARCHAR(50)
+)
+BEGIN
+	SELECT * FROM SUPPLIER_ADMIN WHERE `Username` = in_username AND `Password` = in_password;
+    
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CustomerSignUp;
+
+DELIMITER //
+CREATE PROCEDURE CustomerSignUp(
+    IN in_username VARCHAR(50),
+    IN in_password VARCHAR(50)
+)
+BEGIN
+	INSERT INTO `CUSTOMERS`(`Username`, `Password`)
+	VALUES (in_username,in_password);
+    SELECT `ID` FROM `CUSTOMERS` WHERE `Username` = in_username AND PASSWORD = in_password;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CustomerSignIn;
+
+DELIMITER //
+CREATE PROCEDURE CustomerSignIn(
+    IN in_username VARCHAR(50),
+    IN in_password VARCHAR(50)
+)
+BEGIN
+	SELECT * FROM CUSTOMERS WHERE `Username` = in_username AND `Password` = in_password;
+END; //
+
+DELIMITER ;
+
 
 DROP PROCEDURE IF EXISTS GetProductsByPage;
 
 DELIMITER //
 CREATE PROCEDURE GetProductsByPage(
 	IN currentPage INT,
-    IN Store INT
+    IN Store INT,
+    OUT totalPages INT,
+    OUT totalRecords INT
 )
 BEGIN
 	DECLARE offsetval INT DEFAULT 0;
-	SET offsetval = (currentpage - 1) * 5;
+	SET offsetval = (currentpage - 1) * 6;
 	SELECT * FROM PRODUCTS WHERE StoreID = Store
-    LIMIT 5 OFFSET offsetval;
+    LIMIT 6 OFFSET offsetval;
+    
+    SELECT COUNT(*) INTO totalRecords FROM(
+    SELECT * FROM PRODUCTS WHERE StoreID = Store
+    ) AS rescount;
+    SET totalPages = CEIL(totalRecords/6);
+    
 END; //
 
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS GetProductsByTypeStore;
+
+DELIMITER //
+CREATE PROCEDURE GetProductsByTypeStore(
+	IN currentPage INT,
+    IN in_storeID INT,
+    IN in_Type VARCHAR(30),
+    OUT totalPages INT,
+    OUT totalRecords INT
+)
+BEGIN
+	DECLARE offsetval INT DEFAULT 0;
+	SET offsetval = (currentpage - 1) * 6;
+	SELECT * FROM PRODUCTS WHERE `Type`= in_Type AND StoreID = in_storeID
+    LIMIT 6 OFFSET offsetval;
+    
+    SELECT COUNT(*) INTO totalRecords FROM(
+    SELECT * FROM PRODUCTS WHERE `Type`= in_Type AND StoreID = in_storeID
+    ) AS rescount;
+    SET totalPages = CEIL(totalRecords/6);
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS GetProductsByType;
+
+DELIMITER //
+CREATE PROCEDURE GetProductsByType(
+    IN in_type VARCHAR(30)
+)
+BEGIN
+	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
+    JOIN STORES s ON p.StoreID = s.ID
+    WHERE p.`Type` = in_type;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS GetProductsBySearch;
+
+DELIMITER //
+CREATE PROCEDURE GetProductsBySearch(
+    IN in_search VARCHAR(30)
+)
+BEGIN
+	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
+    JOIN STORES s ON p.StoreID = s.ID
+    WHERE p.`Name` LIKE CONCAT('%', in_search, '%');
+END; //
+
+DELIMITER ;
+
 
 DROP PROCEDURE IF EXISTS GetStoresByPage;
 
 DELIMITER //
 CREATE PROCEDURE GetStoresByPage(
-	IN currentPage INT
+	IN currentPage INT,
+    OUT totalPages INT,
+    OUT totalRecords INT
 )
 BEGIN
 	DECLARE offsetval INT DEFAULT 0;
 	SET offsetval = (currentpage - 1) * 5;
 	SELECT * FROM STORES
     LIMIT 5 OFFSET offsetval;
+    
+    SELECT COUNT(*) INTO totalRecords FROM(
+    SELECT * FROM STORES
+    ) AS rescount;
+    SET totalPages = CEIL(totalRecords/5);
 END; //
 
 DELIMITER ;
+
+
+
+
+
+
+/*
+CALL CustomerSignUp('1','1');
+CALL CreateShoppingSession(1, 1);
+CALL CreateCartItem(1,1,1);
+CALL CreateCartItem(3,1,1);
+CALL RemoveCartItem(1,1,1);
+CALL GetShoppingSession(1);
+SELECT * FROM CART_ITEM;*/
+
+
+

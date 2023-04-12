@@ -12,6 +12,9 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { MystoresComponent } from './components/mystores/mystores.component';
 import { FormsModule } from '@angular/forms';
+import { ViewallComponent } from './components/viewall/viewall.component';
+import { ViewtypesComponent } from './components/viewtypes/viewtypes.component';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { FormsModule } from '@angular/forms';
     NavbarComponent,
     ReportsComponent,
     LandingComponent,
-    MystoresComponent
+    MystoresComponent,
+    ViewallComponent,
+    ViewtypesComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

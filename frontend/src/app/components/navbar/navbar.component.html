@@ -11,9 +11,9 @@
             </div>
           </div>
           <div class="navbar-center">
-            <form class="d-flex" role="search">
+            <form class="d-flex" role="search" (keyup.enter)="searchProducts()">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <input class="search-bar" type="text" placeholder="Search" />
+              <input class="search-bar" type="text" placeholder="Search Products..." name="search" [(ngModel)]="search"/>
             </form>
           </div>
           <div class="navbar-right d-flex">
@@ -71,11 +71,11 @@
               </div>
             </div>
             <div class="offcanvas-body">
-              <div class="card mb-3" style="width: 18rem;">
+              <div class="card mb-3" style="width: 18rem;" *ngFor="let session of shoppingSessions">
                 <div class="card-body">
-                  <h5 class="card-title">Publix</h5>
+                  <h5 class="card-title">{{session.Name}}</h5>
                   <h6 class="card-subtitle mb-2 text-body-secondary">1 Item(s)</h6>
-                  <p class="card-text">Total : $3.99</p>
+                  <p class="card-text">Total : ${{session.Total}}</p>
                   <button type="button" class="btn cart-btn d-flex align-items-center justify-content-center">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <div class="cart-number">Checkout</div>
@@ -102,21 +102,9 @@
             </div>
           </div>
         </div>
-        <div class="container-fluid pt-2 gap-5 justify-content-center">
-            <a class="sub-nav-links text-center" href="">
-              Meats
-            </a>
-            <a class="sub-nav-links text-center" href="">
-              Veggies
-            </a>
-            <a class="sub-nav-links text-center" href="">
-              Cereal
-            </a>
-            <a class="sub-nav-links text-center" href="">
-              Snacks
-            </a>
-            <a class="sub-nav-links text-center" href="">
-              Bread
+        <div class="container-fluid pt-2 gap-4 justify-content-center">
+            <a class="sub-nav-links text-center" *ngFor="let type of productTypes" (click)="getAllOfType(type)">
+              {{type}}
             </a>
         </div>
     </nav>

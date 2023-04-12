@@ -12,8 +12,8 @@ export class LandingComponent {
   Username : string;
   Password : string;
   userInfo = {};
-  ErrorMessage : string = "";
-
+  Message : string = "";
+  User : any[] = [];
   constructor(private authService : AuthService, private router : Router) { }
 
   loginAsCustomer(){
@@ -23,17 +23,18 @@ export class LandingComponent {
     }
     this.authService.loginCustomer(this.userInfo)
     .subscribe( data => {
-      if(data.length == 1){
-        localStorage.setItem('User', 'Customer');
-        localStorage.setItem('Username', data[0].Username);
+      if(data[0].length == 1){
+        this.User = data[0];
+        this.authService.setUser(this.User[0].ID, 'Customer', this.User[0].Username);
+        this.Message = 'Login successful';
         this.router.navigate(['home']);
-        this.ErrorMessage = "";
       }
       else{
-        this.ErrorMessage = "Username or Password is Incorrect";
+        this.Message = "Username or Password is Incorrect";
       }
     });
   }
+
   signUpAsCustomer(){
     this.userInfo = {
       "Username" : this.Username,
@@ -41,9 +42,12 @@ export class LandingComponent {
   }
   this.authService.signUpCustomer(this.userInfo)
   .subscribe( data => {
-      localStorage.setItem('User', 'Customer');
-      localStorage.setItem('Username', this.Username);
+      this.User = data[0];
+      this.authService.setUser(this.User[0].ID, 'Customer', this.User[0].Username);
       this.router.navigate(['home']);
+      this.Message = 'SignUp successful';
+  }, (err) => {
+    if(err.statusText.startsWith('SQL Error : ER_DUP_ENTRY:')) this.Message = "User already exists";
   });
   }
 
@@ -55,13 +59,13 @@ export class LandingComponent {
     this.authService.loginAdmin(this.userInfo)
     .subscribe( data => {
       if(data.length == 1){
-        localStorage.setItem('User', 'Admin');
-        localStorage.setItem('Username', data[0].Username);
+        this.User = data[0];
+        this.authService.setUser(this.User[0].ID, 'Admin', this.User[0].Username);
         this.router.navigate(['home']);
-        this.ErrorMessage = "";
+        this.Message = 'Login successful';
       }
       else{
-        this.ErrorMessage = "Username or Password is Incorrect";
+        this.Message = "Username or Password is Incorrect";
       }
     });
   }
