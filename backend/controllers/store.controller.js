@@ -14,3 +14,17 @@ exports.GetStores = (req, res) => {
         res.send(data);
     });
 }
+
+exports.GetAdminStores = (req, res) => {
+
+    let Q2 = `CALL GetAdminStores(${req.query.supplierID});`;
+    console.log(Q2);
+    db.query(Q2, (err,data,fields) =>{
+        if(err){
+            console.error(err.message);
+            res.statusMessage = "SQL Error : " + err.message;
+            return res.status(400).end();
+        }
+        res.send(data);
+    });
+}

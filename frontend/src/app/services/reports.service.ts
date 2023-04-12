@@ -21,4 +21,14 @@ export class ReportsService {
       }));
   }
 
+  getAdminReports(supplierID : number){
+    this.queryParams = new HttpParams().set('supplierID', supplierID);
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.ADMINREPORTS, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
 }

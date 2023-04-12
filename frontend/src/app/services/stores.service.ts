@@ -20,4 +20,14 @@ export class StoresService {
         return throwError(err);
       }));
   }
+
+  getAdminStores(supplierID : number){
+    this.queryParams = new HttpParams().set('supplierID', supplierID);
+    return this.http.get<any[]>(Config.APIROOT + Config.APIURLS.MYSTORES, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
 }

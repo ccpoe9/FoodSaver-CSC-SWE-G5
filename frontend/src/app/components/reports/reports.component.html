@@ -12,7 +12,8 @@
             <small>{{report.ReportCreated}}</small>
           </div>
           <p class="mb-1">{{report.ReportDesc}}</p>
-          <small>To : {{report.Name}}</small>
+          <span></span>
+          <small><span *ngIf="userType == 'Customer'">To : {{report.Name}}</span><span *ngIf="userType == 'Admin'">From : {{report.Username}}</span></small>
         </a>
       </div>
     </div>

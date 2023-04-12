@@ -10,6 +10,8 @@ export class Config{
         STORES : "/stores",
         FAVORITES : "/favorites",
         REPORTS : "/reports",
+        MYSTORES : "/stores/admin",
+        ADMINREPORTS : "/reports/admin",
         CUSTOMERSIGNUP : "/users/customers/signup",
         CUSTOMERLOGIN : "/users/customers/login",
         SUPPLIERLOGIN : "/users/admin/login"

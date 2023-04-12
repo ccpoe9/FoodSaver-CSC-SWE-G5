@@ -1,12 +1,14 @@
 
-CALL SupplierAdminSignUp('ccpoe9','12345');
-
+CALL SupplierAdminSignUp('a','a');
+CALL SupplierAdminSignUp('b','b');
+CALL CustomerSignUp('1','1');
+CALL CustomerSignUp('2','2');
  
  INSERT INTO `STORES` (`Name`,`Address`,`StoreLogo`,`SupplierAdmin`)
  VALUES ('Walmart', '123 Monroe St','https://logos-world.net/wp-content/uploads/2021/11/Walmart-Logo-700x394.png', 1),
  		('Publix', '188 Marine View Dr','https://logos-world.net/wp-content/uploads/2021/10/Publix-Logo-700x394.png', 1),
- 		('Target', '59 Patchogue Ave','https://logos-world.net/wp-content/uploads/2020/10/Target-Logo-700x394.png', 1),
- 		('7 Eleven', '14001 Fondren Rd','https://logos-world.net/wp-content/uploads/2021/08/7-Eleven-Logo-700x394.png', 1),
+ 		('Target', '59 Patchogue Ave','https://logos-world.net/wp-content/uploads/2020/10/Target-Logo-700x394.png', 2),
+ 		('7 Eleven', '14001 Fondren Rd','https://logos-world.net/wp-content/uploads/2021/08/7-Eleven-Logo-700x394.png', 2),
  		('Kroger', '3617 Chandler Ln','https://logos-world.net/wp-content/uploads/2021/09/Kroger-Logo-700x394.png', 1),
         ('Walgreens', '3616 Chandler Ln','https://logos-world.net/wp-content/uploads/2021/11/Walgreens-Logo-700x394.png', 1);
 
@@ -38,3 +40,18 @@ CALL SupplierAdminSignUp('ccpoe9','12345');
          ('Maruchan Ramen Noodle Soup, Chicken Flavor 12-Pack',1.99,'2023-05-12','Noodles', 'Each of this Maruchan pack contains flavorful chicken seasoning and tender noodles that cook up in just a few minutes. With 12 individual servings, this pack is perfect for stocking up your pantry or for taking to work or school.', 'https://d2lnr5mha7bycj.cloudfront.net/product-image/file/large_9da4f94a-837e-4850-b21e-e6d9120e736f.jpeg', 5),
          ('Lunchables Ham & Swiss Cheese with Crackers Kids Lunch Snack Kit',1.49,'2023-05-12','Prepared Food', 'This Lunchables is a fun and delicious meal option for kids on the go. The kit includes lean ham, Swiss cheese, and crackers, making it a tasty and balanced snack that''s perfect for lunchtime or any time of day.', 'https://www.instacart.com/assets/domains/product-image/file/large_96849b77-fe90-4162-81f8-ede5eccd29b9.jpg', 5),
          ('Ruffles Original Party Size Potato Chips 13 oz',2.49,'2023-05-12','Snacks', 'Ruffles Original Potato Chips are a classic and delicious snack made with crispy, ridged potato chips that have a satisfying crunch. With their bold and flavorful taste, these chips are perfect for sharing with friends and family at parties, picnics, or anytime snacking.', 'https://www.instacart.com/assets/domains/product-image/file/large_b5b7448c-c020-4bff-9745-55e276e26033.png', 5);
+         
+INSERT INTO FAVORITES VALUES (1,1);
+INSERT INTO FAVORITES VALUES (2,1);
+INSERT INTO FAVORITES VALUES (2,2);
+INSERT INTO `REPORTS` (`ReportTitle`,`ReportDesc`,`ReportCreated`,`CtmID`,`StoreID`)
+VALUES('ReportTitle1', 'ReportDesc1', CURDATE(), 1, 1);
+INSERT INTO `REPORTS` (`ReportTitle`,`ReportDesc`,`ReportCreated`,`CtmID`,`StoreID`)
+VALUES('ReportTitle1', 'ReportDesc1', CURDATE(), 2, 1);
+INSERT INTO `REPORTS` (`ReportTitle`,`ReportDesc`,`ReportCreated`,`CtmID`,`StoreID`)
+VALUES('ReportTitle2', 'ReportDesc2', CURDATE() , 1, 2);
+
+INSERT INTO `REPORTS` (`ReportTitle`,`ReportDesc`,`ReportCreated`,`CtmID`,`StoreID`)
+VALUES('ReportTitle1', 'ReportDesc1', CURDATE() , 1, 3);
+INSERT INTO `REPORTS` (`ReportTitle`,`ReportDesc`,`ReportCreated`,`CtmID`,`StoreID`)
+VALUES('ReportTitle2', 'ReportDesc2', CURDATE() , 1, 4);
