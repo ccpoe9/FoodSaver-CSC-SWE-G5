@@ -12,6 +12,7 @@ export class Config{
         REPORTS : "/reports",
         MYSTORES : "/stores/admin",
         ADMINREPORTS : "/reports/admin",
+        CUSTOMERINFO : "/customers",
         CUSTOMERSIGNUP : "/users/customers/signup",
         CUSTOMERLOGIN : "/users/customers/login",
         SUPPLIERLOGIN : "/users/admin/login"

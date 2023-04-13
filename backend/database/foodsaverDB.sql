@@ -352,9 +352,23 @@ END; //
 
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS EditUserInfo;
 
+DELIMITER //
+CREATE PROCEDURE EditUserInfo(
+	IN customerID INT,
+	IN in_Username varchar(50),
+    IN in_Email varchar(70),
+	IN in_Phone varchar(20),
+	IN in_Address varchar(100)
+)
+BEGIN
+	UPDATE CUSTOMERS
+    SET Username = in_Username, Email = in_Email, Phone = in_Phone, Address = in_Address
+    WHERE ID = customerID;
+END; //
 
-
+DELIMITER ;
 
 
 /*

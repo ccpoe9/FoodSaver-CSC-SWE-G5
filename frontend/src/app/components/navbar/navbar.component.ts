@@ -14,6 +14,7 @@ export class NavbarComponent {
   Username : string | null;
   UserType : string | null;
   UserID : number;
+  UserAddress : string | null;
   search : string;
 
   productTypes = ['Produce', 'Dairy & Eggs', 'Meat & Seafood', 
@@ -28,20 +29,27 @@ export class NavbarComponent {
             (event: any) => {
               if(event instanceof NavigationStart) {
                 this.currentPage = event.url;
-                this.Username = localStorage.getItem('username');;
-                this.UserType = localStorage.getItem('user');;
-                this.UserID = Number(localStorage.getItem('user'));
+                this.Username = localStorage.getItem('username');
+                this.UserType = localStorage.getItem('user');
+                this.UserID = Number(localStorage.getItem('id'));
+                this.UserAddress = localStorage.getItem('address');
+                if(this.UserAddress == 'null') this.UserAddress = "Enter Your Address";
               }
             });
   }
-  
-  ngOnInit(){
-    
-  }
+
 
   signOut(){
     localStorage.clear();
     this.router.navigate(['landing']);
+  }
+
+  resetValues(){
+    this.Username = localStorage.getItem('username');
+    this.UserType = localStorage.getItem('user');
+    this.UserID = Number(localStorage.getItem('id'));
+    this.UserAddress = localStorage.getItem('address');
+    if(this.UserAddress == 'null') this.UserAddress = "Enter Your Address";
   }
 
   getAllOfType(type : string){
