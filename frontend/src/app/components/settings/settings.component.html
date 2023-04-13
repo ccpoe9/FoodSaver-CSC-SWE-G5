@@ -16,7 +16,7 @@
             </div>
             <div class="card-body">
                <div class="tab-content mt-3">
-                <div class="tab-pane active" id="account-tab-pane" role="tabpanel">
+                <div class="tab-pane active" id="account-tab-pane" role="tabpanel" *ngIf="userType == 'Customer'">
                   <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Username</label>
                     <input type="text" class="form-control" placeholder="{{userName}}" name="Username" [(ngModel)]="editUserInfo.Username" aria-label="Username" aria-describedby="basic-addon1">
@@ -39,10 +39,10 @@
                 <div class="tab-pane" id="theme-tab-pane" role="tabpanel" aria-labelledby="history-tab">  
                   <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      LIGHT THEME
+                      {{selectedTheme}}
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">DARK THEME</a></li>
+                      <li><a class="dropdown-item" (click)="changeTheme(unselectedTheme)">{{unselectedTheme}}</a></li>
                     </ul>
                   </div>
                 </div>

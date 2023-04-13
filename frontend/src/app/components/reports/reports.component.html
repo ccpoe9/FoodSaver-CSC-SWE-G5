@@ -1,7 +1,7 @@
 <div class="container">
     <div class="page-header d-flex justify-content-between mb-3">
         <h3 class="header-title">Reports</h3>
-        <a href="#" class="btn buy-again-btn me-2" data-bs-toggle="modal" data-bs-target="#reportModal" (click)="getStores()">
+        <a href="#" class="btn buy-again-btn me-2" *ngIf="userType  == 'Customer'" data-bs-toggle="modal" data-bs-target="#reportModal" (click)="getStores()">
             <i class="fa-solid fa-plus me-2"></i>Create Report</a>
     </div>
     <div class="page-body">
@@ -13,7 +13,7 @@
           </div>
           <p class="mb-1">{{report.ReportDesc}}</p>
           <span></span>
-          <small><span *ngIf="userType == 'Customer'">To : {{report.Name}}</span><span *ngIf="userType == 'Admin'">From : {{report.Username}}</span></small>
+          <small><span *ngIf="userType == 'Customer'">To : {{report.Name}}</span><span *ngIf="userType == 'Admin'">From : {{report.Username}} Email: {{report.Email}}</span></small>
         </a>
       </div>
     </div>

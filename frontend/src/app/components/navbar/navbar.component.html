@@ -17,7 +17,7 @@
             </form>
           </div>
           <div class="navbar-right d-flex" *ngIf="UserType == 'Customer'">
-            <button type="button" class="btn address-btn d-flex align-items-center justify-content-center me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn address-btn d-flex align-items-center justify-content-center me-2" data-bs-toggle="modal" data-bs-target="#exampleModal" [ngClass]="{'text-white': theme == 'dark'}">
               <i class="fa-solid fa-location-dot"></i>
               <div class="address-text">{{UserAddress}}</div>
             </button>
@@ -108,7 +108,7 @@
           </div>
         </div>
         <div class="container-fluid pt-2 gap-4 justify-content-center">
-            <a class="sub-nav-links text-center" *ngFor="let type of productTypes" (click)="getAllOfType(type)">
+            <a class="sub-nav-links text-center" *ngFor="let type of productTypes" (click)="getAllOfType(type)" [ngClass]="{'text-white': theme == 'dark'}">
               {{type}}
             </a>
         </div>
