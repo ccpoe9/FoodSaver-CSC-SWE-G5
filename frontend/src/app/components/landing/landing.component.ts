@@ -25,7 +25,7 @@ export class LandingComponent {
     .subscribe( data => {
       if(data[0].length == 1){
         this.User = data[0];
-        this.authService.setUser(this.User[0].ID, 'Customer', this.User[0].Username);
+        this.authService.setUser(this.User[0].ID, 'Customer', this.User[0].Username, this.User[0].Address);
         this.Message = 'Login successful';
         this.router.navigate(['home']);
       }
@@ -43,7 +43,7 @@ export class LandingComponent {
   this.authService.signUpCustomer(this.userInfo)
   .subscribe( data => {
       this.User = data[0];
-      this.authService.setUser(this.User[0].ID, 'Customer', this.User[0].Username);
+      this.authService.setUser(this.User[0].ID, 'Customer', this.User[0].Username, this.User[0].Address);
       this.router.navigate(['home']);
       this.Message = 'SignUp successful';
   }, (err) => {
@@ -58,9 +58,9 @@ export class LandingComponent {
     }
     this.authService.loginAdmin(this.userInfo)
     .subscribe( data => {
-      if(data.length == 1){
+      if(data[0].length == 1){
         this.User = data[0];
-        this.authService.setUser(this.User[0].ID, 'Admin', this.User[0].Username);
+        this.authService.setUser(this.User[0].ID, 'Admin', this.User[0].Username, '');
         this.router.navigate(['home']);
         this.Message = 'Login successful';
       }

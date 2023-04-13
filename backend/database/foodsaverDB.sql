@@ -1,5 +1,3 @@
-set @@global.sql_mode := replace(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', '');
-
 DROP DATABASE IF EXISTS foodsaver;
 CREATE DATABASE foodsaver;
 
@@ -58,17 +56,6 @@ CREATE TABLE `SHOPPING_SESSION` (
 );
 
 --
--- Table structure for table `FAVORITES`
---
--- DROP TABLE IF EXISTS `FAVORITES`;
-CREATE TABLE `FAVORITES` (
-  `ProductName` varchar(100) NOT NULL,
-  `CtmID` int NOT NULL,
-  PRIMARY KEY (`ProductName`),
-  CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
-);
-
---
 -- Table structure for table `PRODUCTS`
 --
 -- DROP TABLE IF EXISTS `PRODUCTS`;
@@ -83,6 +70,17 @@ CREATE TABLE `PRODUCTS` (
   `StoreID` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`StoreID`) REFERENCES `STORES` (`ID`)
+);
+--
+-- Table structure for table `FAVORITES`
+--
+-- DROP TABLE IF EXISTS `FAVORITES`;
+CREATE TABLE `FAVORITES` (
+  `ProductID` int NOT NULL,
+  `CtmID` int NOT NULL,
+  PRIMARY KEY (`ProductID`, `CtmID`),
+  CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ID`),
+  CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
 );
 
 --
@@ -166,7 +164,6 @@ CREATE PROCEDURE SupplierAdminSignIn(
 )
 BEGIN
 	SELECT * FROM SUPPLIER_ADMIN WHERE `Username` = in_username AND `Password` = in_password;
-    
 END; //
 
 DELIMITER ;
@@ -299,9 +296,79 @@ END; //
 
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS GetFavorites;
+
+DELIMITER //
+CREATE PROCEDURE GetFavorites(
+	IN customerID INT
+)
+BEGIN
+	SELECT * FROM FAVORITES f JOIN PRODUCTS p ON f.ProductID = p.ID
+    WHERE f.`CtmID` = customerID;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS GetReports;
+
+DELIMITER //
+CREATE PROCEDURE GetReports(
+	IN customerID INT
+)
+BEGIN
+	SELECT * FROM REPORTS r 
+    JOIN STORES s ON r.StoreID = s.ID
+    WHERE `CtmID` = customerID;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS GetAdminStores;
+
+DELIMITER //
+CREATE PROCEDURE GetAdminStores(
+	IN supplierID INT
+)
+BEGIN
+	SELECT * FROM STORES
+    WHERE `SupplierAdmin` = supplierID;
+END; //
+
+DELIMITER ;
 
 
+DROP PROCEDURE IF EXISTS GetAdminReports;
 
+DELIMITER //
+CREATE PROCEDURE GetAdminReports(
+	IN supplierID INT
+)
+BEGIN
+	SELECT * FROM REPORTS r 
+    JOIN STORES s ON r.StoreID = s.ID
+    JOIN CUSTOMERS c ON r.CtmID = c.ID
+    WHERE `SupplierAdmin` = supplierID;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS EditUserInfo;
+
+DELIMITER //
+CREATE PROCEDURE EditUserInfo(
+	IN customerID INT,
+	IN in_Username varchar(50),
+    IN in_Email varchar(70),
+	IN in_Phone varchar(20),
+	IN in_Address varchar(100)
+)
+BEGIN
+	UPDATE CUSTOMERS
+    SET Username = in_Username, Email = in_Email, Phone = in_Phone, Address = in_Address
+    WHERE ID = customerID;
+END; //
+
+DELIMITER ;
 
 
 /*

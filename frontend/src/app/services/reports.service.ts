@@ -6,14 +6,14 @@ import { Config } from 'src/config/config';
 @Injectable({
   providedIn: 'root'
 })
-export class StoresService {
+export class ReportsService {
 
   constructor(private http : HttpClient) { }
   queryParams : HttpParams;
 
-  getStores(page : number){
-    this.queryParams = new HttpParams().set('page', page);
-    return this.http.get<any[]>(Config.APIROOT + Config.APIURLS.STORES, {params : this.queryParams})
+  getReports(customerID : number){
+    this.queryParams = new HttpParams().set('customerID', customerID);
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.REPORTS, {params : this.queryParams})
     .pipe(
       catchError((err) => {
         console.error(err);
@@ -21,9 +21,9 @@ export class StoresService {
       }));
   }
 
-  getAdminStores(supplierID : number){
+  getAdminReports(supplierID : number){
     this.queryParams = new HttpParams().set('supplierID', supplierID);
-    return this.http.get<any[]>(Config.APIROOT + Config.APIURLS.MYSTORES, {params : this.queryParams})
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.ADMINREPORTS, {params : this.queryParams})
     .pipe(
       catchError((err) => {
         console.error(err);
@@ -31,12 +31,13 @@ export class StoresService {
       }));
   }
 
-  getAllStores(){
-    return this.http.get<any[]>(Config.APIROOT + Config.APIURLS.STORESALL)
+  createReports(reportInfo : any){
+    return this.http.post<any[]>(Config.APIROOT+Config.APIURLS.REPORTS, reportInfo)
     .pipe(
       catchError((err) => {
         console.error(err);
         return throwError(err);
       }));
   }
+
 }

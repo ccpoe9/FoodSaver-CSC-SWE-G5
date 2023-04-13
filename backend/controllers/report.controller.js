@@ -1,9 +1,7 @@
 var db = require('../config/db.config');
 
-exports.GetStores = (req, res) => {
-
-    let Q1 = `CALL GetStoresByPage(${req.query.page}, @totalPages, @totalRecords); 
-    SELECT @totalPages as TotalPages,@totalRecords as TotalRecords;`;
+exports.GetReports = (req,res) => {
+    let Q1 = `CALL GetReports(${req.query.customerID});`;
     console.log(Q1);
     db.query(Q1, (err,data,fields) =>{
         if(err){
@@ -15,9 +13,8 @@ exports.GetStores = (req, res) => {
     });
 }
 
-exports.GetAdminStores = (req, res) => {
-
-    let Q2 = `CALL GetAdminStores(${req.query.supplierID});`;
+exports.GetAdminReports = (req,res) => {
+    let Q2 = `CALL GetAdminReports(${req.query.supplierID});`;
     console.log(Q2);
     db.query(Q2, (err,data,fields) =>{
         if(err){
@@ -29,9 +26,8 @@ exports.GetAdminStores = (req, res) => {
     });
 }
 
-exports.GetAllStores = (req, res) => {
-
-    let Q3 = `SELECT * FROM STORES;`;
+exports.CreateReports = (req,res) => {
+    let Q3 = `CALL CreateReports('${req.body.Title}', '${req.body.Desc}', '${req.body.storeName}',${req.body.customerID});`;
     console.log(Q3);
     db.query(Q3, (err,data,fields) =>{
         if(err){
@@ -42,3 +38,4 @@ exports.GetAllStores = (req, res) => {
         res.send(data);
     });
 }
+

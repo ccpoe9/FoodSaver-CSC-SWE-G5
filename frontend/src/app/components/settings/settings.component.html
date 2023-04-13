@@ -16,24 +16,33 @@
             </div>
             <div class="card-body">
                <div class="tab-content mt-3">
-                <div class="tab-pane active" id="account-tab-pane" role="tabpanel">
+                <div class="tab-pane active" id="account-tab-pane" role="tabpanel" *ngIf="userType == 'Customer'">
                   <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Username</label>
-                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" placeholder="{{userName}}" name="Username" [(ngModel)]="editUserInfo.Username" aria-label="Username" aria-describedby="basic-addon1">
                   </div>
                   <div class="mb-3">
                     <label for="exampleFormControlInput2" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="{{userEmail}}" name="Email" [(ngModel)]="editUserInfo.Email">
                   </div>
-                  <a href="#" class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#viewProductsModal">Save Changes</a>
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput3" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" placeholder="{{userPhoneNumber}}" name="Phone" [(ngModel)]="editUserInfo.Phone">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput4" class="form-label">Address</label>
+                    <input type="text" class="form-control" placeholder="{{userAddress}}" name="Address" [(ngModel)]="editUserInfo.Address">
+                  </div>
+                  <div class="mb-3 text-danger">{{Message}}</div>
+                  <a class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#viewProductsModal" (click)="submitUserInfo()">Save Changes</a>
                 </div>
                 <div class="tab-pane" id="theme-tab-pane" role="tabpanel" aria-labelledby="history-tab">  
                   <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      LIGHT THEME
+                      {{selectedTheme}}
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">DARK THEME</a></li>
+                      <li><a class="dropdown-item" (click)="changeTheme(unselectedTheme)">{{unselectedTheme}}</a></li>
                     </ul>
                   </div>
                 </div>
