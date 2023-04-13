@@ -8,6 +8,7 @@ export class Config{
         PRODUCTDETAILS : "/products/details",
         PRODUCTSEARCH : "/products/search",
         STORES : "/stores",
+        STORESALL : "/stores/all",
         FAVORITES : "/favorites",
         REPORTS : "/reports",
         MYSTORES : "/stores/admin",

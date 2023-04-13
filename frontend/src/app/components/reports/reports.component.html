@@ -1,7 +1,7 @@
 <div class="container">
     <div class="page-header d-flex justify-content-between mb-3">
         <h3 class="header-title">Reports</h3>
-        <a href="#" class="btn buy-again-btn me-2" data-bs-toggle="modal" data-bs-target="#reportModal">
+        <a href="#" class="btn buy-again-btn me-2" data-bs-toggle="modal" data-bs-target="#reportModal" (click)="getStores()">
             <i class="fa-solid fa-plus me-2"></i>Create Report</a>
     </div>
     <div class="page-body">
@@ -28,27 +28,23 @@
         <div class="modal-body">
             <div class="mb-3">
                 <label for="exampleDataList" class="form-label">To</label>
-                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="">
-                <datalist id="datalistOptions">
-                <option value="San Francisco">
-                <option value="New York">
-                <option value="Seattle">
-                <option value="Los Angeles">
-                <option value="Chicago">
-                </datalist>          
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="newReport.storeName">
+                  <option selected>Select Store</option>
+                  <option value="1" *ngFor="let store of stores" [ngValue]="store.Name">{{store.Name}}</option>
+                </select>     
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Report Title</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Title">
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Title" name="Title" [(ngModel)]="newReport.Title">
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Report Description</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="Desc" [(ngModel)]="newReport.Desc"></textarea>
             </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
-          <button type="button" class="btn btn-primary">Create</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createReport()">Create</button>
         </div>
       </div>
     </div>

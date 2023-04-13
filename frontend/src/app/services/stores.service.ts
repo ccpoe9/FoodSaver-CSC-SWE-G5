@@ -30,4 +30,13 @@ export class StoresService {
         return throwError(err);
       }));
   }
+
+  getAllStores(){
+    return this.http.get<any[]>(Config.APIROOT + Config.APIURLS.STORESALL)
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
 }

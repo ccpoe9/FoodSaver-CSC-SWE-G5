@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { switchMap } from 'rxjs';
 import { ReportsService } from 'src/app/services/reports.service';
+import { StoresService } from 'src/app/services/stores.service';
 
 @Component({
   selector: 'app-reports',
@@ -8,9 +10,17 @@ import { ReportsService } from 'src/app/services/reports.service';
 })
 export class ReportsComponent {
 
-  constructor(private reportsService : ReportsService){}
+  constructor(private reportsService : ReportsService, private storesService : StoresService){}
   userType : string;
   reports : any[] = [];
+  stores : any[] = [];
+
+  newReport = {
+    Title : "",
+    Desc : "",
+    storeName : "",
+    customerID : localStorage.getItem('id')
+  }
   ngOnInit(){
     if(localStorage.getItem('user') == 'Customer') this.getReports();
     if(localStorage.getItem('user') == 'Admin') this.getAdminReports();
@@ -32,4 +42,20 @@ export class ReportsComponent {
       this.reports = data[0];
     })
   }
+  createReport(){
+    this.reportsService.createReports(this.newReport)
+    .pipe( switchMap( () => {
+      return this.reportsService.getReports(Number(localStorage.getItem('id')));
+    }))
+    .subscribe( data => {
+      this.reports = data[0];
+    });
+  }
+  getStores(){
+    this.storesService.getAllStores()
+    .subscribe( data => {
+      this.stores = data;
+    })
+  }
+
 }

@@ -28,3 +28,17 @@ exports.GetAdminStores = (req, res) => {
         res.send(data);
     });
 }
+
+exports.GetAllStores = (req, res) => {
+
+    let Q3 = `SELECT * FROM STORES;`;
+    console.log(Q3);
+    db.query(Q3, (err,data,fields) =>{
+        if(err){
+            console.error(err.message);
+            res.statusMessage = "SQL Error : " + err.message;
+            return res.status(400).end();
+        }
+        res.send(data);
+    });
+}

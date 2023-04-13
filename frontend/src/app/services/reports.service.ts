@@ -31,4 +31,13 @@ export class ReportsService {
       }));
   }
 
+  createReports(reportInfo : any){
+    return this.http.post<any[]>(Config.APIROOT+Config.APIURLS.REPORTS, reportInfo)
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
 }
