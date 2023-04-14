@@ -25,7 +25,7 @@ export class ViewtypesComponent {
   }
 
   getProductsByType(type : string){
-    this.productsService.getProductsByType(type).subscribe( data => {
+    this.productsService.getProductsByType(type, Number(localStorage.getItem('id'))).subscribe( data => {
       this.products = data[0];
       console.log(this.products);
     });

@@ -33,11 +33,12 @@
           </div>
         </div>
         <div class="product-buttons d-flex justify-content-between align-items-center">
-          <button type="button" class="btn cart-add-button" (click)="addToCart(product.ID, store.ID)">
+          <button type="button" class="btn cart-add-button" [ngClass]="{'disabled' : product.Quantity == 0}" (click)="addToCart(product.ID, store.ID, product.Quantity)">
             <i class="fa-solid fa-plus"></i>
           </button>
-          <span class="add-text">{{product.Count || 0}}</span>
-          <button type="button" class="btn cart-delete-button">
+          <span class="add-text" *ngIf="product.Quantity != 0 && product.Count > 0">{{product.Count || 0}}</span>
+          <span class="add-text text-danger" *ngIf="product.Quantity == 0">{{message}}</span>
+          <button type="button" class="btn cart-delete-button" (click)="removeFromCart(product.ID, store.ID)" *ngIf="product.Count > 0">
             <i class="fa-solid fa-trash"></i>
           </button>
         </div>

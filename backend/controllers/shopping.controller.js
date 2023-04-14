@@ -13,8 +13,8 @@ exports.AddtoCart = (req,res) => {
     });
 }
 
-exports.GetShoppingSessions = (req,res) => {
-    let Q2 = `CALL GetShoppingSessions(${req.query.customerID});`;
+exports.RemoveFromCart = (req,res) => {
+    let Q2 = `CALL RemoveFromCart(${req.query.customerID},${req.query.productID},${req.query.storeID});`;
     console.log(Q2);
     db.query(Q2, (err,data,fields) =>{
         if(err){
@@ -25,4 +25,31 @@ exports.GetShoppingSessions = (req,res) => {
         res.send(data);
     });
 }
+
+exports.GetShoppingSessions = (req,res) => {
+    let Q3 = `CALL GetShoppingSessions(${req.query.customerID});`;
+    console.log(Q3);
+    db.query(Q3, (err,data,fields) =>{
+        if(err){
+            console.error(err.message);
+            res.statusMessage = "SQL Error : " + err.message;
+            return res.status(400).end();
+        }
+        res.send(data);
+    });
+}
+
+exports.RemoveShoppingSession = (req,res) => {
+    let Q4 = `CALL RemoveShoppingSession(${req.query.sessionID});`;
+    console.log(Q4);
+    db.query(Q4, (err,data,fields) =>{
+        if(err){
+            console.error(err.message);
+            res.statusMessage = "SQL Error : " + err.message;
+            return res.status(400).end();
+        }
+        res.send(data);
+    });
+}
+
 

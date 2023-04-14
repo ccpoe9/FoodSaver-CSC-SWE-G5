@@ -39,7 +39,7 @@ export class ViewallComponent {
 
       for(let i = 0; i < this.productTypes.length; i++){
         this.observablesList.push(this.productService.
-        getProductsByStoreAndType(this.StoreID, this.currentPages[i], this.productTypes[i]));
+        getProductsByStoreAndType(this.StoreID, this.currentPages[i], this.productTypes[i], Number(localStorage.getItem('id'))));
       }
       return forkJoin(this.observablesList);
     }))
@@ -54,7 +54,7 @@ export class ViewallComponent {
 
   getNextPage(index : number ,page : number, type : string){
     this.currentPages[index] = page;
-    this.productService.getProductsByStoreAndType(this.StoreID, this.currentPages[index], type).subscribe( data => {
+    this.productService.getProductsByStoreAndType(this.StoreID, this.currentPages[index], type, Number(localStorage.getItem('id'))).subscribe( data => {
       console.log(data);
       this.products[index][0] = data[0];
       this.products[index][2][0].TotalPages = data[2][0].TotalPages;

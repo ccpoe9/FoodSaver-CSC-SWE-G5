@@ -23,7 +23,7 @@ export class SearchComponent {
   Search(){
     this.route.queryParams.pipe( switchMap( data => {
       this.search = data['s'];
-      return this.productsService.getProductsBySearch(this.search);
+      return this.productsService.getProductsBySearch(this.search, Number(localStorage.getItem('id')));
     }))
     .subscribe( data => {
       this.searchResults = data[0];

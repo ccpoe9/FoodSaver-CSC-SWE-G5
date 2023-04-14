@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ProductsService } from 'src/app/services/products.service';
 import { ShoppingService } from 'src/app/services/shopping.service';
 import { StoresService } from 'src/app/services/stores.service';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +28,7 @@ export class HomeComponent {
   UserID : number;
   theme : string;
   observablesList : any = [];
+  message : String = 'Out of Stock!';
   ngOnInit(){
     this.UserID = Number(localStorage.getItem('id'));
     this.theme = localStorage.getItem('theme') || 'light';
@@ -49,7 +51,7 @@ export class HomeComponent {
       this.TotalStorePages = data[2][0].TotalPages;
       this.TotalStoreRecords = data[2][0].TotalRecords;
       this.stores.forEach( store => {
-        this.observablesList.push(this.productsService.getProducts(store.ID, this.pageNumber))
+        this.observablesList.push(this.productsService.getProducts(store.ID, this.pageNumber, this.UserID))
       });
       return forkJoin(this.observablesList);
     })).subscribe( data => {
@@ -63,7 +65,7 @@ export class HomeComponent {
   }
 
   getNextProducts(storeID : number, page : number){
-    this.productsService.getProducts(storeID, page)
+    this.productsService.getProducts(storeID, page, this.UserID)
     .subscribe( data => {
       this.products[storeID-1][0] = data[0];
       this.currentPageStores[storeID] = page;
@@ -75,10 +77,22 @@ export class HomeComponent {
     this.router.navigate(['/viewall'], {queryParams :{storeID: storeID, storeName : storeName, StoreLogo : StoreLogo}});
   }
 
-  addToCart(productID : number, storeID : number){
-    this.shoppingService.addToCart(this.UserID, productID, storeID)
+  addToCart(productID : number, storeID : number, quantity : number){
+    if(quantity != 0){
+      this.shoppingService.addToCart(this.UserID, productID, storeID)
+      .pipe(switchMap (data => {
+        return this.productsService.getProducts(storeID, this.currentPageStores[storeID], this.UserID);
+      })).subscribe( data => {
+        this.products[storeID-1][0] = data[0];
+        this.products[storeID-1][2][0].TotalPages = data[2][0].TotalPages;
+      });
+    }
+  }
+
+  removeFromCart(productID : number, storeID : number){
+    this.shoppingService.removeFromCart(this.UserID, productID, storeID)
     .pipe(switchMap (data => {
-      return this.productsService.getProducts(storeID, this.currentPageStores[storeID]);
+      return this.productsService.getProducts(storeID, this.currentPageStores[storeID], this.UserID);
     })).subscribe( data => {
       this.products[storeID-1][0] = data[0];
       this.products[storeID-1][2][0].TotalPages = data[2][0].TotalPages;
