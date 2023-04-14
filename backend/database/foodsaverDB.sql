@@ -50,6 +50,7 @@ CREATE TABLE `SHOPPING_SESSION` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `CtmID` int NOT NULL,
   `StoreID` int NOT NULL,
+  `CartCount` int DEFAULT 0,
   `Total` DECIMAL(7,2) DEFAULT 0,
   PRIMARY KEY (`ID`),
   CONSTRAINT `shopping_session_ibfk_1` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`),
@@ -396,8 +397,70 @@ END; //
 
 DELIMITER ;
 
-/*SELECT * FROM CART_ITEM;
+
+DROP PROCEDURE IF EXISTS AddtoCart;
+
+DELIMITER //
+CREATE PROCEDURE AddtoCart(
+	IN customerID INT,
+	IN in_ProductID INT,
+    IN in_StoreID INT
+)
+BEGIN
+	SET @SessionCount = (SELECT COUNT(*) FROM SHOPPING_SESSION WHERE `CtmID` = customerID AND `StoreID` = in_StoreID);
+    SET @SessionID = (SELECT `ID` FROM SHOPPING_SESSION WHERE `CtmID` = customerID AND `StoreID` = in_StoreID);
+    IF (@SessionCount = 1) THEN
+		SET @ItemCount = (SELECT COUNT(*) FROM CART_ITEM WHERE `ProductID` = in_ProductID);
+        IF @ItemCount > 0 THEN
+			UPDATE CART_ITEM SET `Count` = `Count` + 1 WHERE `ProductID` = in_ProductID;
+            UPDATE PRODUCTS SET `Quantity` = `Quantity` - 1 WHERE `ID` = in_ProductID;
+            SET @Price = (SELECT `Price` FROM PRODUCTS WHERE `ID` = in_ProductID);
+            UPDATE SHOPPING_SESSION SET Total = Total + @Price WHERE `ID` = @SessionID;
+            UPDATE SHOPPING_SESSION SET `CartCount` = `CartCount` + 1 WHERE `ID` = @SessionID;
+		ELSE
+			INSERT INTO CART_ITEM VALUES(in_ProductID,@SessionID,1);
+            UPDATE PRODUCTS SET `Quantity` = `Quantity` - 1 WHERE `ID` = in_ProductID;
+            SET @Price = (SELECT `Price` FROM PRODUCTS WHERE `ID` = in_ProductID);
+            UPDATE SHOPPING_SESSION SET Total = Total + @Price WHERE `ID` = @SessionID;
+            UPDATE SHOPPING_SESSION SET `CartCount` = `CartCount` + 1 WHERE `ID` = @SessionID;
+		END IF;
+	ELSE
+		INSERT INTO SHOPPING_SESSION (`CtmID`, `StoreID`) VALUES (customerID, in_StoreID);
+		SET @SessionID = (SELECT `ID` FROM SHOPPING_SESSION WHERE `CtmID` = customerID AND `StoreID` = in_StoreID);
+		INSERT INTO CART_ITEM VALUES(in_ProductID, @SessionID,1);
+        UPDATE PRODUCTS SET `Quantity` = `Quantity` - 1 WHERE `ID` = in_ProductID;
+        SET @Price = (SELECT `Price` FROM PRODUCTS WHERE `ID` = in_ProductID);
+		UPDATE SHOPPING_SESSION SET Total = Total + @Price WHERE `ID` = @SessionID;
+        UPDATE SHOPPING_SESSION SET `CartCount` = `CartCount` + 1 WHERE `ID` = @SessionID;
+	END IF;
+END; //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS GetShoppingSessions;
+
+DELIMITER //
+CREATE PROCEDURE GetShoppingSessions(
+	IN customerID INT
+)
+BEGIN
+	SELECT * FROM SHOPPING_SESSION ss
+    JOIN STORES s ON ss.StoreID = s.ID
+    WHERE `CtmID` = customerID;
+END; //
+
+DELIMITER ;
+
+
+/*CALL GetProductsByPage(1,1, @totalPages, @totalRecords);
+CALL AddtoCart(1,1,1);
 SELECT * FROM SHOPPING_SESSION;
+SELECT * FROM CART_ITEM;*/
+
+
+/*
+
 INSERT INTO SHOPPING_SESSION(`CtmID`, `StoreID`) VALUES(1,1);
 INSERT INTO CART_ITEM (`ProductID`, `SessionID`)  VALUES(1,1);*/
 /*

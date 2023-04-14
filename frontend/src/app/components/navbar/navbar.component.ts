@@ -43,6 +43,7 @@ export class NavbarComponent {
               if(event instanceof NavigationStart) {
                 this.currentPage = event.url;
                 this.getLocalStorage();
+                this.getShoppingSessions();
               }
             });
   }
@@ -107,5 +108,20 @@ export class NavbarComponent {
 
   searchProducts(){
     this.router.navigate(['search'], {queryParams : {s : this.search}});
+  }
+
+  getShoppingSessions(){
+    this.shoppingService.getShoppingSessions(this.UserID)
+    .subscribe( data => {
+      this.shoppingSessions = data[0];
+    })
+  }
+
+  getAllSessionCount(){
+    let totalItems = 0;
+    for(let session of this.shoppingSessions){
+      totalItems += session.CartCount;
+    }
+    return totalItems;
   }
 }

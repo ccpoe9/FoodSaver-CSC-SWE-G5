@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="product-buttons d-flex justify-content-between align-items-center">
-          <button type="button" class="btn cart-add-button">
+          <button type="button" class="btn cart-add-button" (click)="addToCart(product.ID, store.ID)">
             <i class="fa-solid fa-plus"></i>
           </button>
           <span class="add-text">{{product.Count || 0}}</span>

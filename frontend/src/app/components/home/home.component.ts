@@ -74,4 +74,14 @@ export class HomeComponent {
   viewAllProducts(storeID : number, storeName : string, StoreLogo : string){
     this.router.navigate(['/viewall'], {queryParams :{storeID: storeID, storeName : storeName, StoreLogo : StoreLogo}});
   }
+
+  addToCart(productID : number, storeID : number){
+    this.shoppingService.addToCart(this.UserID, productID, storeID)
+    .pipe(switchMap (data => {
+      return this.productsService.getProducts(storeID, this.currentPageStores[storeID]);
+    })).subscribe( data => {
+      this.products[storeID-1][0] = data[0];
+      this.products[storeID-1][2][0].TotalPages = data[2][0].TotalPages;
+    })
+  }
 }

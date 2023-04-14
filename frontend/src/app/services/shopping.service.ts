@@ -11,4 +11,29 @@ export class ShoppingService {
   constructor(private http : HttpClient) { }
   queryParams : HttpParams;
 
+
+  getShoppingSessions(customerID : number){
+    this.queryParams = new HttpParams().set('customerID', customerID);
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.SESSIONS, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
+  addToCart(customerID : number, productID : number, storeID : number){
+    let body = {
+      customerID : customerID,
+      productID : productID,
+      storeID : storeID
+    }
+    return this.http.post<any[]>(Config.APIROOT+Config.APIURLS.CART, body)
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
 }
