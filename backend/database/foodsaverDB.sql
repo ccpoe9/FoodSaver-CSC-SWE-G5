@@ -178,7 +178,7 @@ CREATE PROCEDURE CustomerSignUp(
 BEGIN
 	INSERT INTO `CUSTOMERS`(`Username`, `Password`)
 	VALUES (in_username,in_password);
-    SELECT `ID` FROM `CUSTOMERS` WHERE `Username` = in_username AND PASSWORD = in_password;
+    SELECT * FROM `CUSTOMERS` WHERE `Username` = in_username AND PASSWORD = in_password;
 END; //
 
 DELIMITER ;

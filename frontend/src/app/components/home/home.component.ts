@@ -25,9 +25,11 @@ export class HomeComponent {
   TotalStoreRecords : number;
   currentPageStores = [0, 1, 1, 1, 1, 1];
   UserID : number;
+  theme : string;
 
   ngOnInit(){
     this.UserID = Number(localStorage.getItem('id'));
+    this.theme = localStorage.getItem('theme') || 'light';
     this.getTopStores();
   }
 

@@ -1,8 +1,8 @@
 
-CALL SupplierAdminSignUp('a','a');
-CALL SupplierAdminSignUp('b','b');
-CALL CustomerSignUp('1','1');
-CALL CustomerSignUp('2','2');
+CALL SupplierAdminSignUp('adminuser','adminuser');
+CALL SupplierAdminSignUp('adminuser2','adminuser');
+CALL CustomerSignUp('customer1','customer');
+CALL CustomerSignUp('customer2','customer');
  
  INSERT INTO `STORES` (`Name`,`Address`,`StoreLogo`,`SupplierAdmin`)
  VALUES ('Walmart', '123 Monroe St','https://logos-world.net/wp-content/uploads/2021/11/Walmart-Logo-700x394.png', 1),
@@ -44,14 +44,3 @@ CALL CustomerSignUp('2','2');
 INSERT INTO FAVORITES VALUES (1,1);
 INSERT INTO FAVORITES VALUES (2,1);
 INSERT INTO FAVORITES VALUES (2,2);
-INSERT INTO `REPORTS` (`ReportTitle`,`ReportDesc`,`ReportCreated`,`CtmID`,`StoreID`)
-VALUES('ReportTitle1', 'ReportDesc1', CURDATE(), 1, 1);
-INSERT INTO `REPORTS` (`ReportTitle`,`ReportDesc`,`ReportCreated`,`CtmID`,`StoreID`)
-VALUES('ReportTitle1', 'ReportDesc1', CURDATE(), 2, 1);
-INSERT INTO `REPORTS` (`ReportTitle`,`ReportDesc`,`ReportCreated`,`CtmID`,`StoreID`)
-VALUES('ReportTitle2', 'ReportDesc2', CURDATE() , 1, 2);
-
-INSERT INTO `REPORTS` (`ReportTitle`,`ReportDesc`,`ReportCreated`,`CtmID`,`StoreID`)
-VALUES('ReportTitle1', 'ReportDesc1', CURDATE() , 1, 3);
-INSERT INTO `REPORTS` (`ReportTitle`,`ReportDesc`,`ReportCreated`,`CtmID`,`StoreID`)
-VALUES('ReportTitle2', 'ReportDesc2', CURDATE() , 1, 4);

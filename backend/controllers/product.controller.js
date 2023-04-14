@@ -28,7 +28,7 @@ exports.GetProductsByType = (req,res) => {
 }
 
 exports.GetProductsByTypeStore = (req,res) => {
-    let Q3 = `CALL GetProductsByTypeStore(${req.query.page}, ${req.query.storeID}, '${req.query.type}', @totalPages, @totalRecords); 
+    let Q3 = `CALL GetProductsByTypeStore(${req.query.page}, ${req.query.storeID}, "${req.query.type}", @totalPages, @totalRecords); 
     SELECT @totalPages as TotalPages, @totalRecords as TotalRecords;`;
     console.log(Q3);
     db.query(Q3, (err,data,fields) =>{
@@ -55,7 +55,7 @@ exports.GetProductsBySearch = (req,res) => {
 }
 
 exports.GetProductsCartCount = (req,res) => {
-    let Q5 = `CALL GetProductsCartCount('${req.query.customerID}');`;
+    let Q5 = `CALL GetProductsCartCount(${req.query.customerID});`;
     console.log(Q5);
     db.query(Q5, (err,data,fields) =>{
         if(err){

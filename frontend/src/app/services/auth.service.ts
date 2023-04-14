@@ -14,13 +14,6 @@ export class AuthService {
   ngOnInit(){
   }
 
-  setUser(userID : number, userType : string, Username : string, userAddress : string){
-    localStorage.setItem('id', userID.toString());
-    localStorage.setItem('user', userType);
-    localStorage.setItem('username', Username);
-    localStorage.setItem('address', userAddress);
-  }
-
   loginCustomer(userInfo : any){
     return this.http.post<any[]>(Config.APIROOT+Config.APIURLS.CUSTOMERLOGIN, userInfo, {responseType: 'json' })
     .pipe(
