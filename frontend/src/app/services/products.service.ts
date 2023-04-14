@@ -11,8 +11,8 @@ export class ProductsService {
   constructor(private http : HttpClient) { }
   queryParams : HttpParams;
 
-  getProducts(storeID : number, page : number){
-    this.queryParams = new HttpParams().set('storeID', storeID).set('page', page);
+  getProducts(storeID : number, page : number, customerID : number){
+    this.queryParams = new HttpParams().set('storeID', storeID).set('page', page).set('customerID', customerID);
     return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTS, {params : this.queryParams})
     .pipe(
       catchError((err) => {
@@ -21,8 +21,8 @@ export class ProductsService {
       }));
   }
 
-  getProductsByType(type : string){
-    this.queryParams = new HttpParams().set('type', type);
+  getProductsByType(type : string, customerID : number){
+    this.queryParams = new HttpParams().set('type', type).set('customerID', customerID);
     return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTTYPES, {params : this.queryParams})
     .pipe(
       catchError((err) => {
@@ -31,8 +31,8 @@ export class ProductsService {
       }));
   }
 
-  getProductsBySearch(search : string){
-    this.queryParams = new HttpParams().set('search', search);
+  getProductsBySearch(search : string, customerID : number){
+    this.queryParams = new HttpParams().set('search', search).set('customerID', customerID);
     return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTSEARCH, {params : this.queryParams})
     .pipe(
       catchError((err) => {
@@ -41,8 +41,8 @@ export class ProductsService {
       }));
   }
 
-  getProductsByStoreAndType(storeID : number, page : number, type : string){
-    this.queryParams = new HttpParams().set('storeID', storeID).set('page', page).set('type', type);
+  getProductsByStoreAndType(storeID : number, page : number, type : string, customerID : number){
+    this.queryParams = new HttpParams().set('storeID', storeID).set('page', page).set('type', type).set('customerID', customerID);
     return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTDETAILS, {params : this.queryParams})
     .pipe(
       catchError((err) => {

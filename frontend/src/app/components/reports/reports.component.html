@@ -6,14 +6,18 @@
     </div>
     <div class="page-body">
       <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action" aria-current="true" *ngFor="let report of reports">
+        <a class="list-group-item list-group-item-action" aria-current="true" *ngFor="let report of reports">
           <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">{{report.ReportTitle}}</h5>
-            <small>{{report.ReportCreated}}</small>
+            <small>{{report.ReportCreated.slice(0,10)}}</small>
           </div>
           <p class="mb-1">{{report.ReportDesc}}</p>
           <span></span>
-          <small><span *ngIf="userType == 'Customer'">To : {{report.Name}}</span><span *ngIf="userType == 'Admin'">From : {{report.Username}} Email: {{report.Email}}</span></small>
+          <small *ngIf="userType == 'Customer'">To : {{report.Name}}</small>
+          <div *ngIf="userType == 'Admin'" class="d-flex justify-content-between"> 
+            <small>From: {{report.Username}}</small>
+            <small>Email: <a href="mailto:{{report.Email}}">{{report.Email}}</a></small>
+          </div>
         </a>
       </div>
     </div>
@@ -38,13 +42,16 @@
                 <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Title" name="Title" [(ngModel)]="newReport.Title">
             </div>
             <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Report Description</label>
+                <label for="exampleFormControlTextarea1" class="form-label">Report Description<br>(Please provide email if it's not already on this account.)</label>
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="Desc" [(ngModel)]="newReport.Desc"></textarea>
+            </div>
+            <div class="mb-3">
+              <p class="text-muted">{{Message}}</p>
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createReport()">Create</button>
+          <button type="button" class="btn btn-secondary" #closebtn data-bs-dismiss="modal">Discard</button>
+          <button type="button" class="btn btn-primary"  (click)="createReport()">Create</button>
         </div>
       </div>
     </div>

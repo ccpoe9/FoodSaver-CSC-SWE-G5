@@ -4,6 +4,7 @@ const { SignUp, Login, AdminLogin, GetUserInfo, EditUserInfo} = require('../cont
 const { GetStores, GetAdminStores, GetAllStores } = require('../controllers/store.controller');
 const { GetFavorites } = require('../controllers/favorites.controller');
 const { GetReports, GetAdminReports, CreateReports } = require('../controllers/report.controller');
+const { GetShoppingSessions, AddtoCart, RemoveFromCart, RemoveShoppingSession } = require('../controllers/shopping.controller');
 let router = express.Router();
 
 
@@ -23,12 +24,14 @@ router.put('/api/customers', EditUserInfo);
 router.get('/api/favorites', GetFavorites);
 router.get('/api/reports', GetReports);
 router.get('/api/reports/admin', GetAdminReports);
+router.get('/api/sessions', GetShoppingSessions);
+router.post('/api/carts', AddtoCart);
 router.post('/api/users/customers/login',Login);
 router.post('/api/users/customers/signup',SignUp);
 router.post('/api/users/admin/login',AdminLogin);
 router.post('/api/reports', CreateReports);
-
-
+router.delete('/api/carts', RemoveFromCart);
+router.delete('/api/sessions', RemoveShoppingSession);
 
 
 module.exports = router;

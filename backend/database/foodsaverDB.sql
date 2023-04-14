@@ -12,6 +12,7 @@ CREATE TABLE `CUSTOMERS` (
   `Password` varchar(50) NOT NULL,
   `Email` varchar(70) DEFAULT NULL,
   `Phone` varchar(20) DEFAULT NULL,
+  
   `Address` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 );
@@ -49,6 +50,7 @@ CREATE TABLE `SHOPPING_SESSION` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `CtmID` int NOT NULL,
   `StoreID` int NOT NULL,
+  `CartCount` int DEFAULT 0,
   `Total` DECIMAL(7,2) DEFAULT 0,
   PRIMARY KEY (`ID`),
   CONSTRAINT `shopping_session_ibfk_1` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`),
@@ -67,6 +69,7 @@ CREATE TABLE `PRODUCTS` (
   `Type` varchar(30) DEFAULT NULL,
   `Description` varchar(300) DEFAULT NULL,
   `Image` varchar(400) DEFAULT NULL,
+  `Quantity` INT DEFAULT 0,
   `StoreID` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`StoreID`) REFERENCES `STORES` (`ID`)
@@ -118,8 +121,11 @@ CREATE TABLE `ORDERED` (
 CREATE TABLE `CART_ITEM` (
   `ProductID` int DEFAULT NULL,
   `SessionID` int DEFAULT NULL,
+  `CtmID` int DEFAULT NULL,
+  `Count` int DEFAULT 1,
   CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ID`),
-  CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`SessionID`) REFERENCES `SHOPPING_SESSION` (`ID`)
+  CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`SessionID`) REFERENCES `SHOPPING_SESSION` (`ID`),
+  CONSTRAINT `cart_item_ibfk_3` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
 );
 
 --
@@ -178,7 +184,7 @@ CREATE PROCEDURE CustomerSignUp(
 BEGIN
 	INSERT INTO `CUSTOMERS`(`Username`, `Password`)
 	VALUES (in_username,in_password);
-    SELECT `ID` FROM `CUSTOMERS` WHERE `Username` = in_username AND PASSWORD = in_password;
+    SELECT * FROM `CUSTOMERS` WHERE `Username` = in_username AND PASSWORD = in_password;
 END; //
 
 DELIMITER ;
@@ -203,13 +209,16 @@ DELIMITER //
 CREATE PROCEDURE GetProductsByPage(
 	IN currentPage INT,
     IN Store INT,
+    IN customerID INT,
     OUT totalPages INT,
     OUT totalRecords INT
 )
 BEGIN
 	DECLARE offsetval INT DEFAULT 0;
 	SET offsetval = (currentpage - 1) * 6;
-	SELECT * FROM PRODUCTS WHERE StoreID = Store
+    
+    SELECT * FROM PRODUCTS p LEFT JOIN CART_ITEM c ON p.ID = c.ProductID AND c.`CtmID` = customerID
+    WHERE StoreID = Store
     LIMIT 6 OFFSET offsetval;
     
     SELECT COUNT(*) INTO totalRecords FROM(
@@ -228,13 +237,16 @@ CREATE PROCEDURE GetProductsByTypeStore(
 	IN currentPage INT,
     IN in_storeID INT,
     IN in_Type VARCHAR(30),
+    IN customerID INT,
     OUT totalPages INT,
     OUT totalRecords INT
 )
 BEGIN
 	DECLARE offsetval INT DEFAULT 0;
 	SET offsetval = (currentpage - 1) * 6;
-	SELECT * FROM PRODUCTS WHERE `Type`= in_Type AND StoreID = in_storeID
+    
+    SELECT * FROM PRODUCTS p LEFT JOIN CART_ITEM c ON p.ID = c.ProductID AND c.`CtmID` = customerID
+    WHERE `Type`= in_Type AND StoreID = in_storeID
     LIMIT 6 OFFSET offsetval;
     
     SELECT COUNT(*) INTO totalRecords FROM(
@@ -249,11 +261,13 @@ DROP PROCEDURE IF EXISTS GetProductsByType;
 
 DELIMITER //
 CREATE PROCEDURE GetProductsByType(
-    IN in_type VARCHAR(30)
+    IN in_type VARCHAR(30),
+    IN customerID INT
 )
 BEGIN
 	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
     JOIN STORES s ON p.StoreID = s.ID
+    LEFT JOIN CART_ITEM c ON p.ID = c.ProductID AND c.`CtmID` = customerID
     WHERE p.`Type` = in_type;
 END; //
 
@@ -263,11 +277,13 @@ DROP PROCEDURE IF EXISTS GetProductsBySearch;
 
 DELIMITER //
 CREATE PROCEDURE GetProductsBySearch(
-    IN in_search VARCHAR(30)
+    IN in_search VARCHAR(30),
+    IN customerID INT
 )
 BEGIN
 	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
     JOIN STORES s ON p.StoreID = s.ID
+    LEFT JOIN CART_ITEM c ON p.ID = c.ProductID AND c.`CtmID` = customerID
     WHERE p.`Name` LIKE CONCAT('%', in_search, '%');
 END; //
 
@@ -388,7 +404,106 @@ END; //
 DELIMITER ;
 
 
+DROP PROCEDURE IF EXISTS AddtoCart;
 
+DELIMITER //
+CREATE PROCEDURE AddtoCart(
+	IN customerID INT,
+	IN in_ProductID INT,
+    IN in_StoreID INT
+)
+BEGIN
+	SET @SessionCount = (SELECT COUNT(*) FROM SHOPPING_SESSION WHERE `CtmID` = customerID AND `StoreID` = in_StoreID);
+    SET @SessionID = (SELECT `ID` FROM SHOPPING_SESSION WHERE `CtmID` = customerID AND `StoreID` = in_StoreID);
+    IF (@SessionCount = 1) THEN
+		SET @ItemCount = (SELECT COUNT(*) FROM CART_ITEM WHERE `ProductID` = in_ProductID AND `CtmID` = customerID);
+        IF @ItemCount > 0 THEN
+			UPDATE CART_ITEM SET `Count` = `Count` + 1 WHERE `ProductID` = in_ProductID AND `CtmID` = customerID;
+            UPDATE PRODUCTS SET `Quantity` = `Quantity` - 1 WHERE `ID` = in_ProductID;
+            SET @Price = (SELECT `Price` FROM PRODUCTS WHERE `ID` = in_ProductID);
+            UPDATE SHOPPING_SESSION SET Total = Total + @Price WHERE `ID` = @SessionID;
+            UPDATE SHOPPING_SESSION SET `CartCount` = `CartCount` + 1 WHERE `ID` = @SessionID;
+		ELSE
+			INSERT INTO CART_ITEM VALUES(in_ProductID,@SessionID,customerID,1);
+            UPDATE PRODUCTS SET `Quantity` = `Quantity` - 1 WHERE `ID` = in_ProductID;
+            SET @Price = (SELECT `Price` FROM PRODUCTS WHERE `ID` = in_ProductID);
+            UPDATE SHOPPING_SESSION SET Total = Total + @Price WHERE `ID` = @SessionID;
+            UPDATE SHOPPING_SESSION SET `CartCount` = `CartCount` + 1 WHERE `ID` = @SessionID;
+		END IF;
+	ELSE
+		INSERT INTO SHOPPING_SESSION (`CtmID`, `StoreID`) VALUES (customerID, in_StoreID);
+		SET @SessionID = (SELECT `ID` FROM SHOPPING_SESSION WHERE `CtmID` = customerID AND `StoreID` = in_StoreID);
+		INSERT INTO CART_ITEM VALUES(in_ProductID, @SessionID,customerID,1);
+        UPDATE PRODUCTS SET `Quantity` = `Quantity` - 1 WHERE `ID` = in_ProductID;
+        SET @Price = (SELECT `Price` FROM PRODUCTS WHERE `ID` = in_ProductID);
+		UPDATE SHOPPING_SESSION SET Total = Total + @Price WHERE `ID` = @SessionID;
+        UPDATE SHOPPING_SESSION SET `CartCount` = `CartCount` + 1 WHERE `ID` = @SessionID;
+	END IF;
+END; //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS GetShoppingSessions;
+
+DELIMITER //
+CREATE PROCEDURE GetShoppingSessions(
+	IN customerID INT
+)
+BEGIN
+	SELECT * FROM SHOPPING_SESSION ss
+    JOIN STORES s ON ss.StoreID = s.ID
+    WHERE `CtmID` = customerID;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS RemoveFromCart;
+
+DELIMITER //
+CREATE PROCEDURE RemoveFromCart(
+	IN customerID INT,
+	IN in_ProductID INT,
+    IN in_StoreID INT
+)
+BEGIN
+	SET @SessionID = (SELECT `ID` FROM SHOPPING_SESSION WHERE `CtmID` = customerID AND `StoreID` = in_StoreID);
+    UPDATE CART_ITEM SET `Count` = `Count` - 1 WHERE `ProductID` = in_ProductID AND `CtmID` = customerID;
+    UPDATE PRODUCTS SET `Quantity` = `Quantity` + 1 WHERE `ID` = in_ProductID;
+    SET @CartCount = (SELECT `Count` FROM CART_ITEM WHERE `ProductID` = in_ProductID AND `CtmID` = customerID);
+    SET @Price = (SELECT `Price` FROM PRODUCTS WHERE `ID` = in_ProductID);
+    UPDATE SHOPPING_SESSION SET Total = Total - @Price WHERE `ID` = @SessionID;
+    UPDATE SHOPPING_SESSION SET `CartCount` = `CartCount` - 1 WHERE `ID` = @SessionID;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS RemoveShoppingSession;
+
+DELIMITER //
+CREATE PROCEDURE RemoveShoppingSession(
+	IN sessionID INT
+)
+BEGIN
+	DELETE FROM SHOPPING_SESSION WHERE `ID` = sessionID;
+END; //
+
+DELIMITER ;
+
+
+
+
+/*CALL AddtoCart(2,1,1);*/
+/*CALL GetProductsByPage(1,1, @totalPages, @totalRecords);
+CALL AddtoCart(1,1,1);
+SELECT * FROM SHOPPING_SESSION;
+SELECT * FROM CART_ITEM;*/
+
+
+/*
+
+INSERT INTO SHOPPING_SESSION(`CtmID`, `StoreID`) VALUES(1,1);
+INSERT INTO CART_ITEM (`ProductID`, `SessionID`)  VALUES(1,1);*/
 /*
 CALL CustomerSignUp('1','1');
 CALL CreateShoppingSession(1, 1);

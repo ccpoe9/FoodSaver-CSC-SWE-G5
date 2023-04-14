@@ -27,7 +27,7 @@ exports.GetAdminReports = (req,res) => {
 }
 
 exports.CreateReports = (req,res) => {
-    let Q3 = `CALL CreateReports('${req.body.Title}', '${req.body.Desc}', '${req.body.storeName}',${req.body.customerID});`;
+    let Q3 = `CALL CreateReports("${req.body.Title}", "${req.body.Desc}", "${req.body.storeName}",${req.body.customerID});`;
     console.log(Q3);
     db.query(Q3, (err,data,fields) =>{
         if(err){

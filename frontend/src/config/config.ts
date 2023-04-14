@@ -11,6 +11,8 @@ export class Config{
         STORESALL : "/stores/all",
         FAVORITES : "/favorites",
         REPORTS : "/reports",
+        SESSIONS : "/sessions",
+        CART : "/carts",
         MYSTORES : "/stores/admin",
         ADMINREPORTS : "/reports/admin",
         CUSTOMERINFO : "/customers",

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin, switchMap } from 'rxjs';
 import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
@@ -20,6 +21,9 @@ export class ViewallComponent {
   currentPages = [1,1,1,1,1,1,1,1,1,1];
   totalPages : any = [];
   totalRecords : any = [];
+
+  observablesList : any = [];
+  
   constructor(private route : ActivatedRoute, private productService : ProductsService) {
     
   }
@@ -28,31 +32,32 @@ export class ViewallComponent {
   }
 
   getStoreInfo(){
-    this.route.queryParams.subscribe( data => {
+    this.route.queryParams.pipe(switchMap( data => {
       this.StoreID = data['storeID'];
       this.StoreName = data['storeName'];
       this.StoreLogo = data['StoreLogo'];
-      this.getProductsByStoreAndType();
+
+      for(let i = 0; i < this.productTypes.length; i++){
+        this.observablesList.push(this.productService.
+        getProductsByStoreAndType(this.StoreID, this.currentPages[i], this.productTypes[i], Number(localStorage.getItem('id'))));
+      }
+      return forkJoin(this.observablesList);
+    }))
+    .subscribe( data => {
+      this.products = data;
+      console.log(this.products[0][2][0].TotalPages);
     });
   }
-
-  getProductsByStoreAndType(){
-    this.products[0] = [];
-    for(let i = 0; i < this.productTypes.length; i++){
-      this.productService.getProductsByStoreAndType(this.StoreID, this.currentPages[i], this.productTypes[i]).subscribe( data => {
-        this.products[i] = data[0];
-        this.totalPages[i] = data[2][0].TotalPages;
-        this.totalRecords[i] = data[2][0].TotalRecords;
-      });
-    }
+  getTotalPages( i : number){
+    return this.products[i][2][0].TotalPages;
   }
 
   getNextPage(index : number ,page : number, type : string){
     this.currentPages[index] = page;
-    this.productService.getProductsByStoreAndType(this.StoreID, this.currentPages[index], type).subscribe( data => {
-      this.products[index] = data[0];
-      this.totalPages[index] = data[2][0].TotalPages;
-      this.totalRecords[index] = data[2][0].TotalRecords;
+    this.productService.getProductsByStoreAndType(this.StoreID, this.currentPages[index], type, Number(localStorage.getItem('id'))).subscribe( data => {
+      console.log(data);
+      this.products[index][0] = data[0];
+      this.products[index][2][0].TotalPages = data[2][0].TotalPages;
     });
   }
 

@@ -26,4 +26,8 @@ export class AppComponent {
   ngOnInit(){
     document.documentElement.setAttribute('data-bs-theme', localStorage.getItem('theme') || 'light');
   }
+
+  ngOnDestroy(){
+    localStorage.clear();
+  }
 }
