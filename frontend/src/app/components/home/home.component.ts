@@ -26,7 +26,7 @@ export class HomeComponent {
   currentPageStores = [0, 1, 1, 1, 1, 1];
   UserID : number;
   theme : string;
-
+  observablesList : any = [];
   ngOnInit(){
     this.UserID = Number(localStorage.getItem('id'));
     this.theme = localStorage.getItem('theme') || 'light';
@@ -43,12 +43,17 @@ export class HomeComponent {
   }
 
   getTopStores(){
-    this.storeService.getStores(1).subscribe( data => {
+    this.storeService.getStores(1).pipe( switchMap( data => {
       this.stores = data[0];
       this.topStores = data[0];
       this.TotalStorePages = data[2][0].TotalPages;
       this.TotalStoreRecords = data[2][0].TotalRecords;
-      this.getProducts(this.stores);
+      this.stores.forEach( store => {
+        this.observablesList.push(this.productsService.getProducts(store.ID, this.pageNumber))
+      });
+      return forkJoin(this.observablesList);
+    })).subscribe( data => {
+      this.products = data;
     });
   }
 
@@ -57,23 +62,12 @@ export class HomeComponent {
     this.getStores(page);
   }
 
-  getProducts(stores : any[]){
-    this.products[0] = [];
-    for(let store of stores){
-      this.productsService.getProducts(store.ID, this.pageNumber)
-      .subscribe( data => {
-        this.products[store.ID] = data[0];
-        this.products[0][store.ID] = data[2][0].TotalPages;
-      });
-    }
-  }
-
   getNextProducts(storeID : number, page : number){
     this.productsService.getProducts(storeID, page)
     .subscribe( data => {
-      this.products[storeID] = data[0];
+      this.products[storeID-1][0] = data[0];
       this.currentPageStores[storeID] = page;
-      this.products[0][storeID] = data[2][0].TotalPages;
+      this.products[storeID-1][2][0].TotalPages = data[2][0].TotalPages;
     });
   }
 

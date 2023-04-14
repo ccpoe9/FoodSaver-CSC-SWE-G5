@@ -12,6 +12,7 @@ CREATE TABLE `CUSTOMERS` (
   `Password` varchar(50) NOT NULL,
   `Email` varchar(70) DEFAULT NULL,
   `Phone` varchar(20) DEFAULT NULL,
+  
   `Address` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 );
@@ -67,6 +68,7 @@ CREATE TABLE `PRODUCTS` (
   `Type` varchar(30) DEFAULT NULL,
   `Description` varchar(300) DEFAULT NULL,
   `Image` varchar(400) DEFAULT NULL,
+  `Quantity` INT DEFAULT 0,
   `StoreID` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`StoreID`) REFERENCES `STORES` (`ID`)
@@ -118,6 +120,7 @@ CREATE TABLE `ORDERED` (
 CREATE TABLE `CART_ITEM` (
   `ProductID` int DEFAULT NULL,
   `SessionID` int DEFAULT NULL,
+  `Count` int DEFAULT 1,
   CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ID`),
   CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`SessionID`) REFERENCES `SHOPPING_SESSION` (`ID`)
 );
@@ -209,11 +212,13 @@ CREATE PROCEDURE GetProductsByPage(
 BEGIN
 	DECLARE offsetval INT DEFAULT 0;
 	SET offsetval = (currentpage - 1) * 6;
-	SELECT * FROM PRODUCTS WHERE StoreID = Store
+    
+    SELECT * FROM PRODUCTS p LEFT JOIN CART_ITEM c ON p.ID = c.ProductID
+    WHERE StoreID = Store AND Quantity > 0
     LIMIT 6 OFFSET offsetval;
     
     SELECT COUNT(*) INTO totalRecords FROM(
-    SELECT * FROM PRODUCTS WHERE StoreID = Store
+    SELECT * FROM PRODUCTS WHERE StoreID = Store AND Quantity > 0
     ) AS rescount;
     SET totalPages = CEIL(totalRecords/6);
     
@@ -234,7 +239,9 @@ CREATE PROCEDURE GetProductsByTypeStore(
 BEGIN
 	DECLARE offsetval INT DEFAULT 0;
 	SET offsetval = (currentpage - 1) * 6;
-	SELECT * FROM PRODUCTS WHERE `Type`= in_Type AND StoreID = in_storeID
+    
+    SELECT * FROM PRODUCTS p LEFT JOIN CART_ITEM c ON p.ID = c.ProductID
+    WHERE `Type`= in_Type AND StoreID = in_storeID AND Quantity > 0
     LIMIT 6 OFFSET offsetval;
     
     SELECT COUNT(*) INTO totalRecords FROM(
@@ -254,7 +261,8 @@ CREATE PROCEDURE GetProductsByType(
 BEGIN
 	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
     JOIN STORES s ON p.StoreID = s.ID
-    WHERE p.`Type` = in_type;
+    LEFT JOIN CART_ITEM c ON p.ID = c.ProductID
+    WHERE p.`Type` = in_type AND Quantity > 0;
 END; //
 
 DELIMITER ;
@@ -268,7 +276,8 @@ CREATE PROCEDURE GetProductsBySearch(
 BEGIN
 	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
     JOIN STORES s ON p.StoreID = s.ID
-    WHERE p.`Name` LIKE CONCAT('%', in_search, '%');
+    LEFT JOIN CART_ITEM c ON p.ID = c.ProductID
+    WHERE p.`Name` LIKE CONCAT('%', in_search, '%') AND Quantity > 0;
 END; //
 
 DELIMITER ;
@@ -387,8 +396,10 @@ END; //
 
 DELIMITER ;
 
-
-
+/*SELECT * FROM CART_ITEM;
+SELECT * FROM SHOPPING_SESSION;
+INSERT INTO SHOPPING_SESSION(`CtmID`, `StoreID`) VALUES(1,1);
+INSERT INTO CART_ITEM (`ProductID`, `SessionID`)  VALUES(1,1);*/
 /*
 CALL CustomerSignUp('1','1');
 CALL CreateShoppingSession(1, 1);
