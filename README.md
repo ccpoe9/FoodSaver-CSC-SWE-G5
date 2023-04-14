@@ -3,7 +3,7 @@ A web app that allows registered food providers to sell near expired food at a l
 
 - Christian Okey Ezeh
 - Omar Madjitov
-- Ethan Tang
+- Ethan Tang *****
 - Connie Santibanes
 - Asmau Baffa
 
