@@ -33,7 +33,7 @@ CREATE TABLE `SUPPLIER_ADMIN` (
 -- DROP TABLE IF EXISTS `STORES`;
 CREATE TABLE `STORES` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Name` varchar(30) DEFAULT NULL,
+  `Name` varchar(30) DEFAULT NULL UNIQUE,
   `Address` varchar(100) DEFAULT NULL UNIQUE,
   `StoreLogo` varchar(400) DEFAULT NULL,
   `SupplierAdmin` int DEFAULT NULL,
@@ -323,6 +323,23 @@ END; //
 
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS CreateReports;
+
+DELIMITER //
+CREATE PROCEDURE CreateReports(
+	IN in_title VARCHAR(200),
+    IN in_Desc VARCHAR(1000),
+	IN in_storeName VARCHAR(30),
+    IN in_customerID INT
+)
+BEGIN
+	SET @storeID = (SELECT ID FROM STORES WHERE `Name` = in_storeName);
+    INSERT INTO `REPORTS` (`ReportTitle`,`ReportDesc`,`ReportCreated`,`CtmID`,`StoreID`)
+	VALUES(in_title, in_Desc, CURDATE() , in_customerID, @storeID);
+END; //
+
+DELIMITER ;
+
 DROP PROCEDURE IF EXISTS GetAdminStores;
 
 DELIMITER //
@@ -369,6 +386,7 @@ BEGIN
 END; //
 
 DELIMITER ;
+
 
 
 /*
