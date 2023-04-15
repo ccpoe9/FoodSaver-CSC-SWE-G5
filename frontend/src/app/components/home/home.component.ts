@@ -85,6 +85,7 @@ export class HomeComponent {
       })).subscribe( data => {
         this.products[storeID-1][0] = data[0];
         this.products[storeID-1][2][0].TotalPages = data[2][0].TotalPages;
+        console.log(data[2][0].TotalRecords);
       });
     }
   }

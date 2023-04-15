@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, SimpleChange } from '@angular/core';
+import { Component, EventEmitter, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ShoppingService } from 'src/app/services/shopping.service';
@@ -52,7 +52,7 @@ export class NavbarComponent {
 
 
   ngOnInit(){ 
-    //setInterval(()=> { this.getShoppingSessions(); }, 1 * 1000);
+    setInterval(()=> { this.getShoppingSessions(); }, 1 * 1000);
   }
 
   getLocalStorage(){
@@ -71,7 +71,8 @@ export class NavbarComponent {
       this.UserEmail = data[0].Email;
       this.UserPhoneNumber = data[0].Phone;
       this.UserAddress = data[0].Address;
-      if(this.UserAddress == 'null' || this.UserAddress == '') this.UserAddress = "Enter Your Address";
+      console.log(this.UserAddress);
+      if(this.UserAddress == null || this.UserAddress == '') this.UserAddress = "Enter Your Address";
       this.setUserInfo();
     })
   }

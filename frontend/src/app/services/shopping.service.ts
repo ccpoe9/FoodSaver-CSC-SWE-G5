@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { EventEmitter, Injectable, Output } from '@angular/core';
+import { BehaviorSubject, catchError, throwError } from 'rxjs';
 import { Config } from 'src/config/config';
 
 @Injectable({
@@ -10,7 +10,8 @@ export class ShoppingService {
 
   constructor(private http : HttpClient) { }
   queryParams : HttpParams;
-  
+
+  totalItems$ : BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   getShoppingSessions(customerID : number){
     this.queryParams = new HttpParams().set('customerID', customerID);
@@ -54,6 +55,19 @@ export class ShoppingService {
         console.error(err);
         return throwError(err);
       }));
+  }
+
+  updateTotalCart(customerID : number){
+    let shoppingSessions : any = []
+    this.getShoppingSessions(customerID)
+    .subscribe( data => {
+      shoppingSessions = data[0];
+    });
+    let totalitems = 0;
+    for(let session of shoppingSessions){
+      totalitems+=session.Count;
+    }
+    this.totalItems$.next(totalitems);
   }
 
 
