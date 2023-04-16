@@ -60,4 +60,27 @@ export class ProductsService {
         return throwError(err);
       }));
   }
+
+  addFavorites(customerID : number, productID : number){
+    let body = {
+      customerID : customerID,
+      productID : productID
+    }
+    return this.http.post<any[]>(Config.APIROOT+Config.APIURLS.FAVORITES, body)
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
+  removeFavorites(customerID : number, productID : number){
+    this.queryParams = new HttpParams().set('customerID', customerID).set('productID', productID);
+    return this.http.delete<any[]>(Config.APIROOT+Config.APIURLS.FAVORITES, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
 }

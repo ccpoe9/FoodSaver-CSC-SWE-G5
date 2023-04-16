@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
+import { Subscription, subscribeOn } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ShoppingService } from 'src/app/services/shopping.service';
 
@@ -35,7 +36,8 @@ export class NavbarComponent {
   Message : string;
 
   shoppingSessions : any[] = [];
-
+  subscription : Subscription;
+  totalCartCount : number;
   constructor(private router : Router, private shoppingService : ShoppingService, private authService : AuthService){
     this.router.events
           .subscribe(
@@ -52,7 +54,10 @@ export class NavbarComponent {
 
 
   ngOnInit(){ 
-    setInterval(()=> { this.getShoppingSessions(); }, 1 * 1000);
+    this.subscription = this.shoppingService.totalItems$
+    .subscribe( data => {
+      this.totalCartCount = data;
+    })
   }
 
   getLocalStorage(){
@@ -114,14 +119,13 @@ export class NavbarComponent {
     this.shoppingService.getShoppingSessions(this.UserID)
     .subscribe( data => {
       this.shoppingSessions = data[0];
+      this.shoppingSessions.forEach( (session : any) => {
+        this.totalCartCount+=session.CartCount;
+      })
     })
   }
 
-  getAllSessionCount(){
-    let totalItems = 0;
-    for(let session of this.shoppingSessions){
-      totalItems += session.CartCount;
-    }
-    return totalItems;
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 }

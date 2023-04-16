@@ -15,7 +15,7 @@ exports.GetProductsByStore = (req,res) => {
 }
 
 exports.GetProductsByType = (req,res) => {
-    let Q2 = `CALL GetProductsByType('${req.query.type}');`;
+    let Q2 = `CALL GetProductsByType('${req.query.type}', ${req.query.customerID});`;
     console.log(Q2);
     db.query(Q2, (err,data,fields) =>{
         if(err){

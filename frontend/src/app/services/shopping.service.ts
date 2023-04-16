@@ -59,15 +59,16 @@ export class ShoppingService {
 
   updateTotalCart(customerID : number){
     let shoppingSessions : any = []
+    let totalitems = 0;
     this.getShoppingSessions(customerID)
     .subscribe( data => {
       shoppingSessions = data[0];
+      shoppingSessions.forEach( (session : any) => {
+        totalitems+=session.CartCount;
+        this.totalItems$.next(totalitems);
+      })
     });
-    let totalitems = 0;
-    for(let session of shoppingSessions){
-      totalitems+=session.Count;
-    }
-    this.totalItems$.next(totalitems);
+    
   }
 
 

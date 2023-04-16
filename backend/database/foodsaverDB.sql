@@ -265,7 +265,7 @@ CREATE PROCEDURE GetProductsByType(
     IN customerID INT
 )
 BEGIN
-	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
+	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, p.Quantity ,c.`Count`, s.`Name` AS storeName, s.StoreLogo, s.`ID` AS storeID FROM PRODUCTS p
     JOIN STORES s ON p.StoreID = s.ID
     LEFT JOIN CART_ITEM c ON p.ID = c.ProductID AND c.`CtmID` = customerID
     WHERE p.`Type` = in_type;
@@ -308,6 +308,32 @@ BEGIN
     SELECT * FROM STORES
     ) AS rescount;
     SET totalPages = CEIL(totalRecords/5);
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS AddFavorites;
+
+DELIMITER //
+CREATE PROCEDURE AddFavorites(
+	IN customerID INT,
+    IN in_ProductID INT
+)
+BEGIN
+	INSERT INTO FAVORITES VALUES (in_ProductID, customerID);
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS RemoveFavorites;
+
+DELIMITER //
+CREATE PROCEDURE RemoveFavorites(
+	IN customerID INT,
+    IN in_ProductID INT
+)
+BEGIN
+	DELETE FROM FAVORITES WHERE ProductID = in_ProductID AND CtmID = customerID;
 END; //
 
 DELIMITER ;

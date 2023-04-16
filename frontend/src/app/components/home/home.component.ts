@@ -18,8 +18,8 @@ export class HomeComponent {
     private router : Router, private shoppingService : ShoppingService, private authService : AuthService)  { }
   stores : any[];
   topStores : any[];
-  products : any = [];
-  productsCount : any = [];
+  products : any[] = [];
+  favorites : any[] = [];
   storeCount : number = 0;
   pageNumber : number = 1;
   TotalStorePages : number;
@@ -54,8 +54,12 @@ export class HomeComponent {
         this.observablesList.push(this.productsService.getProducts(store.ID, this.pageNumber, this.UserID))
       });
       return forkJoin(this.observablesList);
-    })).subscribe( data => {
+    })).pipe( switchMap ( (data : any) => {
       this.products = data;
+      return this.productsService.getFavorites(this.UserID)
+    }))
+    .subscribe( data => {
+      this.favorites  = data[0];
     });
   }
 
@@ -85,7 +89,7 @@ export class HomeComponent {
       })).subscribe( data => {
         this.products[storeID-1][0] = data[0];
         this.products[storeID-1][2][0].TotalPages = data[2][0].TotalPages;
-        console.log(data[2][0].TotalRecords);
+        this.shoppingService.updateTotalCart(this.UserID);
       });
     }
   }
@@ -97,6 +101,36 @@ export class HomeComponent {
     })).subscribe( data => {
       this.products[storeID-1][0] = data[0];
       this.products[storeID-1][2][0].TotalPages = data[2][0].TotalPages;
+      this.shoppingService.updateTotalCart(this.UserID);
     })
+  }
+
+  checkFavorite(productID : number){
+    return this.favorites.some( product => product.ProductID == productID )
+  }
+
+  changeFavorite(productID : number, isFavorite : boolean){
+    if(isFavorite) this.removeFromFavorites(productID);
+    else this.addToFavorites(productID);
+  }
+
+  addToFavorites(productID : number){
+    this.productsService.addFavorites(this.UserID, productID)
+    .pipe( switchMap ( data => {
+      return this.productsService.getFavorites(this.UserID);
+    })).subscribe( data => {
+      this.favorites = data[0];
+      console.log(this.favorites);
+    });
+  }
+
+  removeFromFavorites(productID : number){
+    this.productsService.removeFavorites(this.UserID, productID)
+    .pipe( switchMap ( data => {
+      return this.productsService.getFavorites(this.UserID);
+    })).subscribe( data => {
+      this.favorites = data[0];
+      console.log(this.favorites);
+    });
   }
 }
