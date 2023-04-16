@@ -1,7 +1,8 @@
 <div class="container">
-    <div class="page-header">
+    <div class="page-header mb-3">
         <h3 class="header-title">Favorites</h3>
     </div>
+    <h6 *ngIf="favorites.length == 0">No favorites added.</h6>
     <div class="page-body">
         <div class="row">
             <div class="col-sm-6 mb-3 mb-sm-2" *ngFor="let favorite of favorites">
@@ -10,8 +11,11 @@
                     <div class="card-body">
                         <h5 class="card-title">{{favorite.Name}}</h5>
                         <p class="card-text text-muted"><i>{{favorite.Description}}</i></p>
-                        <a href="#" class="btn add-fav-btn me-2"><i class="fa-solid fa-trash me-2"></i>Remove</a>
-                        <a href="#" class="btn add-fav-btn me-2"><i class="fa-solid fa-repeat me-2"></i>Buy Again</a>
+                        <h6 class="">{{favorite.storeName}}</h6>
+                        <div>
+                            <a class="btn add-fav-btn me-2" (click)="removeFromFavorites(favorite.ProductID)"><i class="fa-solid fa-trash me-2"></i>Remove</a>
+                            <a class="btn add-fav-btn me-2" *ngIf="favorite.Quantity > 0" (click)="addToCart(favorite.ProductID, favorite.StoreID, favorite.Quantity)"><i class="fa-solid fa-plus me-2"></i>Buy Again</a>
+                        </div>
                     </div>
                 </div>
             </div>

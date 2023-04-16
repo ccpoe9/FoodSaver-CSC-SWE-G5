@@ -75,7 +75,6 @@ export class ViewtypesComponent {
       return this.productsService.getFavorites(this.UserID);
     })).subscribe( data => {
       this.favorites = data[0];
-      console.log(this.favorites);
     });
   }
 
@@ -85,7 +84,6 @@ export class ViewtypesComponent {
       return this.productsService.getFavorites(this.UserID);
     })).subscribe( data => {
       this.favorites = data[0];
-      console.log(this.favorites);
     });
   }
 

@@ -281,7 +281,7 @@ CREATE PROCEDURE GetProductsBySearch(
     IN customerID INT
 )
 BEGIN
-	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
+	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, p.StoreID, p.Quantity ,c.`Count`, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
     JOIN STORES s ON p.StoreID = s.ID
     LEFT JOIN CART_ITEM c ON p.ID = c.ProductID AND c.`CtmID` = customerID
     WHERE p.`Name` LIKE CONCAT('%', in_search, '%');
@@ -345,7 +345,9 @@ CREATE PROCEDURE GetFavorites(
 	IN customerID INT
 )
 BEGIN
-	SELECT * FROM FAVORITES f JOIN PRODUCTS p ON f.ProductID = p.ID
+	SELECT f.ProductID, f.CtmID, p.`Name`, p.Image, p.`Description`, p.Quantity , s.ID AS StoreID ,s.StoreLogo, s.`Name` AS storeName FROM FAVORITES f 
+    JOIN PRODUCTS p ON f.ProductID = p.ID
+    JOIN STORES s ON p.StoreID = s.ID
     WHERE f.`CtmID` = customerID;
 END; //
 
