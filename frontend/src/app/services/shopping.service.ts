@@ -23,8 +23,8 @@ export class ShoppingService {
       }));
   }
 
-  removeShoppingSession(sessionID : number){
-    this.queryParams = new HttpParams().set('sessionID', sessionID);
+  removeShoppingSession(customerID : number, storeID : number){
+    this.queryParams = new HttpParams().set('customerID', customerID).set('storeID', storeID);
     return this.http.delete<any[]>(Config.APIROOT+Config.APIURLS.SESSIONS, {params : this.queryParams})
     .pipe(
       catchError((err) => {
@@ -65,8 +65,8 @@ export class ShoppingService {
       shoppingSessions = data[0];
       shoppingSessions.forEach( (session : any) => {
         totalitems+=session.CartCount;
-        this.totalItems$.next(totalitems);
-      })
+      });
+      this.totalItems$.next(totalitems);
     });
     
   }

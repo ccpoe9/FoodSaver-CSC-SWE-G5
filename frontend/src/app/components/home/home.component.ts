@@ -26,11 +26,13 @@ export class HomeComponent {
   TotalStoreRecords : number;
   currentPageStores = [0, 1, 1, 1, 1, 1];
   UserID : number;
+  UserType : string | null;
   theme : string;
   observablesList : any = [];
   message : String = 'Out of Stock!';
   ngOnInit(){
     this.UserID = Number(localStorage.getItem('id'));
+    this.UserType = localStorage.getItem('user');
     this.theme = localStorage.getItem('theme') || 'light';
     this.getTopStores();
   }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { Subscription, subscribeOn } from 'rxjs';
+import { Subscription, subscribeOn, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ShoppingService } from 'src/app/services/shopping.service';
 
@@ -118,6 +118,7 @@ export class NavbarComponent {
   getShoppingSessions(){
     this.shoppingService.getShoppingSessions(this.UserID)
     .subscribe( data => {
+      console.log(data);
       this.shoppingSessions = data[0];
       this.shoppingSessions.forEach( (session : any) => {
         this.totalCartCount+=session.CartCount;
@@ -125,7 +126,24 @@ export class NavbarComponent {
     })
   }
 
+  removeShoppingSession(storeID : number){
+    this.shoppingService.removeShoppingSession(this.UserID, storeID)
+    .pipe(switchMap( () => {
+      return this.shoppingService.getShoppingSessions(this.UserID);
+    }))
+    .subscribe( data => {
+      this.shoppingSessions = data[0];
+      this.shoppingSessions.forEach( (session : any) => {
+        this.totalCartCount+=session.CartCount;
+        this.shoppingService.updateTotalCart(this.UserID);
+        location.reload();
+      })
+    })
+  }
+
   ngOnDestroy(){
     this.subscription.unsubscribe();
   }
+
+  
 }

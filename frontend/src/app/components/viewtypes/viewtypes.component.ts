@@ -17,10 +17,12 @@ export class ViewtypesComponent {
   type : string;
   products : any = [];
   UserID : number;
+  UserType : string | null;
   favorites : any[] = [];
   message : String = 'Out of Stock!';
   ngOnInit(){
     this.UserID = Number(localStorage.getItem('id'));
+    this.UserType = localStorage.getItem('user');
     this.getType();
   }
 

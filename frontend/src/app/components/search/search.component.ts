@@ -19,11 +19,14 @@ export class SearchComponent {
   searchResults : any = [];
 
   UserID : number;
+  UserType : string | null;
+  
   message : String = 'Out of Stock!';
   favorites : any[] = [];
 
   ngOnInit(){
     this.UserID = Number(localStorage.getItem('id'));
+    this.UserType = localStorage.getItem('user');
     this.Search();
   }
 

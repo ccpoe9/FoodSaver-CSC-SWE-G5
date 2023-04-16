@@ -19,7 +19,7 @@ export class ViewallComponent {
   StoreLogo : string;
 
   UserID : number;
-
+  UserType : string | null;
   products : any = [];
   favorites : any[] = [];
   currentPages = [1,1,1,1,1,1,1,1,1,1];
@@ -34,6 +34,7 @@ export class ViewallComponent {
   }
   ngOnInit(){
     this.UserID = Number(localStorage.getItem('id'));
+    this.UserType = localStorage.getItem('user');
     this.getStoreInfo();
   }
 

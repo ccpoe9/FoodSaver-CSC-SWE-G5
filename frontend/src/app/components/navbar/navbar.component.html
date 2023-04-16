@@ -78,10 +78,16 @@
                   <h5 class="card-title">{{session.Name}}</h5>
                   <h6 class="card-subtitle mb-2 text-body-secondary">{{session.CartCount}} Item(s)</h6>
                   <p class="card-text">Total : ${{session.Total}}</p>
-                  <button type="button" class="btn cart-btn d-flex align-items-center justify-content-center">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <div class="cart-number">Checkout</div>
-                  </button>
+                  <div class="session-btns d-flex">
+                    <button type="button" class="btn cart-btn d-flex align-items-center me-2">
+                      <i class="fa-solid fa-cart-shopping"></i>
+                      <div class="cart-number">Checkout</div>
+                    </button>
+                    <button type="button" class="btn cart-btn d-flex align-items-center" (click)="removeShoppingSession(session.StoreID)">
+                      <i class="fa-solid fa-circle-xmark"></i>
+                      <div class="cart-number">Remove</div>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
