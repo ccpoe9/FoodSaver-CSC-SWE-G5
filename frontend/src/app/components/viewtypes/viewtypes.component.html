@@ -12,18 +12,25 @@
                       <h6 class="card-subtitle product-name mb-1">{{product.Name}}</h6>
                       <div class="d-flex align-items-center">
                         <i class="fa-regular fa-clock me-1"></i>
-                        <p class="card-subtitle pt-1 text-muted">Expires in x days</p>
+                        <p class="card-subtitle pt-1 text-muted">Expires on {{product.ExpireDate.slice(0,10)}}</p>
                       </div>
-                      <p><i>{{product.storeName}}</i></p>
+                      <small>{{product.storeName}}</small>
                     </div>
                   </div>
-                  <div class="product-buttons d-flex justify-content-between align-items-center">
-                    <button type="button" class="btn cart-add-button">
+                  <div class="product-buttons d-flex justify-content-between align-items-center mb-3" *ngIf="UserType == 'Customer'">
+                    <button type="button" class="btn cart-add-button" [ngClass]="{'disabled' : product.Quantity == 0}" (click)="addToCart(product.ID, product.storeID, product.Quantity, type)">
                       <i class="fa-solid fa-plus"></i>
                     </button>
-                    <span class="add-text">0</span>
-                    <button type="button" class="btn cart-delete-button">
-                      <i class="fa-solid fa-trash"></i>
+                    <span class="add-text" *ngIf="product.Quantity != 0 && product.Count > 0">{{product.Count || 0}}</span>
+                    <span class="add-text text-danger" *ngIf="product.Quantity == 0">{{message}}</span>
+                    <button type="button" class="btn cart-delete-button" (click)="removeFromCart(product.ID, product.storeID, type)" *ngIf="product.Count > 0">
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+                  </div>
+                  <div class="fav-btn" *ngIf="UserType == 'Customer'">
+                    <button type="button" class="btn cart-add-button w-100" (click)="changeFavorite(product.ID, checkFavorite(product.ID))">
+                      <i class="fa-regular fa-heart me-2" *ngIf="!checkFavorite(product.ID)"></i>
+                      <i class="fa-solid fa-heart me-2" *ngIf="checkFavorite(product.ID)"></i>
                     </button>
                   </div>
                 </div>

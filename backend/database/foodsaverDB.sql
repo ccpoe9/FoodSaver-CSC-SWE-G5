@@ -203,6 +203,8 @@ END; //
 DELIMITER ;
 
 
+
+
 DROP PROCEDURE IF EXISTS GetProductsByPage;
 
 DELIMITER //
@@ -265,7 +267,7 @@ CREATE PROCEDURE GetProductsByType(
     IN customerID INT
 )
 BEGIN
-	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
+	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, p.Quantity ,c.`Count`, s.`Name` AS storeName, s.StoreLogo, s.`ID` AS storeID FROM PRODUCTS p
     JOIN STORES s ON p.StoreID = s.ID
     LEFT JOIN CART_ITEM c ON p.ID = c.ProductID AND c.`CtmID` = customerID
     WHERE p.`Type` = in_type;
@@ -281,10 +283,54 @@ CREATE PROCEDURE GetProductsBySearch(
     IN customerID INT
 )
 BEGIN
-	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
+	SELECT p.ID, p.`Name`,p.Price, p.ExpireDate, p.`Type`, p.Image, p.StoreID, p.Quantity ,c.`Count`, s.`Name` AS storeName, s.StoreLogo FROM PRODUCTS p
     JOIN STORES s ON p.StoreID = s.ID
     LEFT JOIN CART_ITEM c ON p.ID = c.ProductID AND c.`CtmID` = customerID
     WHERE p.`Name` LIKE CONCAT('%', in_search, '%');
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CreateProduct;
+
+DELIMITER //
+CREATE PROCEDURE CreateProduct(
+    IN in_Name VARCHAR(80),
+    IN in_Price decimal(7,2),
+    IN in_ExpireDate date,
+	IN in_Type varchar(30),
+	IN in_Description varchar(300),
+	IN in_Image varchar(400),
+	IN in_Quantity INT,
+	IN in_StoreID INT
+)
+BEGIN
+	 INSERT INTO `PRODUCTS`(`Name`,`Price`,`ExpireDate`,`Type`, `Description`,`Image`,`Quantity`,`StoreID`)
+	 VALUES (in_Name, in_Price, in_ExpireDate, in_Type, in_Description, in_Image, in_Quantity, in_StoreID);
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS DeleteProduct;
+
+DELIMITER //
+CREATE PROCEDURE DeleteProduct(
+    IN ProductID INT
+)
+BEGIN
+	DELETE FROM `PRODUCTS` WHERE ID = ProductID;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS GetAllProducts;
+
+DELIMITER //
+CREATE PROCEDURE GetAllProducts(
+    IN in_storeID INT
+)
+BEGIN
+	SELECT * FROM `PRODUCTS` WHERE StoreID = in_storeID;
 END; //
 
 DELIMITER ;
@@ -312,6 +358,32 @@ END; //
 
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS AddFavorites;
+
+DELIMITER //
+CREATE PROCEDURE AddFavorites(
+	IN customerID INT,
+    IN in_ProductID INT
+)
+BEGIN
+	INSERT INTO FAVORITES VALUES (in_ProductID, customerID);
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS RemoveFavorites;
+
+DELIMITER //
+CREATE PROCEDURE RemoveFavorites(
+	IN customerID INT,
+    IN in_ProductID INT
+)
+BEGIN
+	DELETE FROM FAVORITES WHERE ProductID = in_ProductID AND CtmID = customerID;
+END; //
+
+DELIMITER ;
+
 DROP PROCEDURE IF EXISTS GetFavorites;
 
 DELIMITER //
@@ -319,7 +391,9 @@ CREATE PROCEDURE GetFavorites(
 	IN customerID INT
 )
 BEGIN
-	SELECT * FROM FAVORITES f JOIN PRODUCTS p ON f.ProductID = p.ID
+	SELECT f.ProductID, f.CtmID, p.`Name`, p.Image, p.`Description`, p.Quantity , s.ID AS StoreID ,s.StoreLogo, s.`Name` AS storeName FROM FAVORITES f 
+    JOIN PRODUCTS p ON f.ProductID = p.ID
+    JOIN STORES s ON p.StoreID = s.ID
     WHERE f.`CtmID` = customerID;
 END; //
 
@@ -477,19 +551,6 @@ BEGIN
 END; //
 
 DELIMITER ;
-
-DROP PROCEDURE IF EXISTS RemoveShoppingSession;
-
-DELIMITER //
-CREATE PROCEDURE RemoveShoppingSession(
-	IN sessionID INT
-)
-BEGIN
-	DELETE FROM SHOPPING_SESSION WHERE `ID` = sessionID;
-END; //
-
-DELIMITER ;
-
 
 
 

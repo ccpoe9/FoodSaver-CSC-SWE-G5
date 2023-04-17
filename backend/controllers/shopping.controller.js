@@ -39,17 +39,4 @@ exports.GetShoppingSessions = (req,res) => {
     });
 }
 
-exports.RemoveShoppingSession = (req,res) => {
-    let Q4 = `CALL RemoveShoppingSession(${req.query.sessionID});`;
-    console.log(Q4);
-    db.query(Q4, (err,data,fields) =>{
-        if(err){
-            console.error(err.message);
-            res.statusMessage = "SQL Error : " + err.message;
-            return res.status(400).end();
-        }
-        res.send(data);
-    });
-}
-
 

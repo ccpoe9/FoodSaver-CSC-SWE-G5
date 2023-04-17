@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { EventEmitter, Injectable, Output } from '@angular/core';
+import { BehaviorSubject, catchError, throwError } from 'rxjs';
 import { Config } from 'src/config/config';
 
 @Injectable({
@@ -10,21 +10,12 @@ export class ShoppingService {
 
   constructor(private http : HttpClient) { }
   queryParams : HttpParams;
-  
+
+  totalItems$ : BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   getShoppingSessions(customerID : number){
     this.queryParams = new HttpParams().set('customerID', customerID);
     return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.SESSIONS, {params : this.queryParams})
-    .pipe(
-      catchError((err) => {
-        console.error(err);
-        return throwError(err);
-      }));
-  }
-
-  removeShoppingSession(sessionID : number){
-    this.queryParams = new HttpParams().set('sessionID', sessionID);
-    return this.http.delete<any[]>(Config.APIROOT+Config.APIURLS.SESSIONS, {params : this.queryParams})
     .pipe(
       catchError((err) => {
         console.error(err);
@@ -54,6 +45,20 @@ export class ShoppingService {
         console.error(err);
         return throwError(err);
       }));
+  }
+
+  updateTotalCart(customerID : number){
+    let shoppingSessions : any = []
+    let totalitems = 0;
+    this.getShoppingSessions(customerID)
+    .subscribe( data => {
+      shoppingSessions = data[0];
+      shoppingSessions.forEach( (session : any) => {
+        totalitems+=session.CartCount;
+      });
+      this.totalItems$.next(totalitems);
+    });
+    
   }
 
 

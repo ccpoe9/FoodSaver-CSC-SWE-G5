@@ -4,7 +4,13 @@
 
 .container{
     height: 100vh;
+    font-family: 'Quicksand', sans-serif;
 }
 .header-title, .card{
     font-family: 'Quicksand', sans-serif;
 }
+
+.cart-add-button{
+    background-color: rgb(4, 137, 187);
+    color: white;
+  }

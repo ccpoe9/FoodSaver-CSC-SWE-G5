@@ -1,6 +1,7 @@
 
 .container{
   height: 100vh;
+  font-family: 'Quicksand', sans-serif;
 }
 
 .header-title, .card-title, .add-text{
@@ -10,4 +11,13 @@
   .add-fav-btn{
     background-color: rgb(4, 137, 187);
     font-family: 'Quicksand', sans-serif;
+}
+
+.card:hover{
+  transform: scale(1.05);
+
+}
+
+.card{
+  transition: 330ms ease-in-out;
 }

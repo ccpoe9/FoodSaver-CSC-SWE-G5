@@ -4,6 +4,7 @@
         <a href="#" class="btn buy-again-btn me-2" *ngIf="userType  == 'Customer'" data-bs-toggle="modal" data-bs-target="#reportModal" (click)="getStores()">
             <i class="fa-solid fa-plus me-2"></i>Create Report</a>
     </div>
+    <h6 *ngIf="reports.length == 0">No reports created.</h6>
     <div class="page-body">
       <div class="list-group">
         <a class="list-group-item list-group-item-action" aria-current="true" *ngFor="let report of reports">

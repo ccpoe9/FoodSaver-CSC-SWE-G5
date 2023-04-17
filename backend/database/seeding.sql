@@ -43,6 +43,3 @@ CALL CustomerSignUp('customer2','customer');
          ('Lunchables Ham & Swiss Cheese with Crackers Kids Lunch Snack Kit',1.49,'2023-05-12','Prepared Food', 'This Lunchables is a fun and delicious meal option for kids on the go. The kit includes lean ham, Swiss cheese, and crackers, making it a tasty and balanced snack that''s perfect for lunchtime or any time of day.', 'https://www.instacart.com/assets/domains/product-image/file/large_96849b77-fe90-4162-81f8-ede5eccd29b9.jpg', 5, 5),
          ('Ruffles Original Party Size Potato Chips 13 oz',2.49,'2023-05-12','Snacks', 'Ruffles Original Potato Chips are a classic and delicious snack made with crispy, ridged potato chips that have a satisfying crunch. With their bold and flavorful taste, these chips are perfect for sharing with friends and family at parties, picnics, or anytime snacking.', 'https://www.instacart.com/assets/domains/product-image/file/large_b5b7448c-c020-4bff-9745-55e276e26033.png', 5, 5);
          
-INSERT INTO FAVORITES VALUES (1,1);
-INSERT INTO FAVORITES VALUES (2,1);
-INSERT INTO FAVORITES VALUES (2,2);

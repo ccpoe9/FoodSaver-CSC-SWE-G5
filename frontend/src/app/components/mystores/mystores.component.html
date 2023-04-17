@@ -11,8 +11,8 @@
                 <div class="card-body">
                   <h5 class="card-title">{{store.Address}}</h5>
                   <div class="card-btns d-flex">
-                    <a href="#" class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#viewProductsModal">View Products</a>
-                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductsModal">Add Product</a>
+                    <a href="#" class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#viewProductsModal" (click)="getAdminProducts(store.ID)">View Products</a>
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductsModal" (click)="setStoreID(store.ID)">Add Product</a>
                   </div>
                 </div>
             </div>
@@ -27,7 +27,17 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              ...
+              <div class="card w-100 mb-3" *ngFor="let product of products">
+                <div class="card-body">
+                  <h5 class="card-title">{{product.Name}}</h5>
+                  <h6 class="card-subtitle mb-2 text-body-secondary">{{product.Price}}</h6>
+                  <p class="card-text">{{product.Description}}</p>
+                  <button type="button" class="btn cart-add-button w-100" (click)="deleteProduct(product.ID)">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                    Remove
+                  </button>
+                </div>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -36,18 +46,49 @@
     </div>
 </div>
 <div class="modal fade" id="addProductsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Add Product</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          ...
+          <p class="text-danger">{{Message}}</p>
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Product Name</label>
+            <input type="text" class="form-control" placeholder="" name="Name" [(ngModel)]="newProduct.Name" aria-describedby="basic-addon1">
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput2" class="form-label">Price</label>
+            <input type="number" step=".01" class="form-control" placeholder="" name="Price" [(ngModel)]="newProduct.Price" id="exampleFormControlInput1" placeholder="">
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput3" class="form-label">Expiry Date</label>
+            <input type="date" class="form-control" placeholder="" placeholder="" name="Date" [(ngModel)]="newProduct.ExpireDate">
+          </div>
+          <div class="mb-3">
+            <label for="exampleDataList" class="form-label">Product Type</label>
+            <select class="form-select" aria-label="Default select example" placeholder="" name="Type" [(ngModel)]="newProduct.Type">
+              <option selected>Select Type</option>
+              <option value="{{type}}" *ngFor="let type of productTypes">{{type}}</option>
+            </select>     
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="" name="Description" [(ngModel)]="newProduct.Description"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Image Link</label>
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" placeholder="" name="Image" [(ngModel)]="newProduct.Image">
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput2" class="form-label">Quantity</label>
+            <input type="number" step="1" class="form-control" id="exampleFormControlInput1" placeholder="" name="Quantity" [(ngModel)]="newProduct.Quantity">
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
-          <button type="button" class="btn btn-primary">Add</button>
+          <button type="button" class="btn btn-secondary" #discardbtn data-bs-dismiss="modal">Discard</button>
+          <button type="button" class="btn btn-primary" (click)="addProduct()">Add</button>
         </div>
       </div>
     </div>

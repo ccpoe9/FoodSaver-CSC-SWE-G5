@@ -6,6 +6,7 @@ export class Config{
         PRODUCTS : "/products",
         PRODUCTTYPES : "/products/type",
         PRODUCTDETAILS : "/products/details",
+        PRODUCTADMIN : "/products/admin",
         PRODUCTSEARCH : "/products/search",
         STORES : "/stores",
         STORESALL : "/stores/all",
