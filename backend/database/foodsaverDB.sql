@@ -124,7 +124,7 @@ CREATE TABLE `CART_ITEM` (
   `CtmID` int DEFAULT NULL,
   `Count` int DEFAULT 1,
   CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ID`),
-  CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`SessionID`) REFERENCES `SHOPPING_SESSION` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`SessionID`) REFERENCES `SHOPPING_SESSION` (`ID`),
   CONSTRAINT `cart_item_ibfk_3` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
 );
 
@@ -201,6 +201,8 @@ BEGIN
 END; //
 
 DELIMITER ;
+
+
 
 
 DROP PROCEDURE IF EXISTS GetProductsByPage;
@@ -285,6 +287,50 @@ BEGIN
     JOIN STORES s ON p.StoreID = s.ID
     LEFT JOIN CART_ITEM c ON p.ID = c.ProductID AND c.`CtmID` = customerID
     WHERE p.`Name` LIKE CONCAT('%', in_search, '%');
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CreateProduct;
+
+DELIMITER //
+CREATE PROCEDURE CreateProduct(
+    IN in_Name VARCHAR(80),
+    IN in_Price decimal(7,2),
+    IN in_ExpireDate date,
+	IN in_Type varchar(30),
+	IN in_Description varchar(300),
+	IN in_Image varchar(400),
+	IN in_Quantity INT,
+	IN in_StoreID INT
+)
+BEGIN
+	 INSERT INTO `PRODUCTS`(`Name`,`Price`,`ExpireDate`,`Type`, `Description`,`Image`,`Quantity`,`StoreID`)
+	 VALUES (in_Name, in_Price, in_ExpireDate, in_Type, in_Description, in_Image, in_Quantity, in_StoreID);
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS DeleteProduct;
+
+DELIMITER //
+CREATE PROCEDURE DeleteProduct(
+    IN ProductID INT
+)
+BEGIN
+	DELETE FROM `PRODUCTS` WHERE ID = ProductID;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS GetAllProducts;
+
+DELIMITER //
+CREATE PROCEDURE GetAllProducts(
+    IN in_storeID INT
+)
+BEGIN
+	SELECT * FROM `PRODUCTS` WHERE StoreID = in_storeID;
 END; //
 
 DELIMITER ;
@@ -502,19 +548,6 @@ BEGIN
     SET @Price = (SELECT `Price` FROM PRODUCTS WHERE `ID` = in_ProductID);
     UPDATE SHOPPING_SESSION SET Total = Total - @Price WHERE `ID` = @SessionID;
     UPDATE SHOPPING_SESSION SET `CartCount` = `CartCount` - 1 WHERE `ID` = @SessionID;
-END; //
-
-DELIMITER ;
-
-DROP PROCEDURE IF EXISTS RemoveShoppingSession;
-
-DELIMITER //
-CREATE PROCEDURE RemoveShoppingSession(
-	IN customerID INT,
-    IN storeID INT
-)
-BEGIN
-	DELETE FROM SHOPPING_SESSION WHERE CtmID = customerID AND StoreID = storeID;
 END; //
 
 DELIMITER ;

@@ -23,16 +23,6 @@ export class ShoppingService {
       }));
   }
 
-  removeShoppingSession(customerID : number, storeID : number){
-    this.queryParams = new HttpParams().set('customerID', customerID).set('storeID', storeID);
-    return this.http.delete<any[]>(Config.APIROOT+Config.APIURLS.SESSIONS, {params : this.queryParams})
-    .pipe(
-      catchError((err) => {
-        console.error(err);
-        return throwError(err);
-      }));
-  }
-
   addToCart(customerID : number, productID : number, storeID : number){
     let body = {
       customerID : customerID,

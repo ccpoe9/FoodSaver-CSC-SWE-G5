@@ -21,6 +21,16 @@ export class ProductsService {
       }));
   }
 
+  getAdminProducts(storeID : number){
+    this.queryParams = new HttpParams().set('storeID', storeID);
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTADMIN, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
   getProductsByType(type : string, customerID : number){
     this.queryParams = new HttpParams().set('type', type).set('customerID', customerID);
     return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTTYPES, {params : this.queryParams})
@@ -44,6 +54,25 @@ export class ProductsService {
   getProductsByStoreAndType(storeID : number, page : number, type : string, customerID : number){
     this.queryParams = new HttpParams().set('storeID', storeID).set('page', page).set('type', type).set('customerID', customerID);
     return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTDETAILS, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
+  createProducts(newProduct : any){
+    return this.http.post<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTS, newProduct)
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
+  deleteProducts(productID : number){
+    this.queryParams = new HttpParams().set('productID', productID);
+    return this.http.delete<any[]>(Config.APIROOT+Config.APIURLS.PRODUCTS, {params : this.queryParams})
     .pipe(
       catchError((err) => {
         console.error(err);

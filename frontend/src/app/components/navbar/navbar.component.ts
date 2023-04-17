@@ -118,7 +118,6 @@ export class NavbarComponent {
   getShoppingSessions(){
     this.shoppingService.getShoppingSessions(this.UserID)
     .subscribe( data => {
-      console.log(data);
       this.shoppingSessions = data[0];
       this.shoppingSessions.forEach( (session : any) => {
         this.totalCartCount+=session.CartCount;
@@ -126,20 +125,6 @@ export class NavbarComponent {
     })
   }
 
-  removeShoppingSession(storeID : number){
-    this.shoppingService.removeShoppingSession(this.UserID, storeID)
-    .pipe(switchMap( () => {
-      return this.shoppingService.getShoppingSessions(this.UserID);
-    }))
-    .subscribe( data => {
-      this.shoppingSessions = data[0];
-      this.shoppingSessions.forEach( (session : any) => {
-        this.totalCartCount+=session.CartCount;
-        this.shoppingService.updateTotalCart(this.UserID);
-        location.reload();
-      })
-    })
-  }
 
   ngOnDestroy(){
     this.subscription.unsubscribe();
