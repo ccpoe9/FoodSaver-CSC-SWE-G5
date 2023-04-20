@@ -1,3 +1,5 @@
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'T:niuchaYL!2395'; 
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'T:niuchaYL!2395';
 DROP DATABASE IF EXISTS foodsaver;
 CREATE DATABASE foodsaver;
 

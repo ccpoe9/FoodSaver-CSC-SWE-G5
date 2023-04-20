@@ -4,7 +4,7 @@ let dbconfig = {
     connectionLimit : 4,
     host : 'localhost',
     user : 'root',
-    password : 'Paulezeh123',
+    password : 'T:niuchaYL!2395',
     database : 'foodsaver',
     multipleStatements: true
 }
