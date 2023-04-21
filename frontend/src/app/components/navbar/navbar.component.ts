@@ -61,7 +61,7 @@ export class NavbarComponent {
     this.subscription = this.shoppingService.totalItems$
     .subscribe( data => {
       this.totalCartCount = data;
-    })
+    });
   }
 
   getLocalStorage(){
@@ -123,9 +123,7 @@ export class NavbarComponent {
     this.shoppingService.getShoppingSessions(this.UserID)
     .subscribe( data => {
       this.shoppingSessions = data[0];
-      this.shoppingSessions.forEach( (session : any) => {
-        this.totalCartCount+=session.CartCount;
-      })
+      this.shoppingService.updateTotalCart(this.UserID);
     })
   }
 
@@ -158,6 +156,7 @@ export class NavbarComponent {
       .subscribe( data => {
         this.shoppingSessions = data[0];
         this.shoppingService.updateTotalCart(this.UserID);
+        
       })
     }
 

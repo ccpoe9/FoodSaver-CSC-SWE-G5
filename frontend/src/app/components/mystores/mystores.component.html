@@ -11,8 +11,9 @@
                 <div class="card-body">
                   <h5 class="card-title">{{store.Address}}</h5>
                   <div class="card-btns d-flex">
-                    <a href="#" class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#viewProductsModal" (click)="getAdminProducts(store.ID)">View Products</a>
-                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductsModal" (click)="setStoreID(store.ID)">Add Product</a>
+                    <a class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#viewProductsModal" (click)="getAdminProducts(store.ID)">View Products</a>
+                    <a class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#addProductsModal" (click)="setStoreID(store.ID)">Add Product</a>
+                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewOrdersModal" (click)="getAdminOrders(store.ID)">View Orders</a>
                   </div>
                 </div>
             </div>
@@ -89,6 +90,47 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" #discardbtn data-bs-dismiss="modal">Discard</button>
           <button type="button" class="btn btn-primary" (click)="addProduct()">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="viewOrdersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">View Orders</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="card w-100 mb-3" *ngFor="let order of orders">
+            <div class="card-header">
+              <h5>Order ID: <i class="h6">{{order.ID}}</i></h5>
+            </div>
+            <div class="card-body">
+              <div class="mb-3 text-muted">
+                <h5>Total: ${{order.OrderPrice}}</h5>
+              </div>
+              <div class="mb-3">
+                <h5>Order Status:</h5>
+                <select class="form-select" aria-label="Default select example" (change)="onChange(order.ID,$event)">
+                  <option selected>{{order.OrderStatus}}</option>
+                  <option value="DELIVERED" *ngIf="order.OrderStatus != 'DELIVERED'">DELIVERED</option>
+                  <option value="IN PROGRESS" *ngIf="order.OrderStatus != 'IN PROGRESS'">IN PROGRESS</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <h5>Estimated Delivery: {{order.DeliveryDate.slice(0,10)}}</h5>
+                <input type="date" id="date" [(ngModel)]="editDeliveryDate[order.ID]">
+              </div>
+              <button type="button" class="btn cart-add-button w-100" (click)="updateOrder(order.ID, order.StoreID)">
+                <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" #discardbtn data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

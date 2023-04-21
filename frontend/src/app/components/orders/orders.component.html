@@ -3,26 +3,23 @@
         <h3 class="header-title">Orders</h3>
     </div>
     <div class="page-body">
-        <div class="card mb-3">
-            <div class="card-header d-flex justify-content-between">
-                <h5>ORDER ID : <i class="h6">1</i></h5>
-                <h5>ORDER STATUS : <i class="h6">Delivered</i></h5>
-                <h5>TOTAL : <i class="h6">$1.99</i></h5>
-                <h5>DELIVERY DATE : <i class="h6">January 1st, 2023</i></h5>
+        <div class="card mb-3" *ngFor="let order of orders; let i = index">
+            <div class="card-header d-flex justify-content-start gap-4">
+                <h6>ORDER #{{order.ID}}</h6>
+                <h6>STATUS: <small [ngClass]="{'text-success': order.OrderStatus == 'DELIVERED', 'text-warning': order.OrderStatus == 'IN PROGRESS'}">{{order.OrderStatus}}</small></h6>
+                <h6>TOTAL: <small>${{order.OrderPrice}}</small></h6>
+                <h6  *ngIf="order.OrderStatus != 'DELIVERED'">ETA: <small>{{order.DeliveryDate.slice(0,10)}}</small></h6>
             </div>
-            
             <div class="card-body d-flex justify-content-between">
               <div class="card-body-left">
-                <h5 class="card-title">NUMBER OF ITEMS : 1</h5>
-                <p class="card-text">Item A, Item B, Item C, Item D...</p>
-                <a href="#" class="btn buy-again-btn me-2">
-                  <i class="fa-solid fa-repeat me-2"></i>Buy It Again</a>
-                <a href="#" class="btn buy-again-btn">
-                  <i class="fa-solid fa-map-location-dot me-2"></i>Track Package</a>
+                <h5 class="card-title">Items : {{orderDetails[i][0].length}}</h5>
+                <div class="d-flex mb-3">
+                  <img class="store-icon-img me-2" *ngFor="let orderDetail of orderDetails[i][0]" src="{{orderDetail.Image}}" alt="" style="width: 4rem; height:4rem;">
+                </div>
               </div>
               <div class="card-body-right">
                 <div class="store-icons me-2">
-                  <img class="store-icon-img" src="https://logos-world.net/wp-content/uploads/2021/11/Walmart-Logo-700x394.png" alt="">
+                  <img class="store-icon-img" src="{{orderDetails[i][0][0].StoreLogo}}" alt="">
                 </div>
               </div>
             </div>

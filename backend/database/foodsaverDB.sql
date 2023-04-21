@@ -526,7 +526,7 @@ CREATE PROCEDURE GetShoppingSessions(
 	IN customerID INT
 )
 BEGIN
-	SELECT * FROM SHOPPING_SESSION ss
+	SELECT ss.ID, ss.CtmID, ss.StoreID, ss.CartCount, ss.Total, s.`Name`, s.Address, s.StoreLogo, s.SupplierAdmin  FROM SHOPPING_SESSION ss
     JOIN STORES s ON ss.StoreID = s.ID
     WHERE `CtmID` = customerID;
 END; //
@@ -587,6 +587,65 @@ END; //
 DELIMITER ;
 
 
+DROP PROCEDURE IF EXISTS GetOrders;
+
+DELIMITER //
+CREATE PROCEDURE GetOrders(
+    IN in_customerID INT
+)
+BEGIN
+	SELECT * FROM ORDERS WHERE CtmID = in_customerID
+    ORDER BY ID DESC;
+END; //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS GetAdminOrders;
+
+DELIMITER //
+CREATE PROCEDURE GetAdminOrders(
+    IN in_storeID INT
+)
+BEGIN
+	SELECT * FROM ORDERS WHERE StoreID = in_storeID
+    ORDER BY ID DESC;
+END; //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS GetOrderDetails;
+
+DELIMITER //
+CREATE PROCEDURE GetOrderDetails(
+    IN orderID INT
+)
+BEGIN
+	SELECT o.ProductID, o.OrderID, p.`Name` AS productName, p.Image, s.`Name` AS storeName, s.`StoreLogo` FROM ORDERED o 
+    JOIN PRODUCTS p ON o.ProductID = p.ID
+    JOIN STORES s ON p.StoreID = s.ID
+    WHERE o.OrderID = orderID;
+END; //
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS EditOrders;
+
+DELIMITER //
+CREATE PROCEDURE EditOrders(
+    IN orderID INT,
+    IN in_orderStatus VARCHAR(20),
+    IN in_deliveryDate DATE
+)
+BEGIN
+	UPDATE ORDERS
+    SET OrderStatus = in_orderStatus, DeliveryDate = in_deliveryDate
+    WHERE ID = orderID;
+END; //
+
+DELIMITER ;
+
 /*
 CALL CreateOrder(1, 1, 11.47,1,1);
 
@@ -599,10 +658,9 @@ CALL AddtoCart(1,1,1);
 SELECT * FROM SHOPPING_SESSION;
 SELECT * FROM STORES;
 SELECT * FROM CART_ITEM;
-SELECT * FROM ORDERS;
 SELECT * FROM ORDERED;
 */
-
+CALL GetOrderDetails(1);
 
 /*
 INSERT INTO SHOPPING_SESSION(`CtmID`, `StoreID`) VALUES(1,1);
@@ -616,5 +674,5 @@ CALL RemoveCartItem(1,1,1);
 CALL GetShoppingSession(1);
 SELECT * FROM CART_ITEM;*/
 
-
+CALL GetShoppingSessions(1);
 

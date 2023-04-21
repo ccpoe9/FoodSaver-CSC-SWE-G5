@@ -80,6 +80,45 @@ export class ShoppingService {
       }));
   }
 
+  getOrders(customerID : number){
+    this.queryParams = new HttpParams().set('customerID', customerID);
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.ORDERS, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
+  getAdminOrders(storeID : number){
+    this.queryParams = new HttpParams().set('storeID', storeID);
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.ORDERSADMIN, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
+  getOrderDetails(orderID : number){
+    this.queryParams = new HttpParams().set('orderID', orderID);
+    return this.http.get<any[]>(Config.APIROOT+Config.APIURLS.ORDERDETAILS, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
+  editOrder(body : any){
+    return this.http.put<any[]>(Config.APIROOT+Config.APIURLS.ORDERS, body)
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
 
 
 }
