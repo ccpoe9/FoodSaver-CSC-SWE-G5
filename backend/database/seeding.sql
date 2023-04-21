@@ -11,7 +11,7 @@ CALL CustomerSignUp('customer2','customer');
  		('7 Eleven', '14001 Fondren Rd','https://logos-world.net/wp-content/uploads/2021/08/7-Eleven-Logo-700x394.png', 2),
  		('Kroger', '3617 Chandler Ln','https://logos-world.net/wp-content/uploads/2021/09/Kroger-Logo-700x394.png', 1),
         ('Walgreens', '3616 Chandler Ln','https://logos-world.net/wp-content/uploads/2021/11/Walgreens-Logo-700x394.png', 1),
-        ('The Fresh Market', '3337 Cherry St','https://s3.us-east-1.wasabisys.com/foodsaver/The Fresh Market/Logo/logo-color.svg', 2),
+        ('The Fresh Market', '3337 Cherry St','https://s3.us-east-1.wasabisys.com/foodsaver/The Fresh Market/Logo/logo-color.svg', 2);
 
  INSERT INTO `PRODUCTS`(`Name`,`Price`,`ExpireDate`,`Type`, `Description`,`Image`,`Quantity`,`StoreID`)
  -- Walmart
