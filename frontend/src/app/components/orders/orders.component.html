@@ -4,13 +4,12 @@
     </div>
     <div class="page-body">
         <div class="card mb-3" *ngFor="let order of orders; let i = index">
-            <div class="card-header d-flex justify-content-between">
-                <h5>Order ID: <i class="h6">{{order.ID}}</i></h5>
-                <h5>Order Status: <i class="h6">{{order.OrderStatus}}</i></h5>
-                <h5>Total: <i class="h6">${{order.OrderPrice}}</i></h5>
-                <h5>Estimated Delivery: <i class="h6">{{order.DeliveryDate.slice(0,10)}}</i></h5>
+            <div class="card-header d-flex justify-content-start gap-4">
+                <h6>ORDER #{{order.ID}}</h6>
+                <h6>STATUS: <small [ngClass]="{'text-success': order.OrderStatus == 'DELIVERED', 'text-warning': order.OrderStatus == 'IN PROGRESS'}">{{order.OrderStatus}}</small></h6>
+                <h6>TOTAL: <small>${{order.OrderPrice}}</small></h6>
+                <h6  *ngIf="order.OrderStatus != 'DELIVERED'">ETA: <small>{{order.DeliveryDate.slice(0,10)}}</small></h6>
             </div>
-            
             <div class="card-body d-flex justify-content-between">
               <div class="card-body-left">
                 <h5 class="card-title">Items : {{orderDetails[i][0].length}}</h5>

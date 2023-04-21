@@ -100,9 +100,21 @@ export class MystoresComponent {
     })
   }
 
-  updateOrder(orderID : number){
+  updateOrder(orderID : number, storeID : number){
     let order = this.orders.find( order => order.ID == orderID);
-    console.log(orderID ,this.editDeliveryDate[orderID] || order.DeliveryDate.slice(0,10), this.editOrderStatus[orderID] || order.OrderStatus);
+    let body = {
+      orderID : orderID,
+      orderStatus : this.editOrderStatus[orderID] || order.OrderStatus,
+      deliveryDate : this.editDeliveryDate[orderID] || order.DeliveryDate.slice(0,10)
+    }
+    console.log(body);
+    this.shoppingService.editOrder(body)
+    .pipe(switchMap( () => {
+      return this.shoppingService.getAdminOrders(storeID);
+    })) 
+    .subscribe( data=> {
+      this.orders = data[0];
+    })
   }
 
   onChange(orderID : number, value : any){
