@@ -14,6 +14,7 @@ export class Config{
         REPORTS : "/reports",
         SESSIONS : "/sessions",
         CART : "/carts",
+        ORDERS : "/orders",
         MYSTORES : "/stores/admin",
         ADMINREPORTS : "/reports/admin",
         CUSTOMERINFO : "/customers",

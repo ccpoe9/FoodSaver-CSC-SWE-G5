@@ -23,6 +23,16 @@ export class ShoppingService {
       }));
   }
 
+  RemoveShoppingSession(sessionID : number){
+    this.queryParams = new HttpParams().set('sessionID', sessionID);
+    return this.http.delete<any[]>(Config.APIROOT+Config.APIURLS.SESSIONS, {params : this.queryParams})
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
+  }
+
   addToCart(customerID : number, productID : number, storeID : number){
     let body = {
       customerID : customerID,
@@ -59,6 +69,15 @@ export class ShoppingService {
       this.totalItems$.next(totalitems);
     });
     
+  }
+
+  CreateOrder(body : any){
+    return this.http.post<any[]>(Config.APIROOT+Config.APIURLS.ORDERS, body)
+    .pipe(
+      catchError((err) => {
+        console.error(err);
+        return throwError(err);
+      }));
   }
 
 
