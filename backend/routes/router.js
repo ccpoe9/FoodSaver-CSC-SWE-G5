@@ -5,7 +5,7 @@ const { GetStores, GetAdminStores, GetAllStores } = require('../controllers/stor
 const { GetFavorites, AddFavorites, RemoveFavorites } = require('../controllers/favorites.controller');
 const { GetReports, GetAdminReports, CreateReports } = require('../controllers/report.controller');
 const { GetShoppingSessions, AddtoCart, RemoveFromCart, RemoveShoppingSession } = require('../controllers/shopping.controller');
-const { CreateOrder } = require('../controllers/orders.controller');
+const { CreateOrder, GetOrders, GetOrderDetails, GetAdminOrders, EditOrders } = require('../controllers/orders.controller');
 let router = express.Router();
 
 
@@ -27,6 +27,9 @@ router.get('/api/favorites', GetFavorites);
 router.get('/api/reports', GetReports);
 router.get('/api/reports/admin', GetAdminReports);
 router.get('/api/sessions', GetShoppingSessions);
+router.get('/api/orders', GetOrders);
+router.get('/api/orders/admin', GetAdminOrders);
+router.get('/api/orders/details', GetOrderDetails);
 router.post('/api/carts', AddtoCart);
 router.post('/api/orders', CreateOrder);
 router.post('/api/users/customers/login',Login);
@@ -35,6 +38,7 @@ router.post('/api/users/admin/login',AdminLogin);
 router.post('/api/reports', CreateReports);
 router.post('/api/favorites', AddFavorites);
 router.post('/api/products',CreateProduct);
+router.put('/api/orders', EditOrders);
 router.delete('/api/carts', RemoveFromCart);
 router.delete('/api/favorites', RemoveFavorites);
 router.delete('/api/products', DeleteProduct);

@@ -34,7 +34,7 @@
             <div class="mb-3">
                 <label for="exampleDataList" class="form-label">To</label>
                 <select class="form-select" aria-label="Default select example" [(ngModel)]="newReport.storeName">
-                  <option selected>Select Store</option>
+                  <option selected disabled>Select Store</option>
                   <option value="1" *ngFor="let store of stores" [ngValue]="store.Name">{{store.Name}}</option>
                 </select>     
             </div>

@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { switchMap } from 'rxjs';
 import { ProductsService } from 'src/app/services/products.service';
+import { ShoppingService } from 'src/app/services/shopping.service';
 import { StoresService } from 'src/app/services/stores.service';
 
 @Component({
@@ -10,7 +11,8 @@ import { StoresService } from 'src/app/services/stores.service';
 })
 export class MystoresComponent {
 
-  constructor(private storeService : StoresService, private productsService : ProductsService){}
+  constructor(private storeService : StoresService, private productsService : ProductsService, 
+    private shoppingService : ShoppingService){}
 
   myStores : any[] = [];
 
@@ -18,6 +20,8 @@ export class MystoresComponent {
   productTypes = ['Produce', 'Dairy & Eggs', 'Meat & Seafood', 
   'Beverages', 'Snacks', 'Prepared Food', 'Breakfast', 'Dry Goods & Pasta',
   'Bakery', 'Oils, Spices & Condiments'];
+
+  statusTypes : string[] = ['IN PROGRESS', 'DELIVERED'];
 
   Message : string;
 
@@ -34,6 +38,11 @@ export class MystoresComponent {
 
   products : any[] = [];
 
+  editOrderID : number;
+  editOrderStatus : any[] = [];
+  editDeliveryDate : any[] = [];
+
+  orders : any[] = [];
   @ViewChild('discardbtn') discardButton: ElementRef;
 
   ngOnInit(){
@@ -81,5 +90,22 @@ export class MystoresComponent {
     .subscribe( data => {
       this.products = data[0];
     })
+  }
+
+  getAdminOrders(storeID : number){
+    this.shoppingService.getAdminOrders(storeID)
+    .subscribe( data => {
+      this.orders = data[0];
+      console.log(this.orders);
+    })
+  }
+
+  updateOrder(orderID : number){
+    let order = this.orders.find( order => order.ID == orderID);
+    console.log(orderID ,this.editDeliveryDate[orderID] || order.DeliveryDate.slice(0,10), this.editOrderStatus[orderID] || order.OrderStatus);
+  }
+
+  onChange(orderID : number, value : any){
+    this.editOrderStatus[orderID] = value.target.value;
   }
 }

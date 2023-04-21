@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { forkJoin, switchMap } from 'rxjs';
+import { Subscription, forkJoin, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductsService } from 'src/app/services/products.service';
 import { ShoppingService } from 'src/app/services/shopping.service';
@@ -30,11 +30,17 @@ export class HomeComponent {
   theme : string;
   observablesList : any = [];
   message : String = 'Out of Stock!';
+  subscription : Subscription;
+  
   ngOnInit(){
     this.UserID = Number(localStorage.getItem('id'));
     this.UserType = localStorage.getItem('user');
     this.theme = localStorage.getItem('theme') || 'light';
     this.getTopStores();
+    this.subscription = this.shoppingService.totalItems$
+    .subscribe( data => {
+      this.getTopStores();
+    });
   }
 
   getStores(page : number){
