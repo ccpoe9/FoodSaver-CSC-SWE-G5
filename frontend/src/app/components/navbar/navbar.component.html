@@ -81,7 +81,7 @@
                   <div class="session-btns d-flex">
                     <button type="button" class="btn cart-btn d-flex align-items-center me-2">
                       <i class="fa-solid fa-cart-shopping"></i>
-                      <div class="cart-number">Checkout</div>
+                      <div class="cart-number" (click)="checkout(session.Total, session.Name, session.ID, session.StoreID, session.CartCount)">Checkout</div>
                     </button>
                   </div>
                 </div>

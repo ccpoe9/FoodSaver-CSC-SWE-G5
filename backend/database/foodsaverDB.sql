@@ -98,6 +98,7 @@ CREATE TABLE `ORDERS` (
   `DeliveryDate` date DEFAULT NULL,
   `StoreID` int DEFAULT NULL,
   `CtmID` int DEFAULT NULL,
+  `SessionID` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`StoreID`) REFERENCES `STORES` (`ID`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
@@ -124,7 +125,7 @@ CREATE TABLE `CART_ITEM` (
   `CtmID` int DEFAULT NULL,
   `Count` int DEFAULT 1,
   CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ID`),
-  CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`SessionID`) REFERENCES `SHOPPING_SESSION` (`ID`),
+  CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`SessionID`) REFERENCES `SHOPPING_SESSION` (`ID`) ON DELETE CASCADE,
   CONSTRAINT `cart_item_ibfk_3` FOREIGN KEY (`CtmID`) REFERENCES `CUSTOMERS` (`ID`)
 );
 
@@ -532,6 +533,19 @@ END; //
 
 DELIMITER ;
 
+
+DROP PROCEDURE IF EXISTS RemoveShoppingSession;
+
+DELIMITER //
+CREATE PROCEDURE RemoveShoppingSession(
+	IN sessionID INT
+)
+BEGIN
+	DELETE FROM SHOPPING_SESSION WHERE ID = sessionID;
+END; //
+
+DELIMITER ;
+
 DROP PROCEDURE IF EXISTS RemoveFromCart;
 
 DELIMITER //
@@ -552,17 +566,45 @@ END; //
 
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS CreateOrder;
 
+DELIMITER //
+CREATE PROCEDURE CreateOrder(
+	IN itemCount INT,
+	IN Price DECIMAL(7,2),
+    IN storeID INT,
+    IN in_customerID INT,
+    IN in_sessionID INT
+)
+BEGIN
+	SELECT storeID;
+	INSERT INTO ORDERS (`NumberOfItems`,`OrderPrice`,`OrderStatus`,`DeliveryDate`,`StoreID`,`CtmID`,`SessionID`)
+    VALUES(itemCount, Price, 'IN PROGRESS', DATE_ADD(CURDATE(), INTERVAL 2 DAY), storeID, in_customerID, in_sessionID);
+    INSERT INTO ORDERED(`ProductID`, `OrderID`)
+	SELECT c.ProductID , o.ID FROM CART_ITEM c JOIN ORDERS o ON c.SessionID = o.SessionID WHERE c.SessionID = in_sessionID;
+END; //
+
+DELIMITER ;
+
+
+/*
+CALL CreateOrder(1, 1, 11.47,1,1);
+
+
+CALL RemoveShoppingSession(1);
 
 /*CALL AddtoCart(2,1,1);*/
 /*CALL GetProductsByPage(1,1, @totalPages, @totalRecords);
 CALL AddtoCart(1,1,1);
 SELECT * FROM SHOPPING_SESSION;
-SELECT * FROM CART_ITEM;*/
+SELECT * FROM STORES;
+SELECT * FROM CART_ITEM;
+SELECT * FROM ORDERS;
+SELECT * FROM ORDERED;
+*/
 
 
 /*
-
 INSERT INTO SHOPPING_SESSION(`CtmID`, `StoreID`) VALUES(1,1);
 INSERT INTO CART_ITEM (`ProductID`, `SessionID`)  VALUES(1,1);*/
 /*
