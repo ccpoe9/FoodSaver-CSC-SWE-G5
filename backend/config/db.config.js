@@ -2,7 +2,7 @@ var mysql = require('mysql');
 
 let dbconfig = {
     connectionLimit : 4,
-    host : 'localhost',
+    host : '127.0.0.1',
     user : 'root',
     password : 'Paulezeh123',
     database : 'foodsaver',
