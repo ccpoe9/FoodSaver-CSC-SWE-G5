@@ -8,7 +8,7 @@ const http = require('http');
 const fs = require('fs');
 const cors = require('cors');
 const corsOptions ={
-    origin:'http://localhost:4200', 
+    origin:'*', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
