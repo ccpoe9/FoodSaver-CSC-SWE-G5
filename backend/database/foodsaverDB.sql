@@ -646,33 +646,3 @@ END; //
 
 DELIMITER ;
 
-/*
-CALL CreateOrder(1, 1, 11.47,1,1);
-
-
-CALL RemoveShoppingSession(1);
-
-/*CALL AddtoCart(2,1,1);*/
-/*CALL GetProductsByPage(1,1, @totalPages, @totalRecords);
-CALL AddtoCart(1,1,1);
-SELECT * FROM SHOPPING_SESSION;
-SELECT * FROM STORES;
-SELECT * FROM CART_ITEM;
-SELECT * FROM ORDERED;
-*/
-CALL GetOrderDetails(1);
-
-/*
-INSERT INTO SHOPPING_SESSION(`CtmID`, `StoreID`) VALUES(1,1);
-INSERT INTO CART_ITEM (`ProductID`, `SessionID`)  VALUES(1,1);*/
-/*
-CALL CustomerSignUp('1','1');
-CALL CreateShoppingSession(1, 1);
-CALL CreateCartItem(1,1,1);
-CALL CreateCartItem(3,1,1);
-CALL RemoveCartItem(1,1,1);
-CALL GetShoppingSession(1);
-SELECT * FROM CART_ITEM;*/
-
-CALL GetShoppingSessions(1);
-
