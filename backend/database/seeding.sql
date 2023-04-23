@@ -1,5 +1,5 @@
 
-CALL SupplierAdminSignUp('adminuser','adminuser');
+CALL SupplierAdminSignUp('adminuser1','adminuser1');
 CALL SupplierAdminSignUp('adminuser2','adminuser2');
 CALL CustomerSignUp('customer1','customer1');
 CALL CustomerSignUp('customer2','customer2');
