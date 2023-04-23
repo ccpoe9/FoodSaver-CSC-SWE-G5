@@ -1,8 +1,8 @@
 
 CALL SupplierAdminSignUp('adminuser','adminuser');
-CALL SupplierAdminSignUp('adminuser2','adminuser');
-CALL CustomerSignUp('customer1','customer');
-CALL CustomerSignUp('customer2','customer');
+CALL SupplierAdminSignUp('adminuser2','adminuser2');
+CALL CustomerSignUp('customer1','customer1');
+CALL CustomerSignUp('customer2','customer2');
  
  INSERT INTO `STORES` (`Name`,`Address`,`StoreLogo`,`SupplierAdmin`)
  VALUES ('Walmart', '123 Monroe St','https://logos-world.net/wp-content/uploads/2021/11/Walmart-Logo-700x394.png', 1),
