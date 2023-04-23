@@ -1,6 +1,6 @@
 export class Config{
 
-    static readonly APIROOT = "http://209.38.244.251:3000/api";
+    static readonly APIROOT = "https://foodsaverapi.one/api";
 
     static readonly APIURLS = {
         PRODUCTS : "/products",
