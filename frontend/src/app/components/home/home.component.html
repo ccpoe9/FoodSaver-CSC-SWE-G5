@@ -38,7 +38,7 @@
           </button>
           <span class="add-text" *ngIf="product.Quantity != 0 && product.Count > 0">{{product.Count || 0}}</span>
           <span class="add-text text-danger" *ngIf="product.Quantity == 0">{{message}}</span>
-          <button type="button" class="btn cart-delete-button" (click)="removeFromCart(product.ID, store.ID)" *ngIf="product.Count > 0">
+          <button type="button" class="btn cart-delete-button" [ngClass]="{'disabled' : product.Quantity == 0}" (click)="removeFromCart(product.ID, store.ID)" *ngIf="product.Count > 0">
             <i class="fa-solid fa-minus"></i>
           </button>
         </div>
