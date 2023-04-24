@@ -9,7 +9,7 @@
     <button type="button" class="btn store-list-btn btn-lg" *ngIf="pageNumber < TotalStorePages && TotalStorePages != 0" (click)="getNextStores(pageNumber + 1)" [ngClass]="{'text-white': theme == 'dark'}">&#8250;</button>
   </div>
   <div class="page-row mb-4" *ngFor="let store of topStores">
-    <div class="header-title mb-3 d-flex justify-content-between">
+    <div class="header-title mb-3 d-flex justify-content-between" *ngIf="store.Name != '7 Eleven'">
       <div class="header-left d-flex align-items-center">
         <h3>{{store.Name}}</h3>
       </div>
