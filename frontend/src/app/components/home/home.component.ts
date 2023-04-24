@@ -90,7 +90,7 @@ export class HomeComponent {
   }
 
   addToCart(productID : number, storeID : number, quantity : number){
-    if(quantity >= 0){
+    if(quantity > 0){
       this.shoppingService.addToCart(this.UserID, productID, storeID)
       .pipe(switchMap (data => {
         return this.productsService.getProducts(storeID, this.currentPageStores[storeID], this.UserID);
