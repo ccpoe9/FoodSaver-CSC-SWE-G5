@@ -40,7 +40,7 @@ export class ViewtypesComponent {
   }
 
   addToCart(productID : number, storeID : number, quantity : number, type : string){
-    if(quantity <= 0){
+    if(quantity >= 0){
       this.shoppingService.addToCart(this.UserID, productID, storeID)
       .pipe(switchMap (data => {
 

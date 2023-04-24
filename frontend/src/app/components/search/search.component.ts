@@ -45,7 +45,7 @@ export class SearchComponent {
   }
 
   addToCart(productID : number, storeID : number, quantity : number){
-    if(quantity <= 0){
+    if(quantity >= 0){
       this.shoppingService.addToCart(this.UserID, productID, storeID)
       .pipe(switchMap (data => {
 
