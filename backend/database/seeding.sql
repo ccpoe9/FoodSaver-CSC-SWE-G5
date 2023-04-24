@@ -11,12 +11,12 @@ CALL CustomerSignUp('customer2','customer2');
  
  INSERT INTO `STORES` (`Name`,`Address`,`StoreLogo`,`SupplierAdmin`)
  VALUES ('Walmart', '123 Monroe St','https://logos-world.net/wp-content/uploads/2021/11/Walmart-Logo-700x394.png', 1),
- 		('Publix', '188 Marine View Dr','https://logos-world.net/wp-content/uploads/2021/10/Publix-Logo-700x394.png', 1),
- 		('Target', '59 Patchogue Ave','https://logos-world.net/wp-content/uploads/2020/10/Target-Logo-700x394.png', 2),
- 		('7 Eleven', '14001 Fondren Rd','https://logos-world.net/wp-content/uploads/2021/08/7-Eleven-Logo-700x394.png', 2),
- 		('Kroger', '3617 Chandler Ln','https://logos-world.net/wp-content/uploads/2021/09/Kroger-Logo-700x394.png', 1),
-        ('Walgreens', '3616 Chandler Ln','https://logos-world.net/wp-content/uploads/2021/11/Walgreens-Logo-700x394.png', 1),
-        ('The Fresh Market', '3337 Cherry St','https://s3.us-east-1.wasabisys.com/foodsaver/The Fresh Market/Logo/logo-color.svg', 2);
+ 		('Publix', '188 Marine View Dr','https://logos-world.net/wp-content/uploads/2021/10/Publix-Logo-700x394.png', 2),
+ 		('Target', '59 Patchogue Ave','https://logos-world.net/wp-content/uploads/2020/10/Target-Logo-700x394.png', 3),
+ 		('7 Eleven', '14001 Fondren Rd','https://logos-world.net/wp-content/uploads/2021/08/7-Eleven-Logo-700x394.png', 4),
+ 		('Kroger', '3617 Chandler Ln','https://logos-world.net/wp-content/uploads/2021/09/Kroger-Logo-700x394.png', 5),
+        ('Walgreens', '3616 Chandler Ln','https://logos-world.net/wp-content/uploads/2021/11/Walgreens-Logo-700x394.png', 6),
+        ('The Fresh Market', '3337 Cherry St','https://s3.us-east-1.wasabisys.com/foodsaver/The Fresh Market/Logo/logo-color.svg', 7);
 
  INSERT INTO `PRODUCTS`(`Name`,`Price`,`ExpireDate`,`Type`, `Description`,`Image`,`Quantity`,`StoreID`)
  VALUES ('Snack Pack Chocolate Pudding',0.99,'2023-05-24','Snacks', 'A delicious and convenient treat that satisfies your sweet tooth. Made with real milk and cocoa, this creamy pudding is perfect for a quick and easy dessert or snack anytime, anywhere.', 'https://s3.us-east-1.wasabisys.com/foodsaver/Walmart/Snacks/8d1f388b-ef97-4f78-95b6-d4ba94ea7cd8_1.d6f4467feeeca110e6416b2598a88733.webp', 10,1),
