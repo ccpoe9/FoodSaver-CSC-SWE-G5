@@ -37,10 +37,10 @@ export class HomeComponent {
     this.UserType = localStorage.getItem('user');
     this.theme = localStorage.getItem('theme') || 'light';
     this.getTopStores();
-    this.subscription = this.shoppingService.totalItems$
+   /* this.subscription = this.shoppingService.totalItems$
     .subscribe( data => {
       this.getTopStores();
-    });
+    });*/
   }
 
   getStores(page : number){
