@@ -1,6 +1,11 @@
 
-CALL SupplierAdminSignUp('adminuser1','adminuser1');
-CALL SupplierAdminSignUp('adminuser2','adminuser2');
+CALL SupplierAdminSignUp('walmartadmin','admin');
+CALL SupplierAdminSignUp('publixadmin','admin');
+CALL SupplierAdminSignUp('targetadmin','admin');
+CALL SupplierAdminSignUp('7elevenadmin','admin');
+CALL SupplierAdminSignUp('krogeradmin','admin');
+CALL SupplierAdminSignUp('walgreensadmin','admin');
+CALL SupplierAdminSignUp('thefreshmarketadmin','admin');
 CALL CustomerSignUp('customer1','customer1');
 CALL CustomerSignUp('customer2','customer2');
  
